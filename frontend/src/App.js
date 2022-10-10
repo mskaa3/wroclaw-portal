@@ -2,10 +2,10 @@
 
 const App = () => {
   return (
-    <div className='App'>
+    <div>
       <h1>Wroclaw Portal</h1>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
