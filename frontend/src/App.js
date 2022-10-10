@@ -1,11 +1,11 @@
 //import './App.css';
 
-const App=()=> {
+const App = () => {
   return (
-    <div className="App">
-     <h1>Wroclaw Portal</h1>
+    <div className='App'>
+      <h1>Wroclaw Portal</h1>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
