@@ -29,15 +29,8 @@
     ]
   },
   "prettier": {
-    "singleQuote": true,
-    "overrides": [
-      {
-        "files":"*.html",
-        "options": {
-          "parser":"html"
-        }
-      }
-    ]
+    "singleQuote": true
+  
   },
   "browserslist": {
     "production": [
