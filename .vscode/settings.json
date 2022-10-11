@@ -9,6 +9,15 @@
         "source.fixAll.eslint":true 
     },
     
-    "python.pipenvPath":"backend/.venv/Scripts/python"
+    "python.pipenvPath":"backend/.venv/Scripts/python",
+    "python.linting.pycodestyleEnabled": true,
+    "python.linting.pylintEnabled": true,
+    "python.linting.pycodestyleArgs": [
+        "--max-line-length=88"
+    ],
+    "python.formatting.provider": "black",
+    "[python]": {
+        "editor.formatOnSave": true
+    }
     
 }
