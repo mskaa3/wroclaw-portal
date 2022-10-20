@@ -4,3 +4,21 @@ main{
   min-height: 70vh;
   
 }
+
+.menu-back{
+  background-color: #7aa8ff;
+}
+
+.image-container-top{
+  display: block;
+  height: 300 px;
+  width: 100%;  
+}
+
+.image-top{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+
