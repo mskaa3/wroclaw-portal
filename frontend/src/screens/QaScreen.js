@@ -7,7 +7,7 @@ const QaScreen = () => {
     <div>
       <QAform />
     </div>
-  );
+  )
 };
 
 
