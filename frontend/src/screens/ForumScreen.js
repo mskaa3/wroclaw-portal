@@ -1,9 +1,11 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
+import ForumTopics from '../components/forumTopics';
+
 
 const ForumScreen = () => {
   <div>
-      <forumTopics />
+      <ForumTopics />
     </div>
 };
 

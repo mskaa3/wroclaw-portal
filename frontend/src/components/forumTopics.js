@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import ListGroup from 'react-bootstrap/ListGroup';
 
-function FlushExample() {
+function ForumTopics() {
   return (
     <center>
       <h1>Choose the topic</h1>
@@ -25,4 +25,4 @@ function FlushExample() {
   );
 }
 
-export default FlushExample;
+export default ForumTopics;
