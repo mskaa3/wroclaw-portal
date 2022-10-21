@@ -1,10 +1,13 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
+import ForumTopics from '../components/ForumTopics';
 
 const ForumScreen = () => {
-  <div>
-      <forumTopics />
+  return (
+    <div>
+      <ForumTopics/>
     </div>
+  );
 };
 
 export default ForumScreen;
