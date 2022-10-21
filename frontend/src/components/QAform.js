@@ -3,8 +3,13 @@ import Button from 'react-bootstrap/Button';
 import React from 'react';
 import Form from 'react-bootstrap/Form';
 
-function QAform() {
+<<<<<<< HEAD
+function QA
+form() {
 
+=======
+function QAform()  {
+>>>>>>> dbc1b17fed88b90f9422e9710ebcdcd4fad2caae
   return (
     <Form>
      <center>
