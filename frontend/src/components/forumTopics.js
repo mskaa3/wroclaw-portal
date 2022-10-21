@@ -2,7 +2,7 @@
 import React from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
 
-function forumTopics() {
+function ForumTopics() {
   return (
     <center>
       <h1>Choose the topic</h1>
@@ -26,4 +26,4 @@ function forumTopics() {
   );
 }
 
-export default forumTopics;
+export default ForumTopics;
