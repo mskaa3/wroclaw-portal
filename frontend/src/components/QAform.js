@@ -1,8 +1,10 @@
 /* eslint-disable prettier/prettier */
 import Button from 'react-bootstrap/Button';
+import React from 'react';
 import Form from 'react-bootstrap/Form';
 
 function QAform() {
+
   return (
     <Form>
      <center>
@@ -22,4 +24,4 @@ function QAform() {
   );
 }
 
-export default QAform();
+export default QAform;

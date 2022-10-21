@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { useState } from 'react';
 import React from 'react';
 import Button from 'react-bootstrap/Button';
