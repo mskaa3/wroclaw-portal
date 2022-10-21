@@ -22,4 +22,4 @@ function QAform() {
   );
 }
 
-export default QAform;
+export default QAform();
