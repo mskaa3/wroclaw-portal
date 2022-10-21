@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Image,Card } from 'react-bootstrap';
+import { Container, Image, Card } from 'react-bootstrap';
 
 const UnivercityCard = () => {
   return (
@@ -8,14 +8,15 @@ const UnivercityCard = () => {
       <Card.Body>
         <Card.Title>Univercity Title</Card.Title>
         <Card.Text>
-          Institution Type:  Univercity/ Higher Education Institution
+          Institution Type: Univercity/ Higher Education Institution
         </Card.Text>
-        
+
         <Card.Link href="#">View Courses</Card.Link>
         <Card.Link href="#">Visit Vebsite</Card.Link>
         <Card.Link href="#">Contact this institution</Card.Link>
       </Card.Body>
     </Card>
+  );
 };
 
 export default UnivercityCard;
