@@ -1,9 +1,10 @@
 import React from 'react';
+import QAform from '../components/QAform';
 
 const QaScreen = () => {
   return (
     <div>
-      <QaScreen />
+      <QAform />
     </div>
   );
 };
