@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React from 'react';
 import QAform from '../components/QAform';
 
@@ -8,5 +9,6 @@ const QaScreen = () => {
     </div>
   );
 };
+
 
 export default QaScreen;
