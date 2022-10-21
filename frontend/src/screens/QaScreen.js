@@ -10,4 +10,5 @@ const QaScreen = () => {
   );
 };
 
+
 export default QaScreen;
