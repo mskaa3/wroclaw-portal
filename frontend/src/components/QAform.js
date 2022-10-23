@@ -2,7 +2,7 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
-function QAform() {
+function QAform()  {
   return (
     <Form>
      <center>
@@ -22,4 +22,4 @@ function QAform() {
   );
 }
 
-export default QAform();
+export default QAform;
