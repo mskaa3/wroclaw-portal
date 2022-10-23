@@ -2,12 +2,13 @@
 import React from 'react';
 import ForumTopics from '../components/ForumTopics';
 
+
 const ForumScreen = () => {
-  return (
-    <div>
-      <ForumTopics/>
+  return(
+  <div>
+      <ForumTopics />
     </div>
-  );
+    )
 };
 
 export default ForumScreen;
