@@ -6,6 +6,12 @@ const Footer = () => {
     <footer>
       <Container>
         <Row>
+          <Col className="text-center py-3">
+            <h6>Have any questions?</h6>
+            <a href="mailto:sales@example.com" class="contact-link">
+              sales@example.com
+            </a>
+          </Col>
           <Col className="text-center py-3">Copyright &copy; WroclawPortal</Col>
         </Row>
       </Container>
