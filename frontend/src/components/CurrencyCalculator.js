@@ -4,7 +4,10 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Dropdown from 'react-dropdown';
+//import Dropdown from 'react-bootstrap/Dropdown';
 import 'C:/7SEMESTER/wroclaw-portal/frontend/src/css/Currency.css';
+//import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 
 function CurrencyCalculator() {
   /*const [inputs, setInputs] = useState({});
@@ -53,7 +56,7 @@ function CurrencyCalculator() {
   const [info, setInfo] = useState([]);
   const [input, setInput] = useState(0);
   const [from, setFrom] = useState('usd');
-  const [to, setTo] = useState('inr');
+  const [to, setTo] = useState('eur');
   const [options, setOptions] = useState([]);
   const [output, setOutput] = useState(0);
 
@@ -94,8 +97,9 @@ function CurrencyCalculator() {
     <center>
       <Form.Group className="mb-3 w-25 mt-5" controlId="formBasicCurrencyFrom">
         <Form.Label>Currency From</Form.Label>
-        <div className="container">
+        <div className="container" style={{ display: 'inherit' }}>
           <Dropdown
+            className="sample-container-2"
             options={options}
             onChange={(e) => {
               setFrom(e.value);
@@ -104,24 +108,29 @@ function CurrencyCalculator() {
             placeholder="From"
           />
         </div>
+
         <br />
-        <Form.Control
-          type="Currency From"
-          placeholder="Enter currency"
-          onChange={(e) => setInput(e.target.value)}
-        />
+        <div>
+          <Form.Control
+            type="Currency From"
+            placeholder="Enter currency"
+            onChange={(e) => setInput(e.target.value)}
+          />
+        </div>
         <br />
       </Form.Group>
       <Form.Group className="mb-3 w-25" controlId="formBasicCurrencyTo">
         <Form.Label>Currency To</Form.Label>
-        <Dropdown
-          options={options}
-          onChange={(e) => {
-            setTo(e.value);
-          }}
-          value={to}
-          placeholder="To"
-        />
+        <div>
+          <Dropdown
+            options={options}
+            onChange={(e) => {
+              setTo(e.value);
+            }}
+            value={to}
+            placeholder="To"
+          />
+        </div>
         <br />
       </Form.Group>
       <button

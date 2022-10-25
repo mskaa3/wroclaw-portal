@@ -1,14 +1,14 @@
 "main application configuration"
 
 import os
-from dotenv import load_dotenv
+#from dotenv import load_dotenv
 from flask import Flask
 from flask_cors import CORS
 
 # from flask_oidc import OpenIDConnect
 # from okta import UsersClient
 
-load_dotenv(dotenv_path="./.env.local")
+#load_dotenv(dotenv_path="./.env.local")
 
 DEBUG = bool(os.environ.get("DEBUG", True))
 
