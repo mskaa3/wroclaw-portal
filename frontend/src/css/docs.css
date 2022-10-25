@@ -1,0 +1,18 @@
+.line {
+  border-left: 2px solid rgb(55, 146, 221);
+  height: 500;
+}
+
+.h1 {
+  color:  #69a3ff;
+  font-size: xx-large;
+}
+
+.h2{
+  font-size: medium;
+}
+
+.image{
+  max-width: 100%;
+  height: auto;
+}
