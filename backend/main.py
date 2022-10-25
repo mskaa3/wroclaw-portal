@@ -3,7 +3,7 @@
 # requests module will be used to CREATE client requests and send them to ANOTHER server
 # from crypt import methods
 import os, requests
-from dotenv import load_dotenv
+#from dotenv import load_dotenv
 from flask import Flask, request, jsonify
 
 # reques object is used to get access to the client request tat is sent TO THE Flask appl from the OTHER clients
@@ -12,7 +12,7 @@ from flask_cors import CORS
 # from flask_oidc import OpenIDConnect
 # from okta import UsersClient
 
-load_dotenv(dotenv_path="./.env.local")
+#load_dotenv(dotenv_path="./.env.local")
 
 DEBUG = bool(os.environ.get("DEBUG", True))
 
