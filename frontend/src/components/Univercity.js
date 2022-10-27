@@ -1,14 +1,16 @@
 import React from 'react';
 import { Form, Button } from 'react-bootstrap';
 
-const Univercity = () => {
+const Univercity = ({ handleSubmit, uniSearchWord, setUniSearchWord }) => {
   return (
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 align-left ">
-      <h2 class="mt-4">Explore study options</h2>
+    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 align-left ">
+      <h2 className="mt-4">Explore study options</h2>
 
-      <Form>
+      <Form onSubmit={handleSubmit}>
         <Form.Control
-          type="search"
+          type="text"
+          value={uniSearchWord}
+          onChange={(e) => setUniSearchWord(e.target.value)}
           placeholder="Enter search keywords"
           className="mt-4 "
           aria-label="SearchUni"
@@ -38,7 +40,7 @@ const Univercity = () => {
           <option value="3">Three</option>
         </Form.Select>
 
-        <Button className="mt-2 w-100" variant="custom">
+        <Button className="mt-2 w-100" variant="custom" type="submit">
           Search
         </Button>
       </Form>
