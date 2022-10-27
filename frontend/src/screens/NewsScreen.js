@@ -1,10 +1,13 @@
 import React from 'react';
 import News from '../components/News';
+import { NewsContextProvider } from '../NewsContext';
 
 const NewsScreen = () => {
   return (
     <div>
-      <News></News>
+      <NewsContextProvider>
+        <News />
+      </NewsContextProvider>
     </div>
   );
 };
