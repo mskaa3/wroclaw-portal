@@ -6,7 +6,7 @@ function QAform()  {
   return (
     <Form>
      <center>
-     <div class="col-sm-6">
+     <div className="col-sm-6">
       <Form.Group className="mb-3" controlId="formQuestion">
         <Form.Label>Have any questions? We will try to answer them!</Form.Label>
         <Form.Control type="email" placeholder="Type your question..." />
