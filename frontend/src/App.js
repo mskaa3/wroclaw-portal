@@ -1,4 +1,4 @@
-//import './App.css';
+import './css/App.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
@@ -16,6 +16,17 @@ import QaScreen from './screens/QaScreen';
 import LoginScreen from './screens/LoginScreen';
 import { useState, useEffect } from 'react';
 //import Univercity from './components/Univercity';
+
+const API_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:5000';
+
+import SignupScreen from './screens/SignupScreen';
+
+import { useState, useEffect } from 'react';
+//import Univercity from './components/Univercity';
+
+// news api for
+import { NewsContextProvider } from './NewsContext';
+import News from './components/News';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:5000';
 
@@ -79,6 +90,7 @@ const App = () => {
             <Route exact path="/docs" element={<DocumentsScreen />} />
             <Route exact path="/qa" element={<QaScreen />} />
             <Route exact path="/login" element={<LoginScreen />} />
+            <Route exact path="/signup" element={<SignupScreen />} />
           </Routes>
         </Container>
       </main>
