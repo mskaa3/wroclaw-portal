@@ -9,7 +9,6 @@ import SignupScreen from '../screens/SignupScreen';
 
 import {useNavigate} from 'react-router-dom';
 
-// import './Login.css';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -29,10 +28,12 @@ export default function Login() {
   return (
     <div className="Login">
       <Form onSubmit={handleSubmit}>
+      
         <Form.Group size="lg" controlId="email">
           <Form.Label>Email</Form.Label>
 
           <Form.Control
+           placeholder="Type your email..."
             autoFocus
             type="email"
             value={email}
@@ -44,11 +45,13 @@ export default function Login() {
           <Form.Label>Password</Form.Label>
 
           <Form.Control
+          placeholder="Type yor password..."
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
         </Form.Group>
+        
         <br />
 
         <Button size="lg" type="submit" disabled={!validateForm()}>
@@ -56,7 +59,8 @@ export default function Login() {
         </Button>
         <span> </span>
 
-        <Button onClick={SignupScreen} block size="lg" type="submit">
+        <Button a href="/signup" onClick={<SignupScreen />} block size="lg" type="submit">
+          
           Sign Up
         </Button>
       </Form>

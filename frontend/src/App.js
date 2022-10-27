@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import './css/App.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -14,21 +15,20 @@ import MapScreen from './screens/MapScreen';
 import NewsScreen from './screens/NewsScreen';
 import QaScreen from './screens/QaScreen';
 import LoginScreen from './screens/LoginScreen';
+import HomeContentScreen from './screens/HomeContentScreen';
 import { useState, useEffect } from 'react';
-//import Univercity from './components/Univercity';
-
-const API_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:5000';
-
-import SignupScreen from './screens/SignupScreen';
-
-import { useState, useEffect } from 'react';
-//import Univercity from './components/Univercity';
-
-// news api for
 import { NewsContextProvider } from './NewsContext';
 import News from './components/News';
+import SignupScreen from './screens/SignupScreen';
+//import Univercity from './components/Univercity';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:5000';
+
+
+
+// news api for
+
+
 
 const App = () => {
   const [uniSearchWord, setUniSearchWord] = useState('');
@@ -64,9 +64,11 @@ const App = () => {
 
   return (
     <Router>
+      
       <HomeScreen />
+      
       <Header title="Wroclaw Portal" />
-
+      
       <main>
         <Container>
           <Routes>
@@ -91,6 +93,7 @@ const App = () => {
             <Route exact path="/qa" element={<QaScreen />} />
             <Route exact path="/login" element={<LoginScreen />} />
             <Route exact path="/signup" element={<SignupScreen />} />
+            <Route exact path="/home" element={<HomeContentScreen />} />
           </Routes>
         </Container>
       </main>
