@@ -13,7 +13,8 @@ const TopImage = () => {
         src="https://cdn.pixabay.com/photo/2016/05/25/15/05/poland-1415099_1280.jpg"
         className="image-top"
       />
-    </div> 
+    </div>
+  
   );
 };
 
