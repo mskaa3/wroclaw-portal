@@ -4,9 +4,9 @@ import ListGroup from 'react-bootstrap/ListGroup';
 
 function ForumTopics() {
   return (
-    <center>
+    <div className="text-center">
       <h1>Choose the topic</h1>
-      <ListGroup variant="flush" active>
+      <ListGroup variant="flush active">
         <ListGroup.Item>Food&Entertainment</ListGroup.Item>
         <ListGroup.Item>
           International meetings
@@ -22,7 +22,7 @@ function ForumTopics() {
         <ListGroup.Item>Help</ListGroup.Item>
         <ListGroup.Item>General</ListGroup.Item>
       </ListGroup>
-    </center>
+    </div>
   );
 }
 
