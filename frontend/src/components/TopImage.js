@@ -1,3 +1,5 @@
+/* eslint-disable prettier/prettier */
+
 import React from 'react';
 //import { Container } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -12,6 +14,7 @@ const TopImage = () => {
         className="image-top"
       />
     </div>
+  
   );
 };
 

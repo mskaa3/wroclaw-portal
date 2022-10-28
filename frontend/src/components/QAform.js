@@ -1,10 +1,14 @@
 /* eslint-disable prettier/prettier */
 import Button from 'react-bootstrap/Button';
+import React from 'react';
 import Form from 'react-bootstrap/Form';
 
-function QAform()  {
+
+function QAform() {
+
   return (
-    <Form>
+    <div className="QaComponents">
+    <Form name="QAform">
      <center>
      <div className="col-sm-6">
       <Form.Group className="mb-3" controlId="formQuestion">
@@ -17,8 +21,16 @@ function QAform()  {
       <Button variant="primary" type="submit">
         Submit
       </Button>
+      
        </center>
+       
     </Form>
+        <center>
+          <div className="ga-answer"> <p> <br/> <br/> Just some generated answer</p> </div></center>
+    
+    </div>
+    
+    
   );
 }
 
