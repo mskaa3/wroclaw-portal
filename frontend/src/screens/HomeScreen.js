@@ -1,6 +1,6 @@
 import React from 'react';
+import HomeTextComponent from '../components/HomeTextComponent';
 import TopImage from '../components/TopImage';
-import HomeContentScreen from './HomeContentScreen';
 
 const HomeScreen = () => {
   return <TopImage />;
