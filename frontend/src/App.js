@@ -20,6 +20,7 @@ import { useState, useEffect } from 'react';
 import { NewsContextProvider } from './NewsContext';
 import News from './components/News';
 import SignupScreen from './screens/SignupScreen';
+import HomeTextComponent from './components/HomeTextComponent';
 //import Univercity from './components/Univercity';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:5000';
@@ -66,8 +67,8 @@ const App = () => {
     <Router>
       
       <HomeScreen />
-      
       <Header title="Wroclaw Portal" />
+      
       
       <main>
         <Container>
@@ -93,7 +94,9 @@ const App = () => {
             <Route exact path="/qa" element={<QaScreen />} />
             <Route exact path="/login" element={<LoginScreen />} />
             <Route exact path="/signup" element={<SignupScreen />} />
-            <Route exact path="/home" element={<HomeContentScreen />} />
+            <Route exact path="/" element={<HomeContentScreen />} />
+            
+            
           </Routes>
         </Container>
       </main>
