@@ -1,6 +1,9 @@
+/* eslint-disable prettier/prettier */
 import React from 'react';
 import { Navbar, Container, Nav } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import '../css/index.css';
+import Image from 'react-bootstrap/Image';
 
 const Header = ({ title }) => {
   return (
@@ -58,6 +61,7 @@ const Header = ({ title }) => {
         </Container>
       </Navbar>
     </>
+    
   );
 };
 
