@@ -21,6 +21,10 @@ main{
   object-fit:cover;
 }
 
+.title-uni{
+    vertical-align: middle;
+}
+
 .btn-custom{
   background-color: #69a3ff !important;
 }
