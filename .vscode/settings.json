@@ -20,9 +20,14 @@
     "python.linting.pycodestyleArgs": [
         "--max-line-length=88"
     ],
+    "python.linting.pylintArgs": [
+        "--load-plugins",
+        "pylint_flask_sqlalchemy",
+    ],
     "python.formatting.provider": "black",
     "[python]": {
         "editor.formatOnSave": true
-    }
+    },
+    "python.analysis.typeCheckingMode": "off"
     
 }
