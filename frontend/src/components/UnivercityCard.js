@@ -13,7 +13,7 @@ const UnivercityCard = ({ uni }) => {
                 <Card.Img variant="top" src={uni.logo} />
               </Col>
               <Col>
-                <Card.Title>{uni.title}</Card.Title>
+                <Card.Title>{uni.uni_name}</Card.Title>
               </Col>
             </Row>
             <Row>
@@ -27,7 +27,7 @@ const UnivercityCard = ({ uni }) => {
                 <Card.Link href="#">View Courses</Card.Link>
               </Col>
               <Col className="text-align-center">
-                <Card.Link href={uni.site}>Visit Vebsite</Card.Link>
+                <Card.Link href={uni.www}>Visit Vebsite</Card.Link>
               </Col>
               <Col className="text-align-center">
                 <Card.Link href="#">Contact this institution</Card.Link>

@@ -1,25 +1,18 @@
 import React from 'react';
 import Univercity from '../components/Univercity';
-import UnivercityCard from '../components/UnivercityCard';
+import UnivercityResults from '../components/UnivercityResults';
 
-const UniversityScreen = ({
-  uniSearchWord,
-  setUniSearchWord,
-  handleSubmit,
-  unis,
-  setUnis,
-}) => {
+//const API_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:5000';
+
+const UniversityScreen = () => {
+  //const { unis, loading, getUnis } = useContext(UnivercityContext);
+  // const { unis, loading, handleSearchUni, unuSearchWord } =
+  //   useContext(UnivercityContext);
+
   return (
-    <div>
-      <Univercity
-        handleSubmit={handleSubmit}
-        uniSearchWord={uniSearchWord}
-        setUniSearchWord={setUniSearchWord}
-      />
-      {unis.map((uni, i) => (
-        <UnivercityCard key={i} uni={uni} />
-      ))}
-    </div>
+    <>
+      <Univercity />
+    </>
   );
 };
 
