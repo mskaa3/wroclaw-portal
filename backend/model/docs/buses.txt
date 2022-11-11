@@ -1,0 +1,23 @@
+
+You can buy tickets for trams and buses at the ticket vending machines located at the bus/tram stops (payment by cash or card) or directly in the vehicle (payment by card only). If your planning to stay in Wrocław for longer, it is a good idea to apply for an Urbancard. You can encode any ticket, including a long-term one, on this card.
+
+City buses and trams in Wrocław are free of charge for students attending schools in Wrocław (they only have to show a valid ID card). Persons over 68 years of age can also travel free of charge (upon presentation of an identity card or other document with a photograph proving their age).
+
+When you get on a tram or bus, you will find machines with displays mounted by the seats.See how to use them:
+Come to the display.
+Select a language by clicking on one of the flags in the upper right-hand corner of the screen.
+Choose the right ticket.
+Confirm your ticket selection with the green button at the bottom of the display.
+To pay for the ticket, put a payment card that supports contactless payment into the panel below the display – you have just bought a paperless ticket saved on your payment card.
+
+
+In case of an ticket inspection, you must show the controller the payment card that you paid for the ticket. The controller’s reader will confirm the validity of the ticket.
+In public transport vehicles you will not buy a paper ticket, but an electronic one.
+If you have a paper ticket that you bought outside the vehicle, validate it in the same machine where you can buy a close-up ticket, you will find the punch under the display.
+Tickets for buses and trams can be one-time, temporary (for a certain number of minutes) and long-term (e.g. 7-day, 30-day, half-year, annual, semester). A single ticket entitles to a single journey on one means of transport only. A time ticket, on the other hand, entitles you to use an unlimited number of journeys during the period for which it has been purchased. The moment you validate your ticket, the time of your journey begins.
+
+For more information about public transport, see this:
+pl/wroclaw/track – search engine for transport connections and public transport travel planning;
+urbancard.pl – Urbancard will come in handy, if you use public transport on a daily basis, as you will easily encode long-term tickets on it;
+wroclaw.pl/rozklady-jazdy – timetables of public transport in Wrocław: tram and bus lines within Wrocław;
+wroc.pl/en/tickets/tickets-types-and-prices – information about types of public transport tickets.
