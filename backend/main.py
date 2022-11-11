@@ -102,7 +102,7 @@ def generate_answer():
     results_dict={}
     reader=Reader()
     retriever=Retriever()
-    # retriever.create_embeddings()
+    retriever.create_embeddings()
     
     results=retriever.retrieve_docs(query)
     for num,i in enumerate(results):
