@@ -12,6 +12,7 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from model.retriever import Retriever
 from model.reader import Reader
+from flask_cors import CORS
 # from docs_database import Category, Documents,db
 # from flask_oidc import OpenIDConnect
 # from okta import UsersClient
@@ -21,7 +22,7 @@ from model.reader import Reader
 DEBUG = bool(os.environ.get("DEBUG", True))
 
 app = Flask(__name__)
-# CORS(app)
+CORS(app)
 
 # app.config["OIDC_CLIENT_SECRETS"] = "client_seecrets.json"
 # app.config["OIDC_COOKIE_SECURE"] = False
@@ -96,19 +97,20 @@ def unis_list():
         return {}
 
 
-@app.route("/qa")
-def generate_answer():
-    query="Is there any cinema for foreigners?"
-    results_dict={}
-    reader=Reader()
-    retriever=Retriever()
-    retriever.create_embeddings()
-    
-    results=retriever.retrieve_docs(query)
-    for num,i in enumerate(results):
-        answer=reader.answer_question(query,i)
-        results_dict[num]=answer
-    return results_dict
+@app.route("/qa",methods=["POST"])
+def qa():
+    if request.method == 'POST':
+        query=request.json["question"]
+        results_dict={}
+        reader=Reader()
+        retriever=Retriever()
+        # retriever.create_embeddings()
+        
+        results=retriever.retrieve_docs(query)
+        for num,i in enumerate(results):
+            answer=reader.answer_question(query,i)
+            results_dict[num]=answer
+        return jsonify(results_dict[0])
  
 
 
