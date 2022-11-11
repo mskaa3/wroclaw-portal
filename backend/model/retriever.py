@@ -8,7 +8,7 @@ import os
 import pickle
 
 
-dirname ='C:\\Users\\Asus\\Documents\\GitHub\\wroclaw-portal\\backend\\model\\docs'
+dirname ='.\\backend\\model\\docs\\'
 ext = ('txt')
 threshold = 250
 
@@ -47,14 +47,14 @@ class Retriever():
           continue
       self.paragraphs=content_divided
       embeddings = self.model.encode(content_divided)  
-      with open('embeddings.pkl', "wb") as fOut:
+      with open('.\\backend\\model\\embeddings.pkl', "wb") as fOut:
           pickle.dump({'sentences': content_divided, 'embeddings': embeddings}, fOut, protocol=pickle.HIGHEST_PROTOCOL)
       
 # najpeirw elastic search na np 20 zapytań a potem sentence-transformer
 
   def retrieve_docs(self,query):
 
-    with open('embeddings.pkl', "rb") as fIn:
+    with open('.\\backend\\model\\embeddings.pkl', "rb") as fIn:
         stored_data = pickle.load(fIn)
         content = stored_data['sentences']
         embeddings = stored_data['embeddings']
