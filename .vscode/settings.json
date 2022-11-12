@@ -30,6 +30,9 @@
     "[python]": {
         "editor.formatOnSave": true
     },
-    "python.analysis.typeCheckingMode": "off"
+    "python.analysis.typeCheckingMode": "off",
+    "files.exclude": {
+        "**/__pycache__": true
+   }
     
 }
