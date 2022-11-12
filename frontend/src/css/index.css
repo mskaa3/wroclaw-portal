@@ -8,6 +8,10 @@ main{
 .menu-back{
   background-color: #7aa8ff;
 }
+.uni-detail-card-back{
+  background-color: #F5F5F5 !important;
+  
+}
 
 .image-container-top{
   display: block;

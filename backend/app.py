@@ -1,6 +1,6 @@
 """entry point"""
 from distutils.log import debug
-from src import create_app
+from main import create_app
 
 # from src.uni import data_loader
 

@@ -1,341 +1,131 @@
-"""Voivodeship routes in the WroclawPortal API.  Used for retrieving, adding, updating, and deleting voivodeships ."""
-from flask_restful import Api, Resource, fields, marshal_with, reqparse
+"""Voivodeship routes in the WroclawPortal API.
+Used for retrieving, adding, updating, and deleting voivodeships ."""
+from flask_restful import Resource, fields, marshal_with
 from flask import Response, request
 from flask.json import jsonify
-from src.uni.dao.studies_dao import StudiesDao
 
+from src.uni.dao.uni_dao import UniDao
+from src.uni.dao.course_dao import CourseDao
+from src.uni.dao.language_dao import CourseLanguageDao
+from src.uni.dao.level_dao import CourseLevelDao
+from src.uni.dao.title_dao import CourseTitleDao
+from src.uni.dao.form_dao import CourseFormDao
 
 # from flask_jwt_extended import jwt_required
-from src.uni.models.study_model import (
-    Study,
-    StudySchema,
-    LevelsSchema,
-    study_schema,
-    studies_schema,
-    levels_schema,
-)
-
-resource_fields = {
-    "study_id": fields.Integer,
-    "study_uid": fields.String,
-    "study_name": fields.String,
-    "course_id": fields.String,
-    "level": fields.String,
-    "profile": fields.String,
-    "title": fields.String,
-    "forms": fields.String,
-    "main_discipline": fields.String,
-    "institutions": fields.String,
-}
 
 
-class StudyIdApi(Resource):
+class SearchUniApi(Resource):
     # parser = reqparse.RequestParser()
     # parser.add_argument(
     #    "price", type=float, required=True, help="This field cannot be left blank!"
     # )
+    response_fields = {
+        "course_id": fields.Integer,
+        "course_name": fields.String,
+        "course_level_name": fields.String,
+        "level_name": fields.String,
+        "discipline_name": fields.String,
+        "main_discipline": fields.String,
+        # "uni_id": fields.Integer,
+        "uni_uid": fields.String,
+        "uni_name": fields.String,
+        "city": fields.String,
+    }
 
-    def get(self, study_id):
+    @marshal_with(response_fields)
+    def get(self):
+        # def get_unis_filtered_from_query_string(self):
         """
         Get a single study with a unique ID.
         :param study_id: The unique identifier for a study.
         :return: A response object for the GET API request.
         """
-        study = StudiesDao.get_study_by_id(study_id=study_id)
-
-        if study is None:
-            response = jsonify(
-                {
-                    "self": f"/studies/{study_id}",
-                    "study": None,
-                    # "log": None,
-                    "error": "there is no study with this identifier",
-                }
-            )
-            response.status_code = 400
-            return response
+        error = None
+        query = request.args
+        if query and query != "":
+            # print("args")
+            # print(type(query))
+            print(query)
         else:
-            study_dict: dict = Study(study).__dict__
-            # comment_dict["time"] = str(comment_dict["time"])
+            error = "Empty query string."
 
-            response = jsonify(
-                {
-                    "self": f"/studies/{study_id}",
-                    "study": study_dict,
-                    # "log": f'/v2/logs/{comment_dict.get("log_id")}',
-                }
-            )
-            # response.status_code = 200
-            # return response
-            return Response(response, mimetype="application/json", status=200)
-
-        # voivodeship = Voivodeship.objects.get(id=id).to_json()
-        # return Response(voivodeship, mimetype="application/json", status=200)
-
-    def put(self, study_id):
+        result = UniDao.filter_unis(query)
+        return result
         """
-        Update an existing study.
-        :param study_id: The unique identifier for a study.
-        :return: A response object for the PUT API request.
+        parser = reqparse.RequestParser()
+        parser.add_argument("discipline_id", type=str)
+        parser.add_argument("course_level_id", type=int)
+        parser.add_argument("city", type=str)
+
+        args = parser.parse_args()
+        print("parse")
+        # print(type(args))
+        print(args["city"])
         """
-        old_study: Study = StudiesDao.get_study_by_id(study_id=study_id)
 
-        if old_study is None:
-            response = jsonify(
-                {
-                    "self": f"/studies/{study_id}",
-                    "updated": False,
-                    "study": None,
-                    "error": "there is no existing study with this id",
-                }
-            )
-            # response.status_code = 400
-            # return response
-            return Response(response, mimetype="application/json", status=400)
+        def post(self):
+            return {}
 
-        study_data: dict = request.get_json()
-        new_study = Study(study_data)
+        def put(self):
+            return {}
 
-        if old_study != new_study:
-
-            is_updated = StudiesDao.update_study(study=new_study)
-
-            if is_updated:
-                updated_study: Study = StudiesDao.get_study_by_id(
-                    study_id=new_study.study_id
-                )
-                updated_study_dict: dict = Study(updated_study).__dict__
-
-                response = jsonify(
-                    {
-                        "self": f"/studies/{study_id}",
-                        "updated": True,
-                        "study": updated_study_dict,
-                    }
-                )
-                # response.status_code = 200
-                # return response
-                return Response(response, mimetype="application/json", status=200)
-            else:
-                response = jsonify(
-                    {
-                        "self": f"/studies/{study_id}",
-                        "updated": False,
-                        "study": None,
-                        "error": "the study failed to update",
-                    }
-                )
-                # response.status_code = 500
-                # return response
-                return Response(response, mimetype="application/json", status=500)
-        else:
-            response = jsonify(
-                {
-                    "self": f"/studies/{study_id}",
-                    "updated": False,
-                    "study": None,
-                    "error": "the study submitted is equal to the existing study with the same id",
-                }
-            )
-            # response.status_code = 400
-            # return response
-            return Response(response, mimetype="application/json", status=400)
-
-        # body = request.get_json()
-        # Voivodeship.objects.get(id=id).update(**body)
-        # return "", 200
-
-    def delete(self, study_id):
-        """
-        Delete an existing study.
-        :param study_id: The unique identifier for a study.
-        :return: A response object for the DELETE API request.
-        """
-        existing_study: Study = StudiesDao.get_study_by_id(study_id=study_id)
-
-        if existing_study is None:
-            response = jsonify(
-                {
-                    "self": f"/studies/{study_id}",
-                    "deleted": False,
-                    "error": "there is no existing study with this id",
-                }
-            )
-            # response.status_code = 400
-            # return response
-            return Response(response, mimetype="application/json", status=400)
-
-        is_deleted = StudiesDao.delete_study(study_id=study_id)
-
-        if is_deleted:
-            response = jsonify(
-                {
-                    "self": f"/studies/{study_id}",
-                    "deleted": True,
-                }
-            )
-            # response.status_code = 204
-            # return response
-            return Response(response, mimetype="application/json", status=204)
-        else:
-            response = jsonify(
-                {
-                    "self": f"/studies/{study_id}",
-                    "deleted": False,
-                    "error": "failed to delete the study",
-                }
-            )
-            # response.status_code = 500
-            # return response
-            return Response(response, mimetype="application/json", status=500)
-
-        # voivodeship = Voivodeship.objects.get(id=id).delete()
-        # return "", 200
+        def delete(self):
+            return None, 204
 
 
-class StudyNameApi(Resource):
+class SearchCourseApi(Resource):
     # parser = reqparse.RequestParser()
     # parser.add_argument(
     #    "price", type=float, required=True, help="This field cannot be left blank!"
     # )
-
-    # @jwt_required()
-    def get(self, study_name):
-        "get studies by name"
-        # voivodeship = Voivodeship.objects.get(name=name).to_json()
-        # if voivodeship:
-        #     return Response(voivodeship, mimetype="application/json", status=200)
-        # return {"message": "Uni not found"}, 404
-        studies = StudiesDao.get_studies_by_name(study_name=study_name).to_json()
-        return Response(studies, mimetype="application/json", status=200)
-
-    def put(self, study_name):
-
-        body = request.get_json()
-        StudiesDao.get_studies_by_name(study_name=study_name).update(**body)
-        return "", 200
-
-    def delete(self, study_name):
-
-        studies = StudiesDao.get_studies_by_name(study_name=study_name).delete()
-        return "", 200
-
-
-class StudiesApi(Resource):
-    @marshal_with(resource_fields)
-    def get(self):
-        """
-        Get all the studies in the database.
-        :return: A response object for the GET API request.
-        """
-        stud: list = StudiesDao.get_studies()
-        print(";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;")
-        print(type(stud))
-        print(stud)
-        """
-        if study_disciplines is None:
-            response = jsonify(
-                {
-                    "self": "/study_disciplines",
-                    "study_disciplines": None,
-                    "error": "an unexpected error occurred retrieving study_disciplines",
-                }
-            )
-            # response.status_code = 500
-            # return response
-            return Response(response, mimetype="application/json", status=500)
-        else:
-            study_disciplines_dicts = [
-                StudyDiscipline(study_disc).__dict__ for study_disc in study_disciplines
-            ]
-
-            # for voiv_dict in voiv_dicts:
-            #    voiv_dict["log"] = f'/v2/logs/{comment_dict.get("log_id")}'
-
-            response = jsonify(
-                {
-                    "self": "/study_disciplines",
-                    "study_disciplines": study_disciplines_dicts,
-                }
-            )
-            # response.status_code = 200
-            # return response
-            return Response(response, mimetype="application/json", status=200)
-        """
-        res = studies_schema.dump(stud)
-        print(res)
-
-        # return study_disciplines_schema.dump(study_disciplines)
-        # return jsonify(study_disciplines)
-        # return {"a": "1", "b": "2"}
-        return stud
-
-    def post(self):
-
-        """
-        Create a new study.
-        :return: A response object for the POST API request.
-        """
-        study_data: dict = request.get_json()
-
-        if study_data is None:
-            response = jsonify(
-                {
-                    "self": f"/studies",
-                    "added": False,
-                    "study": None,
-                    "error": "the request body isn't populated",
-                }
-            )
-            response.status_code = 400
-            return response
-        study_to_add = Study(study_data)
-
-        study_added_successfully: bool = StudiesDao.add_study(new_study=study_to_add)
-
-        if study_added_successfully:
-            study_added = StudiesDao.get_study_by_id(study_to_add.study_id)
-            study_added_dict: dict = Study(study_added).__dict__
-
-            response = jsonify(
-                {
-                    "self": "/studies",
-                    "added": True,
-                    "studye": study_added_dict,
-                }
-            )
-            response.status_code = 200
-            return response
-        else:
-            response = jsonify(
-                {
-                    "self": "/studies",
-                    "added": False,
-                    "study": None,
-                    "error": "failed to create a new study",
-                }
-            )
-            response.status_code = 500
-            return response
-
-
-class StudyLevelsApi(Resource):
-    level_fields = {
+    response_fields = {
+        "course_id": fields.Integer,
+        "course_name": fields.String,
         "level": fields.String,
+        "title": fields.String,
+        "form": fields.String,
+        "language": fields.String,
+        "semesters_number": fields.Integer,
+        "ects": fields.Integer,
+        # "discipline_name": fields.String,
+        "main_discipline": fields.String,
     }
 
-    @marshal_with(level_fields)
+    @marshal_with(response_fields)
     def get(self):
+        # def get_unis_filtered_from_query_string(self):
         """
-        Get all the levels of study in the database.
+        Get a single study with a unique ID.
+        :param study_id: The unique identifier for a study.
         :return: A response object for the GET API request.
         """
-        levels: list = StudiesDao.get_levels()
-        print(";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;")
-        print(type(levels))
-        print(levels)
+        error = None
+        query = request.args
+        if query and query != "":
+            print("args")
+            print(type(query))
+            print(query)
+        else:
+            error = "Empty query string."
 
-        res = levels_schema.dump(levels)
-        print(res)
+        result = CourseDao.filter_courses(query)
 
-        return levels
+        print("result courses in route/////////////////////")
+        print(result)
+        for course in result:
+            print(course)
+            print(type(course))
+            print(course.language)
+            language = CourseLanguageDao.get_language_by_id(course.language)
+            level = CourseLevelDao.get_level_by_id(course.level)
+            form = CourseFormDao.get_form_by_id(course.form)
+            title = CourseTitleDao.get_title_by_id(course.title)
+
+            course.language = language.course_language_name
+            course.form = form.course_form_name
+            course.title = title.course_title_name
+            course.level = level.course_level_name
+
+            print(course)
+
+        return result

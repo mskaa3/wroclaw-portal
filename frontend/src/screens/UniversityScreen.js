@@ -1,6 +1,6 @@
 import React from 'react';
-import Univercity from '../components/Univercity';
-import UnivercityResults from '../components/UnivercityResults';
+import UniversitySearch from '../components/uni/UniversitySearch';
+import UniversityResults from '../components/uni/UniversityResults';
 
 //const API_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:5000';
 
@@ -11,7 +11,8 @@ const UniversityScreen = () => {
 
   return (
     <>
-      <Univercity />
+      <UniversitySearch />
+      <UniversityResults />
     </>
   );
 };
