@@ -10,6 +10,12 @@ import connexion
 from src.uni.data_loader import fill_tables
 from database import Database
 
+# requests module will be used to CREATE client requests and send them to ANOTHER server
+# from crypt import methods
+import os
+import requests
+from dotenv import load_dotenv
+from flask import Flask, request, jsonify
 
 # from flask_oidc import OpenIDConnect
 # from okta.client import Client as UsersClient
