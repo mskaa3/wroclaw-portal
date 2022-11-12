@@ -1,4 +1,5 @@
-"""Universities routes in the WroclawPortal API.  Used for retrieving, adding, updating, and deleting universities."""
+"""Universities routes in the WroclawPortal API.
+Used for retrieving, adding, updating, and deleting universities."""
 from flask_restful import Resource, reqparse, fields, marshal_with
 from flask.json import jsonify
 from flask import Response, request
@@ -6,6 +7,7 @@ from flask import Response, request
 # from flask_jwt_extended import jwt_required
 
 from src.uni.dao.uni_dao import UniDao
+from src.uni.dao.kind_dao import UniKindDao
 
 from src.uni.models.uni_model import (
     Uni,
@@ -20,8 +22,8 @@ resource_fields = {
     "uni_id": fields.Integer,
     "uni_uid": fields.String,
     "uni_name": fields.String,
-    "uni_code": fields.String,
-    "uni_kind": fields.Integer,
+    # "uni_kind": fields.Integer,
+    "uni_kind": fields.String,
     "www": fields.String,
     "phone_number": fields.String,
     "uni_email": fields.String,
@@ -41,6 +43,7 @@ class UniIdApi(Resource):
         :return: A response object for the GET API request.
         """
         uni = UniDao.get_uni_by_id(uni_id=uni_id)
+        # kind=Ki
 
         if uni is None:
             response = jsonify(
@@ -190,6 +193,178 @@ class UniIdApi(Resource):
         # return "", 200
 
 
+class UniUidApi(Resource):
+    # uid_resourse_fields=resource_fields
+    @marshal_with(resource_fields)
+    def get(self, uni_uid):
+        """
+        Get a single uni with a unique Uid.
+        :param uni_uid: The unique identifier for a study.
+        :return: A response object for the GET API request.
+        """
+
+        print("uid ====================================")
+        print(uni_uid)
+        print(type(uni_uid))
+        uni = UniDao.get_uni_by_uid(uni_uid=uni_uid)
+        kind = UniKindDao.get_kind_by_id(kind_id=uni.kind)
+
+        print("get uni bu uid ====================================")
+        print(uni)
+        print(type(uni))
+        print(kind)
+
+        uni_dict = uni.__dict__
+        uni_dict["uni_kind"] = kind.kind_name
+        print("ini dict")
+        print(uni_dict)
+
+        if uni is None:
+            response = jsonify(
+                {
+                    "self": f"/unis/uid/{uni_uid}",
+                    "uni": None,
+                    # "log": None,
+                    "error": "there is no university with this identifier",
+                }
+            )
+            response.status_code = 400
+            return response
+
+        else:
+            # uni_dict: dict = uni.__dict__
+
+            # response = jsonify(
+            #    {
+            #        "self": f"/unis/uid/{uni_uid}",
+            #        "uni": uni_dict,
+            # "log": f'/v2/logs/{comment_dict.get("log_id")}',
+            #    }
+            # )
+
+            # return Response(response, mimetype="application/json", status=200)
+
+            return uni
+
+    def put(self, uni_uid):
+        """
+        Update an existing university.
+        :param uni_uid: The unique identifier for a university.
+        :return: A response object for the PUT API request.
+        """
+        old_uni: Uni = UniDao.get_uni_by_uid(uni_uid=uni_uid)
+
+        if old_uni is None:
+            response = jsonify(
+                {
+                    "self": f"/unis/uid/{uni_uid}",
+                    "updated": False,
+                    "uni": None,
+                    "error": "there is no existing university with this uid",
+                }
+            )
+            # response.status_code = 400
+            # return response
+            return Response(response, mimetype="application/json", status=400)
+
+        uni_data: dict = request.get_json()
+        new_uni = Uni(uni_data)
+
+        if old_uni != new_uni:
+
+            is_updated = UniDao.update_uni(uni=new_uni)
+
+            if is_updated:
+                updated_uni: Uni = UniDao.get_uni_by_id(uni_id=new_uni.uni_id)
+                updated_uni_dict: dict = Uni(updated_uni).__dict__
+
+                response = jsonify(
+                    {
+                        "self": f"/unis/uid/{uni_uid}",
+                        "updated": True,
+                        "uni": updated_uni_dict,
+                    }
+                )
+                # response.status_code = 200
+                # return response
+                return Response(response, mimetype="application/json", status=200)
+            else:
+                response = jsonify(
+                    {
+                        "self": f"/unis/uid/{uni_uid}",
+                        "updated": False,
+                        "uni": None,
+                        "error": "the university failed to update",
+                    }
+                )
+                # response.status_code = 500
+                # return response
+                return Response(response, mimetype="application/json", status=500)
+        else:
+            response = jsonify(
+                {
+                    "self": f"/unis/uid/{uni_uid}",
+                    "updated": False,
+                    "uni": None,
+                    "error": "the university submitted is equal to the existing university with the same id",
+                }
+            )
+            # response.status_code = 400
+            # return response
+            return Response(response, mimetype="application/json", status=400)
+
+        # body = request.get_json()
+        # Voivodeship.objects.get(id=id).update(**body)
+        # return "", 200
+
+    def delete(self, uni_uid):
+        """
+        Delete an existing university.
+        :param uni_uid: The unique identifier for a university.
+        :return: A response object for the DELETE API request.
+        """
+        existing_uni: Uni = UniDao.get_Uni_by_uid(uni_uid=uni_uid)
+
+        if existing_uni is None:
+            response = jsonify(
+                {
+                    "self": f"/unis/uid/{uni_uid}",
+                    "deleted": False,
+                    "error": "there is no existing university with this id",
+                }
+            )
+            # response.status_code = 400
+            # return response
+            return Response(response, mimetype="application/json", status=400)
+
+        is_deleted = UniDao.delete_uni(uni_id=existing_uni.uni_id)
+
+        if is_deleted:
+            response = jsonify(
+                {
+                    "self": f"/unis/uid/{uni_uid}",
+                    "deleted": True,
+                }
+            )
+            # response.status_code = 204
+            # return response
+            return Response(response, mimetype="application/json", status=204)
+        else:
+            response = jsonify(
+                {
+                    "self": f"/unis/uid/{uni_uid}",
+                    "deleted": False,
+                    "error": "failed to delete the university",
+                }
+            )
+            # response.status_code = 500
+            # return response
+            return Response(response, mimetype="application/json", status=500)
+
+        # voivodeship = Voivodeship.objects.get(id=id).delete()
+        # return "", 200
+
+
 class UniNameApi(Resource):
 
     # @jwt_required()
@@ -283,7 +458,7 @@ class UnisApi(Resource):
 
         if uni_added_successfully:
             uni_added = UniDao.get_uni_by_id(uni_to_add.uni_id)
-            uni_added_dict: dict = Uni(Uni_added).__dict__
+            uni_added_dict: dict = Uni(uni_added).__dict__
 
             response = jsonify(
                 {
@@ -342,7 +517,8 @@ class CitiesApi(Resource):
 
         def post(self, name):
             if Uni.find_by_name(name):
-                return {"message": "An uni with name '{} already exists.".format(name)}, 400
+                return {
+                    "message": "An uni with name '{} already exists.".format(name)}, 400
 
             data = Uni.parser.parse_args()
 
@@ -452,5 +628,4 @@ class CitiesApi(Resource):
             }
 
             return jsonify({"data": data, "meta": meta}), HTTP_200_OK
-            
 """

@@ -1,436 +1,282 @@
 """download data needed to fill uni db"""
 import sqlite3
 from urllib.error import URLError
+from sqlalchemy.inspection import inspect
 
-# from sqlalchemy.exc import IntegrityError
+from collections import defaultdict
+
 # import dpath.util
 
-# from src import db
-# from backend.database import Database
 from src.utils.validators import validate_string
 from src.utils.helpers import get_json_from_url
+from src.utils.helpers import sql_data_to_dict
 
-# from app import app
+# get column names from table
+# columns = [column.name for column in inspect(model).c]
 
-VOIVODESHIP_DATA_URL = "https://polon.nauka.gov.pl/opi-ws/api/dictionaries/voivodeships"
+
+UNI_DATA_API_URL = "https://radon.nauka.gov.pl/opendata/polon"
+
+VOIVODESHIP_DATA_URL = UNI_DATA_API_URL + "/dictionaries/shared/voivodeships"
 INSTITUTION_KINDS_DATA_URL = (
-    "https://polon.nauka.gov.pl/opi-ws/api/dictionaries/institutionKindDictionary"
+    UNI_DATA_API_URL + "/dictionaries/institution/institutionKinds"
 )
 
-INSTITUTIONS_LIST_DATA_URL = (
-    "https://polon.nauka.gov.pl/opi-ws/api/academicInstitutions"
+COURSE_LEVELS_DATA_URL = UNI_DATA_API_URL + "/dictionaries/course/levels"
+COURSE_TITLES_DATA_URL = UNI_DATA_API_URL + "/dictionaries/course/professionalTitles"
+COURSE_FORMS_DATA_URL = UNI_DATA_API_URL + "/dictionaries/course/instanceForms"
+COURSE_LANGUAGES_DATA_URL = (
+    UNI_DATA_API_URL + "/dictionaries/course/philologicalLanguages"
 )
-INSTITUTION_DATA_URL = "https://polon.nauka.gov.pl/opi-ws/api/institutions"
-FIELDS_OF_STUDY_DATA_URL = (
-    "https://polon.nauka.gov.pl/opi-ws/api/dictionaries/fieldClass"
+DISCIPLINES_DATA_URL = UNI_DATA_API_URL + "/dictionaries/shared/disciplines"
+COURSES_DATA_URL = UNI_DATA_API_URL + "/courses"
+INSTITUTIONS_DATA_URL = UNI_DATA_API_URL + "/institutions"
+
+
+VOIVODESHIPS_QUERY = "INSERT INTO voivodeships(voiv_id,voiv_name) VALUES (?,?)"
+INSTITUTION_KINDS_QUERY = "INSERT INTO uni_kinds(kind_id,kind_name) VALUES (?,?)"
+COURSE_LEVELS_QUERY = (
+    "INSERT INTO course_levels(course_level_id,course_level_name) VALUES (?,?)"
 )
 
-
-DISCIPLINES_DATA_URL = (
-    "https://polon.nauka.gov.pl/opi-ws/api/dictionaries/disciplineClass"
+COURSE_TITLES_QUERY = (
+    "INSERT INTO course_titles(course_title_id,course_title_name) VALUES (?,?)"
 )
-
-
-STUDIES_DATA_URL = "https://polon.nauka.gov.pl/opi-ws/api/studies?pageSize=17500"
-
-
-VOIVODESHIPS_QUERY = "INSERT INTO voivodeships(voiv_name,terc) VALUES (?,?)"
-INSTITUTION_KINDS_QUERY = "INSERT INTO uni_kinds(kind_key,kind_name) VALUES (?,?)"
-# UNIS_LIST_QUERY = "INSERT INTO unis(uni_uid,uni_name)  VALUES (?,?)"
-UNIS_QUERY = "INSERT INTO unis(uni_uid,uni_name,uni_code,kind,www,phone_number,uni_email,city,street,building,postal_code,voivodeship)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?)"
-FIELDS_OF_STUDY_QUERY = "INSERT INTO fields_of_study(field_name) VALUES (?)"
+COURSE_FORMS_QUERY = (
+    "INSERT INTO course_forms(course_form_id,course_form_name) VALUES (?,?)"
+)
+COURSE_LANGUAGES_QUERY = (
+    "INSERT INTO course_languages(course_language_id,course_language_name) VALUES (?,?)"
+)
 DISCIPLINES_QUERY = (
-    "INSERT INTO disciplines(discipline_key,discipline_name) VALUES (?,?)"
+    "INSERT INTO disciplines(discipline_id,discipline_name) VALUES (?,?)"
 )
-# STUDIES_QUERY = "INSERT INTO studies(study_uid,course_id,study_name,level,profile,title,forms,main_discipline,disciplines,institutions) VALUES (?,?,?,?,?,?,?,?,?,?)"
-STUDIES_QUERY = "INSERT INTO studies(study_uid,course_id,study_name,level,profile,title,forms,main_discipline,institutions) VALUES (?,?,?,?,?,?,?,?,?)"
-# STUDIES_QUERY = "INSERT INTO studies(study_uid,study_name,level,profile,title,forms,main_discipline,institutions) VALUES (?,?,?,?,?,?,?,?)"
-STUDY_DISCIPLINES_QUERY = (
-    "INSERT INTO study_disciplines(study_discipline_name) VALUES (?)"
+
+COURSES_QUERY = "INSERT INTO courses(course_uid,course_name,course_isced_name,level,title,form,language,semesters_number,ects,main_discipline,institution) VALUES (?,?,?,?,?,?,?,?,?,?,?)"
+
+UNIS_QUERY = "INSERT INTO unis(uni_uid,uni_name,kind,www,phone_number,uni_email,city,street,building,postal_code,voivodeship)  VALUES (?,?,?,?,?,?,?,?,?,?,?)"
+
+COURSES_DISCIPLINES_QUERY = (
+    "INSERT INTO courses_disciplines(course_id_joint,discipline_id_joint) VALUES (?,?)"
 )
-STIDIES_STUDY_DISCIPLINES_QUERY = "INSERT INTO studies_study_disciplines(study_id_joint,study_discipline_id_joint) VALUES (?,?)"
+
+INSTITUTION_DATA_STATUS_FILTER="1" #Działająca - Operating
+INSTITUTION_DATA_COUNTRY_FILTER="Polska"
+INSTITUTION_DATA_KIND_FILTER=16 #Federation
 
 
-def load_voivodeships(source: str):
-    """fill the voivodeships table in database"""
-    voivodeships = get_json_from_url(source)
-    # print(type(voivodeships["voivodeships"]))
-    # print(voivodeships["voivodeships"][1])
-    # print(type(voivodeships["voivodeships"][1]))
+# here id already exist in sourse
+def load_institutions(source: str):
+    """data to fill the unis in database"""
     data = []
-    # parse json data to SQL insert
-    for item in voivodeships["voivodeships"]:
-        voiv_name = validate_string(item["name"])
-        terc = validate_string(item["terc"])
+    token = ""
+    is_continue = True
 
-        elem = (voiv_name, terc)
-        data.append(elem)
+    # count = 1
+    while is_continue:
+        query_string = "?token=" + token if token else ""
 
-    return data
-
-
-def load_institution_kinds(source: str):
-    """fill the institution kinds table in database"""
-    institution_kinds = get_json_from_url(source)
-    # print(institution_kinds["items"][1])
-    data = []
-    # parse json data to SQL insert
-    for item in institution_kinds["items"]:
-        kind_key = validate_string(item["key"])
-        print("from inst_kinds")
-        print(type(kind_key))
-        kind_name = validate_string(item["value"])
-
-        elem = (kind_key, kind_name)
-        data.append(elem)
-        # print(elem)
-    return data
-
-
-def load_institutions_list(source: str):
-    """get institutions list to further proceed"""
-    institutions = get_json_from_url(source)
-    # print(institutions["institutions"][1])
-    # print(institutions["institutions"][1]["status"])
-    data = []
-    # parse json data to SQL insert
-    for item in institutions["institutions"]:
-        uni_uid = validate_string(item["uid"])
-        # uni_name = validate_string(item["name"])
-        status = validate_string(item["status"])
-        if status == "OPERATING":
-            # elem = (uni_uid, uni_name)
-            elem = uni_uid
-            data.append(elem)
-    return data
-
-
-# def load_institutions_data(source: str, list_source: str):
-def load_institutions_data(source: str, uni_list: list):
-    """load institutions data to further proceed"""
-    data = {}
-    error_url_list = []
-    for uni_uid in uni_list:
-        url = source + "/" + str(uni_uid)
-        # print(uni_uid)
-        try:
-            item = get_json_from_url(url)
-            # print(type(item))
-            data[uni_uid] = item
-        except URLError:
-            error_url_list.append(uni_uid)
-    return data
-
-
-def load_institutions(data_dict: dict, kind_dict: dict, voiv_dict: dict):
-    """fill the unis table in database"""
-    # print(list(data_dict.items())[0])
-    data = []
-    kind_dict_reversed = dict((v, k) for k, v in kind_dict.items())
-    voiv_dict_reversed = dict((v, k) for k, v in voiv_dict.items())
-    # data_dict.setdefault("phoneNumber", None)
-    # data_dict.setdefault("www", None)
-    for uni_uid, item in data_dict.items():
-        # print(type(item))
+        response = get_json_from_url(source + query_string)
+        if response["results"]:
+            # print("count:" + str(count))
+            token = response["pagination"]["token"]
+            # print(token)
+            # count = count + 1
+        else:
+            is_continue = False
+            break
         # parse json data to SQL insert
-        # for item in institutions["institutions"]:
-        # uni_uid = validate_string(item["uid"])
-        uni_name = validate_string(item["name"])
-        uni_code = validate_string(item["code"])
-        kind_str = validate_string(item["kind"])
-        # print("kind_str")
-        # print(kind_str)
-        kind = kind_dict_reversed[kind_str]
-        # print("kind, hope its id")
-        # print(kind)
-        # print(type(kind))
-        if "www" in item:
-            www = validate_string(item["www"])
-        else:
-            www = None
-        # print(uni_uid)
-        if "phoneNumber" in item:
-            phone_number = validate_string(item["phoneNumber"])
-        else:
-            phone_number = None
-        # print(phone_number)
-        if "email" in item:
-            # print("email type")
-            # print(item["email"])
-            uni_email = validate_string(item["email"])
-        else:
-            uni_email = None
-        # print(uni_email)
-        city = validate_string(item["address"]["city"])
-        # print(city)
-        if "street" in item["address"]:
-            street = validate_string(item["address"]["street"])
-        else:
-            street = None
-        # print(street)
-        if "building" in item["address"]:
-            building = validate_string(item["address"]["buildingNumber"])
-        else:
-            building = None
-        # print(building)
-        if "postalCode" in item["address"]:
-            postal_code = validate_string(item["address"]["postalCode"])
-        else:
-            postal_code = None
-        # print(postal_code)
-        # if "voivodeship" in item["address"]:
-        voivodeship_str = validate_string(item["address"]["voivodeship"])
+        for item in response["results"]:
 
-        # print("voivodeship_str")
-        # print(voivodeship_str)
-        voivodeship = voiv_dict_reversed[voivodeship_str]
-        # print("voivodeship, hope its id")
-        # print(voivodeship)
-        # print(type(voivodeship))
+            status = item["statusCode"]
+            country = item["country"]
+            if item["iKindCd"]:
+                kind = int(item["iKindCd"])
+            else:
+                kind = None
+            
+            # select universities in active status, i Poland, not Federation kind
+            if (
+                status == INSTITUTION_DATA_STATUS_FILTER and country == INSTITUTION_DATA_COUNTRY_FILTER and kind != INSTITUTION_DATA_KIND_FILTER
+            ):  # Działająca - Operating, Polska, not Federation
+               
+                uni_uid = validate_string(item["institutionUuid"])
+                uni_name = validate_string(item["name"])
+                www = validate_string(item["www"])                
+                phone_number = validate_string(item["phone"])
+                uni_email = validate_string(item["eMail"])
+                city = validate_string(item["city"])
+                street = validate_string(item["street"])
+                building = validate_string(item["bNumber"])
+                postal_code = validate_string(item["postalCd"])
+                voivodeship = int(item["voivodeshipCode"])
 
-        elem = (
-            uni_uid,
-            uni_name,
-            uni_code,
-            kind,
-            www,
-            phone_number,
-            uni_email,
-            city,
-            street,
-            building,
-            postal_code,
-            voivodeship,
-        )
-        # print(elem)
-        data.append(elem)
-    print("end of function==========================================")
-
-    return data
-
-
-def load_fields_of_study(source: str):
-    """fill the fields_of_study table in database"""
-    fields = get_json_from_url(source)
-    # print(fields["items"][1])
-    data = []
-    # parse json data to SQL insert
-    for item in fields["items"]:
-        field_name = validate_string(item["value"])
-
-        elem = (field_name,)
-        data.append(elem)
-        # print(elem)
-    return data
-
-
-def load_disciplines(source: str):
-    """fill the discilpines table in database"""
-    disciplines = get_json_from_url(source)
-    # print("discipline type:")
-    # print(type(disciplines))  #dict
-    # print(type(disciplines["items"])) #list
-    # print(disciplines["items"][1])
-    data = []
-
-    # parse json data to SQL insert
-    for item in disciplines["items"]:
-        discipline_key = validate_string(item["key"])
-        discipline_name = validate_string(item["value"])
-
-        elem = (discipline_key, discipline_name)
-        data.append(elem)
-        # print(elem)
-    return data
-
-
-def load_studies_list(source: str):
-    """load the studies dta to further proceed"""
-    studies = get_json_from_url(source)
-    return studies
-
-
-# def load_studies(source: str):
-def load_studies(studies: list, uni_dict: dict):
-    """fill the studies table in database"""
-
-    print(studies["studies"][1])
-    print(studies["studies"][1]["forms"])
-    print(studies["studies"][1]["disciplines"])
-    print(studies["studies"][1]["institutions"])
-
-    data = []
-    more_than_one_uni = []
-    bad_reversed_uid = []
-    uni_dict_reversed = dict((v, k) for k, v in uni_dict.items())
-    print("ini dict reversed///////////////////////////////////////")
-    # print(uni_dict_reversed)
-    # parse json data to SQL insert
-    for item in studies["studies"]:
-        study_uid = validate_string(item["uid"])
-        # print(study_uid)
-        course_id = validate_string(item["courseId"])
-        study_name = validate_string(item["name"])
-        level = validate_string(item["level"])
-        profile = validate_string(item["profile"])
-        title = validate_string(item["title"])
-        forms = validate_string(item["forms"])
-        if "mainDiscipline" in item:
-            main_discipline = validate_string(item["mainDiscipline"])
-        else:
-            main_discipline = None
-
-        # institutions_str = item["institutions"]
-        institutions = item["institutions"][0]
-        """
-        if len(institutions_str) > 1:
-            # institutions = institutions[0]
-            more_than_one_uni.append(institutions)
-            # for now skip uni from list, maybe need change later, what about parent uni
-            continue
-
-        if institutions_str[0] in uni_dict_reversed:
-            print("institutions_str[0] in uni_dict_reversed")
-            print(institutions_str[0])
-            print(type(institutions_str[0]))
-            institutions = int(uni_dict_reversed[institutions_str[0]])
-            print(type(institutions))
-
-        else:
-            bad_reversed_uid.append(institutions_str[0])
-            # print(institutions_str[0])
-            continue
-        """
-        # print(type(institutions))  #list
-        elem = (
-            study_uid,
-            course_id,
-            study_name,
-            level,
-            profile,
-            title,
-            forms,
-            main_discipline,
-            institutions,
-        )
-        data.append(elem)
-    print("more than one institution???????????????")
-    print(len(more_than_one_uni))
-    print("bad reversed uid")
-    print(len(bad_reversed_uid))
-    return data
-
-
-def sql_data_to_list_of_dicts(path_to_db, select_query):
-    # def sql_data_to_list_of_dicts(connection, select_query):
-    """Returns data from an SQL query as a list of dicts."""
-
-    try:
-        connection = sqlite3.connect(path_to_db)
-        connection.row_factory = sqlite3.Row
-        results = connection.execute(select_query).fetchall()
-        unpacked = [{k: item[k] for k in item.keys()} for item in results]
-
-        return unpacked
-    except Exception as err:
-        print(f"Failed to execute. Query: {select_query}\n with error:\n{err}")
-        return []
-    finally:
-        connection.close()
-
-
-def sql_data_to_dict(path_to_db, select_query):
-    # def sql_data_to_list_of_dicts(connection, select_query):
-    """Returns data from an SQL query as a list of dicts."""
-    data = {}
-    try:
-        connection = sqlite3.connect(path_to_db)
-        # connection.row_factory = sqlite3.Row
-        results = connection.execute(select_query).fetchall()
-        # unpacked = [{k: item[k] for k in item.keys()} for item in results]
-        for row in results:
-            data[row[0]] = row[1]
-
-        return data
-    except Exception as err:
-        print(f"Failed to execute. Query: {select_query}\n with error:\n{err}")
-        return []
-    finally:
-        connection.close()
-
-
-def create_disciplines_data_from_studies(studies: list):
-    """create set of disciplines from studies data to use in frontend"""
-    disciplines_list = []
-    # result = map(lambda d: d["disciplines"], studies["studies"])
-    for item in studies["studies"]:
-        if "disciplines" in item:
-            disciplines_list.extend(item["disciplines"])
-        # try:
-        #    disc = dpath.util.get(item, "/disciplines/*")
-        #    print(disc)
-        #    disc_set.add(disc)
-        # except KeyError:
-        #   print("no disciplines")
-
-    # print("disc_list =======================================")
-    # print(disc_list)
-    disciplines_set = set(disciplines_list)
-    # print("disc_set =======================================")
-    # print(disc_set)
-    data = [(x,) for x in disciplines_set]
-    return data
-
-
-def studies_study_disciplines_data(studies: list, study_disciplines_dict: dict):
-    """create data for studies_study_disciplines joint table in database"""
-    # study_study_disciplines_dict = {}
-    data = []
-    study_disciplines_dict_reversed = dict(
-        (v, k) for k, v in study_disciplines_dict.items()
-    )
-    for item in studies["studies"]:
-        study_uid = validate_string(item["uid"])
-
-        if "disciplines" in item:
-            disciplines = item["disciplines"]
-
-            for disc in disciplines:
-                # study_study_disciplines_dict[study_uid] = disc
-
-                # print("kind_str")
-                # print(kind_str)
-                disc_id = study_disciplines_dict_reversed[disc]
-                elem = (study_uid, disc_id)
+                elem = (
+                    uni_uid,
+                    uni_name,
+                    kind,
+                    www,
+                    phone_number,
+                    uni_email,
+                    city,
+                    street,
+                    building,
+                    postal_code,
+                    voivodeship,
+                )
+                
                 data.append(elem)
 
     return data
 
 
-def create_unis_data_from_studies(studies: list):
-    """create set of unis from studies data to compare with those in unis table"""
-    unis_list = []
-    # result = map(lambda d: d["disciplines"], studies["studies"])
+def load_courses_list(source: str):
+    """get courses list to further proceed"""
+    # return list of dict
+    data = []
+    token = ""
+    is_continue = True
+    count = 1
+    while is_continue:
+        query_string = "?token=" + token if token else ""
 
-    for item in studies["studies"]:
-        if "institutions" in item:
-            unis_list.extend(item["institutions"])
-        # try:
-        #    disc = dpath.util.get(item, "/disciplines/*")
-        #    print(disc)
-        #    disc_set.add(disc)
-        # except KeyError:
-        #   print("no disciplines")
+        response = get_json_from_url(source + query_string)
+        if response["results"]:
+            print("count:" + str(count))
+            token = response["pagination"]["token"]
+            # print(token)
+            count = count + 1
+        else:
+            is_continue = False
+            break
 
-    # print("disc_list =======================================")
-    # print(disc_list)
-    unis_set = set(unis_list)
-    # print("disc_set =======================================")
-    # print(disc_set)
-    data = [(x,) for x in unis_set]
+        # parse json data to SQL insert
+        for item in response["results"]:
+
+            status = item["currentStatusCode"]
+
+            if status == "3":  # prowadzone - active
+                # print(type(item))  # dict
+                # elem = (uni_uid, uni_name)
+                # elem = uni_uid
+                data.append(item)
+            # print(data[0])
     return data
 
 
+def load_courses(course_list: list):
+    """data to fill the courses table in database"""
+
+    data = []
+
+    # parse json data to SQL insert
+    for item in course_list:
+        isced_name = validate_string(item["iscedName"])
+        institution = item["mainInstitutionUuid"]
+        for disc in item["disciplines"]:
+            if disc["disciplineLeading"] == "Tak":
+                main_discipline = validate_string(disc["disciplineCode"])
+        for elem in item["courseInstances"]:
+            if elem["statusCode"] == "3":
+                course_uid = validate_string(elem["courseInstanceUuid"])
+                course_name = validate_string(item["courseName"])
+                level = int(item["levelCode"])
+                title = int(elem["titleCode"])
+                form = int(elem["formCode"])
+                language = validate_string(elem["languageCode"])
+                semesters_number = int(elem["numberOfSemesters"])
+                ects = int(elem["ects"])
+
+                elem = (
+                    course_uid,
+                    course_name,
+                    isced_name,
+                    level,
+                    title,
+                    form,
+                    language,
+                    semesters_number,
+                    ects,
+                    main_discipline,
+                    institution,
+                )
+                data.append(elem)
+
+    return data
+
+
+def courses_disciplines_data(courses: list, courses_dict: dict):
+    """create data for courses_disciplines joint table in database"""
+    data = []
+    courses_dict_reversed = dict((v, k) for k, v in courses_dict.items())
+    
+    for item in courses:
+        if "disciplines" in item:
+            disciplines_list = item["disciplines"]
+            for instance in item["courseInstances"]:
+                course_uid = validate_string(instance["courseInstanceUuid"])
+                if course_uid in courses_dict_reversed:
+                    course_id = courses_dict_reversed[course_uid]
+                else:
+                    break
+                for disc in disciplines_list:
+                    elem = (course_id, disc["disciplineCode"])
+                    data.append(elem)
+
+    return data
+
+
+data_to_load_dict = {}
+data_to_load_dict["voivodeships"] = (VOIVODESHIP_DATA_URL, "voiv_id", "voiv_name")
+data_to_load_dict["uni_kinds"] = (INSTITUTION_KINDS_DATA_URL, "kind_id", "kind_name")
+data_to_load_dict["course_levels"] = (
+    COURSE_LEVELS_DATA_URL,
+    "course_level_id",
+    "course_level_name",
+)
+data_to_load_dict["course_titles"] = (
+    COURSE_TITLES_DATA_URL,
+    "course_title_id",
+    "course_title_name",
+)
+data_to_load_dict["course_forms"] = (
+    COURSE_FORMS_DATA_URL,
+    "course_form_id",
+    "course_form_name",
+)
+data_to_load_dict["course_languages"] = (
+    COURSE_LANGUAGES_DATA_URL,
+    "course_language_id",
+    "course_language_name",
+)
+data_to_load_dict["disciplines"] = (
+    DISCIPLINES_DATA_URL,
+    "discipline_id",
+    "discipline_name",
+)
+
+
+# ?? int, string id: in 2 tables(languages and disciplines) id-string
+def load_dictionaries(initial_data: dict):
+    """data to fill the dictionaries tables in database"""
+    
+    data = defaultdict(list)
+    for k, v in initial_data.items():
+        response = get_json_from_url(v[0])
+
+        # parse json data to SQL insert
+        for item in response:
+            code = item["code"]
+            name = validate_string(item["nameEn"])
+
+            elem = (code, name)
+
+            data[k].append(elem)
+
+    return data
+
+
+# *************************************************************************************
 # @app.before_first_request
 def fill_tables(db):
     """function to initial fill database tables"""
@@ -438,99 +284,41 @@ def fill_tables(db):
     conn = sqlite3.connect(db, detect_types=sqlite3.PARSE_DECLTYPES)
     cursor = conn.cursor()
 
-    cursor.executemany(VOIVODESHIPS_QUERY, load_voivodeships(VOIVODESHIP_DATA_URL))
-    print("voevodeships table filled---------------------------------")
+    loaded_dictionaries = load_dictionaries(data_to_load_dict)
 
-    cursor.executemany(
-        INSTITUTION_KINDS_QUERY, load_institution_kinds(INSTITUTION_KINDS_DATA_URL)
-    )
-    print("kinds table filled----------------------------------------")
-    conn.commit()
+    for k, v in data_to_load_dict.items():
+        query = "INSERT INTO " + k + "(" + v[1] + "," + v[2] + ") VALUES (?,?)"
+        cursor.executemany(query, loaded_dictionaries[k])
+        conn.commit()
+        print(k + " table filled")
 
-    cursor.executemany(
-        FIELDS_OF_STUDY_QUERY, load_fields_of_study(FIELDS_OF_STUDY_DATA_URL)
-    )
-    print("fields table filled-----------------------------------------")
-    conn.commit()
-    cursor.executemany(DISCIPLINES_QUERY, load_disciplines(DISCIPLINES_DATA_URL))
-    print("disciplines table filled--------------------------------------")
-    conn.commit()
-
-    KINDS_SELECT_QUERY = "SELECT kind_id, kind_key FROM uni_kinds"
-
-    kind_dict_from_db = sql_data_to_dict(db, KINDS_SELECT_QUERY)
-    print("kind query executed=========================================")
-    # print("kinds from db")
-    # print(type(kind_dict_from_db))  # list   of dicts
-    # print(kind_dict_from_db)
-
-    VOIVODESHIPS_SELECT_QUERY = "SELECT voiv_id, voiv_name FROM voivodeships"
-
-    voivodesips_dict_from_db = sql_data_to_dict(db, VOIVODESHIPS_SELECT_QUERY)
-    print("voivodeships query executed=========================================")
-    # print("voivodeships from db")
-    # print(type(voivodesips_dict_from_db))  # list   of dicts
-    # print(voivodesips_dict_from_db)
-
-    institution_list = load_institutions_list(INSTITUTIONS_LIST_DATA_URL)
-    print("institution_list created------------------------------------")
-    institution_dict = load_institutions_data(INSTITUTION_DATA_URL, institution_list)
-    print("institution_dict created----------------------------------")
-    institution_data = load_institutions(
-        institution_dict, kind_dict_from_db, voivodesips_dict_from_db
-    )
-    print("institution data////////////////////////////////////////")
-    # print(institution_data)
-    cursor.executemany(UNIS_QUERY, institution_data)
+    cursor.executemany(UNIS_QUERY, load_institutions(INSTITUTIONS_DATA_URL))
     conn.commit()
     print("unis table filled ======================================")
 
-    UNIS_SELECT_QUERY = "SELECT uni_id, uni_uid FROM unis"
+    courses_list = load_courses_list(COURSES_DATA_URL)
+    print("courses list created-------------------------------------------------")
 
-    unis_dict_from_db = sql_data_to_dict(db, UNIS_SELECT_QUERY)
-    print("unis query executed=========================================")
-    # print(unis_dict_from_db)
+    courses_data = load_courses(courses_list)
+    print("courses data created-------------------------------------------------")
+    print(courses_data[0])
 
-    studies_list = load_studies_list(STUDIES_DATA_URL)
-
-    studies = load_studies(studies_list, unis_dict_from_db)
-    print("first study+++++++++++++++++++++++++++++++++++++++++")
-    print(len(studies))
-    print(studies[0])
-
-    cursor.executemany(STUDIES_QUERY, studies)
+    cursor.executemany(COURSES_QUERY, courses_data)
     conn.commit()
-    print("studies table filled +++++++++++++++++++++++++++++++++++++++++")
+    print("courses table filled +++++++++++++++++++++++++++++++++++++++++")
 
-    disciplines_list = create_disciplines_data_from_studies(studies_list)
-    print("set created-------------------------------------------------")
-    # print(disciplines_list)
+    COURSES_SELECT_QUERY = "SELECT course_id, course_uid FROM courses"
 
-    cursor.executemany(STUDY_DISCIPLINES_QUERY, disciplines_list)
+    courses_dict_from_db = sql_data_to_dict(db, COURSES_SELECT_QUERY)
+    print("courses query executed=========================================")
+
+    cursor.executemany(
+        COURSES_DISCIPLINES_QUERY,
+        courses_disciplines_data(courses_list, courses_dict_from_db),
+    )
     conn.commit()
-    print("study disciplines table filled ======================================")
-
-    STUDY_DISCIPLINES_SELECT_QUERY = (
-        "SELECT study_discipline_id, study_discipline_name FROM study_disciplines"
+    print(
+        "courses disciplines joint table filled ======================================"
     )
 
-    study_disciplines_dict_from_db = sql_data_to_dict(
-        db, STUDY_DISCIPLINES_SELECT_QUERY
-    )
-    print("study disciplines query executed=========================================")
-    print(study_disciplines_dict_from_db)
-
-    studies_study_disciplines_list = studies_study_disciplines_data(
-        studies_list, study_disciplines_dict_from_db
-    )
-
-    cursor.executemany(STIDIES_STUDY_DISCIPLINES_QUERY, studies_study_disciplines_list)
-    conn.commit()
-    print("study disciplines joint table filled ======================================")
-
-    # conn.commit()
     conn.close()
-
-    test_unis_list = create_unis_data_from_studies(studies_list)
-    print(test_unis_list)
-    print(len(test_unis_list))

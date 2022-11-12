@@ -1,5 +1,6 @@
 """helpers methods common fpr application"""
 # import urllib.request
+import sqlite3
 import json
 
 # import requests
@@ -8,9 +9,9 @@ from urllib.request import urlopen, Request
 from urllib.error import HTTPError, URLError
 import socket
 
-
 def get_json_from_url(source: str):
     """load data from source url and tramsform it to json format"""
+
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.124 Safari/537.36 YaBrowser/22.9.3.888 Yowser/2.5 Edge/18.19582"
     }
@@ -34,3 +35,42 @@ def get_json_from_url(source: str):
     except Exception as err:
         print(f"Other error occurred: {err}")
         exit()
+
+
+def sql_data_to_list_of_dicts(path_to_db, select_query):
+    # def sql_data_to_list_of_dicts(connection, select_query):
+    """Returns data from an SQL query as a list of dicts."""
+
+    try:
+        connection = sqlite3.connect(path_to_db)
+        connection.row_factory = sqlite3.Row
+        results = connection.execute(select_query).fetchall()
+        unpacked = [{k: item[k] for k in item.keys()} for item in results]
+
+        return unpacked
+    except Exception as err:
+        print(f"Failed to execute. Query: {select_query}\n with error:\n{err}")
+        return []
+    finally:
+        connection.close()
+
+
+def sql_data_to_dict(path_to_db, select_query):
+    # def sql_data_to_list_of_dicts(connection, select_query):
+    """Returns data from an SQL query as a list of dicts."""
+    data = {}
+    try:
+        connection = sqlite3.connect(path_to_db)
+        # connection.row_factory = sqlite3.Row
+        results = connection.execute(select_query).fetchall()
+        # unpacked = [{k: item[k] for k in item.keys()} for item in results]
+        for row in results:
+            data[row[0]] = row[1]
+
+        return data
+    except Exception as err:
+        print(f"Failed to execute. Query: {select_query}\n with error:\n{err}")
+        return []
+    finally:
+        connection.close()
+

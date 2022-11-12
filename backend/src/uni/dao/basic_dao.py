@@ -1,5 +1,5 @@
 """Basic Data Access Object with function reused by the other DAOs."""
-from src.__init__ import db
+from main import db
 from flask import current_app
 from sqlalchemy.exc import SQLAlchemyError
 

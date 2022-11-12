@@ -8,7 +8,11 @@ export const UnivercityProvider = ({ children }) => {
     unis: [],
     uni: {},
     study_disciplines: [],
-    //study_discipline: {},
+    discipline: '',
+    uniSearchWord: '',
+    level: '',
+    city: '',
+    searchUniResults: [],
     loading: false,
   };
 

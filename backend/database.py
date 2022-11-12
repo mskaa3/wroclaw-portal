@@ -19,7 +19,7 @@ class Database:
     def init_app(self, app):
         """Set up SQLAlchemy to work with Flask Application"""
         # connect database
-        self.engine = create_engine(app.config["SQLALCHEMY_DATABASE_URI"])
+        self.engine = create_engine(app.config["SQLALCHEMY_DATABASE_URI"], echo=True)
         # create session factory
         self.sessionmaker = sessionmaker(
             autocommit=False, autoflush=False, bind=self.engine
@@ -35,14 +35,15 @@ class Database:
         from src.uni.models.uni_model import Uni
         from src.uni.models.voivodeship_model import Voivodeship
         from src.uni.models.uni_kind_model import UniKind
-        from src.uni.models.field_of_study_model import FieldOfStudy
+        from src.uni.models.course_level_model import CourseLevel
+        from src.uni.models.course_title_model import CourseTitle
+        from src.uni.models.course_form_model import CourseForm
+        from src.uni.models.course_language_model import CourseLanguage
         from src.uni.models.discipline_model import Discipline
-        from src.uni.models.study_model import Study
-        from src.uni.models.study_discipline_model import StudyDiscipline
+        from src.uni.models.course_model import Course
 
-        # from src.uni.models.studies_study_discipline_model import StudiesStudyDiscipline
-
-        self.Base.metadata.create_all(bind=self.engine)
+        # move to __init__
+        # self.Base.metadata.create_all(bind=self.engine)
 
         # app.teardown_request(self.remove_session)
 

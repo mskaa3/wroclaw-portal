@@ -23,6 +23,8 @@
     "python.linting.pylintArgs": [
         "--load-plugins",
         "pylint_flask_sqlalchemy",
+        "pylint-flask",
+        "--init-hook"
     ],
     "python.formatting.provider": "black",
     "[python]": {

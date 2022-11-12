@@ -1,6 +1,10 @@
 """uni table shema"""
-from src import db, ma
-from sqlalchemy import Column, Integer, SmallInteger, String, ForeignKey
+from main import db, ma
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship
+
+# from sqlalchemy_filters import Filter, Field, StringField, IntegerField
+# from sqlalchemy_filters.operators import EqualsOperator
 
 
 class Uni(db.Base):
@@ -10,7 +14,7 @@ class Uni(db.Base):
     uni_id = Column(Integer, primary_key=True)
     uni_uid = Column(String(30), unique=True)
     uni_name = Column(String(64), index=True, unique=True)
-    uni_code = Column(String(20), unique=True)
+    # uni_code = Column(String(20), unique=True)
     kind = Column(Integer, ForeignKey("uni_kinds.kind_id"))
     www = Column(String(64))
     phone_number = Column(String(20))
@@ -21,10 +25,13 @@ class Uni(db.Base):
     postal_code = Column(String(6))
     voivodeship = Column(Integer, ForeignKey("voivodeships.voiv_id"))
 
+    courses = relationship("Course", backref="courses")
+
     def __init__(self, uni: dict):
+        # self.uni_id = uni.get("uni_id")
         self.uni_uid = uni.get("uni_uid")
         self.uni_name = uni.get("uni_name")
-        self.uni_code = uni.get("uni_code")
+        # self.uni_code = uni.get("uni_code")
         self.kind = uni.get("kind")
         self.www = uni.get("www")
         self.phone_number = uni.get("phone_number")
@@ -53,7 +60,7 @@ class Uni(db.Base):
         """
         return (
             f"Uni: [uni_id: {self.uni_id},uni_uid: {self.uni_uid},"
-            f"uni_name: {self.uni_name},uni_code:{self.uni_code},kind:{self:kind},"
+            f"uni_name: {self.uni_name},kind:{self.kind},"
             f"www: {self.www},phone_number: {self.phone_number},"
             f"uni_email: {self.uni_email},city: {self.city},street: {self.street},"
             f"building: {self.building},postal_code:{self.postal_code},"
@@ -83,6 +90,8 @@ class Uni(db.Base):
 
 
 class UniSchema(ma.Schema):
+    """schema for Uni"""
+
     class Meta:
         model = Uni
         # sqla_session = db.session
@@ -102,3 +111,14 @@ class CitiesSchema(ma.Schema):
 
 
 cities_schema = CitiesSchema(many=True)
+
+"""
+class UniFilter(Filter):
+    city = StringField(field_name="unis.city")
+    level = IntegerField(field_name="courses.level")
+    discipline_name = StringField(field_name="disciplines.discipline_name")
+
+    class Meta:
+        model = Uni
+        session = db.session
+"""

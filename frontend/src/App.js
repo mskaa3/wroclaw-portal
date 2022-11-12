@@ -14,6 +14,8 @@ import MapScreen from './screens/MapScreen';
 import NewsScreen from './screens/NewsScreen';
 import QaScreen from './screens/QaScreen';
 import LoginScreen from './screens/LoginScreen';
+import CourseScreen from './screens/CourseScreen';
+
 import { UnivercityProvider } from './context/uni/UnivercityContext';
 //import { useState, useEffect } from 'react';
 //import Univercity from './components/Univercity';
@@ -38,6 +40,7 @@ const App = () => {
               <Route exact path="/docs" element={<DocumentsScreen />} />
               <Route exact path="/qa" element={<QaScreen />} />
               <Route exact path="/login" element={<LoginScreen />} />
+              <Route exact path="/courses/uni/:id" element={<CourseScreen />} />
             </Routes>
           </Container>
         </main>
