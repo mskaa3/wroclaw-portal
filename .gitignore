@@ -7,5 +7,11 @@
 .env.production.local
 
 __pycache__/
+.venv/
+*.pyc
 
+.cache/
+instance/
+.webassets-cache
+db.sqlite3
 
