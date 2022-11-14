@@ -101,16 +101,22 @@ def unis_list():
 def qa():
     if request.method == 'POST':
         query=request.json["question"]
-        results_dict={}
+        # results_dict={}
         reader=Reader()
         retriever=Retriever()
         # retriever.create_embeddings()
-        
+        answers={}
         results=retriever.retrieve_docs(query)
         for num,i in enumerate(results):
-            answer=reader.answer_question(query,i)
-            results_dict[num]=answer
-        return jsonify(results_dict[0])
+            answers[num]=reader.answer_question(query,i)
+        highest_score=0
+        best_answer=''
+        for elem in answers:
+            if answers[elem]['score']>highest_score:
+                highest_score=answers[elem]['score']
+                best_answer=answers[elem]['answer']
+        return jsonify(best_answer)
+        # return jsonify(results_dict[0])
  
 
 
