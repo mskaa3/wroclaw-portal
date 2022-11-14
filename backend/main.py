@@ -101,7 +101,6 @@ def unis_list():
 def qa():
     if request.method == 'POST':
         query=request.json["question"]
-        # results_dict={}
         reader=Reader()
         retriever=Retriever()
         # retriever.create_embeddings()
@@ -116,7 +115,7 @@ def qa():
                 highest_score=answers[elem]['score']
                 best_answer=answers[elem]['answer']
         return jsonify(best_answer)
-        # return jsonify(results_dict[0])
+
  
 
 
