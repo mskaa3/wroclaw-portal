@@ -2,9 +2,10 @@
 import { useEffect, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import ListGroup from 'react-bootstrap/ListGroup';
-import {Col} from 'react-bootstrap'
+import {Col,Row} from 'react-bootstrap'
 import DocumentCard from '../components/DocumentCard';
 import axios from 'axios';
+import '..\\frontend\\src\\css\\doc_component.css';
 
 const News = () => {
   const [categories,setCategories]=useState([]);
@@ -32,11 +33,11 @@ const News = () => {
   
   return (
   <div>    
-    <Form role="form" >
-    <center>
-    <h1>Documents </h1>
-    </center>
-    <Form.Group>              
+  
+    {/* <center>
+    <h1 className='doc_title'>Documents </h1>
+    </center> */}
+    <Row>
       <Col lg={6} md={6} sm={12} xs={12}>
       <ListGroup variant="flush active" active className='line mb-3 w-25 mt-3' 
       value={categories}>
@@ -53,14 +54,17 @@ const News = () => {
             <ListGroup.Item key={item.id} value={item.category} action href='#8'>{item.category}</ListGroup.Item>
           )
          })} */}
-      </ListGroup>  
-      </Col>       
-      </Form.Group>  
          
-    </Form>
-    <div>
-      <DocumentCard />
-    </div>   
+      </ListGroup>  
+
+      </Col> 
+      <Col>
+      <div className='doc_component'>
+      <DocumentCard /> 
+      </div>
+      </Col>  
+      </Row>
+
     </div>  
   );
 };

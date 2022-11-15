@@ -28,11 +28,6 @@ class Retriever():
           print(files)
           file=open(os.path.join(dirname, files), "r",encoding="utf-8")
           content=file.read()
-          # for chunk in content.split('. '):
-          #     if content_divided and len(chunk)+len(content_divided[-1]) < threshold:
-          #        content_divided[-1] += ' '+chunk+'.'
-          #     else:
-          #        content_divided.append(chunk+'.')
           ct_list=content.split(' ')
           temp_paragraph=''
           for i,chunk in enumerate(ct_list):
