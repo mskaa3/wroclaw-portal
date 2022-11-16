@@ -1,7 +1,12 @@
 import React from 'react';
+import Documents from '../components/Documents';
 
 const DocumentsScreen = () => {
-  return <div>DocumentsScreen</div>;
+  return (
+    <div>
+      <Documents></Documents>
+    </div>
+  );
 };
 
 export default DocumentsScreen;

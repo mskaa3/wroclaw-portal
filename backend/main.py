@@ -1,16 +1,23 @@
 "main application configuration"
-
+import json
+from bs4 import BeautifulSoup
+import requests
+from googletrans import Translator
+# pip installpip
 # requests module will be used to CREATE client requests and send them to ANOTHER server
 # from crypt import methods
 import os, requests
 #from dotenv import load_dotenv
 from flask import Flask, request, jsonify
 import json
-from bs4 import BeautifulSoup
+
 
 # reques object is used to get access to the client request tat is sent TO THE Flask appl from the OTHER clients
+from flask_sqlalchemy import SQLAlchemy
+from model.retriever import Retriever
+from model.reader import Reader
 from flask_cors import CORS
-
+# from docs_database import Category, Documents,db
 # from flask_oidc import OpenIDConnect
 # from okta import UsersClient
 
@@ -202,6 +209,69 @@ def unis_list():
     if request.method == "POST":
         # save
         return {}
+
+
+@app.route("/qa",methods=["POST"])
+def qa():
+    if request.method == 'POST':
+        query=request.json["question"]
+        results_dict={}
+        reader=Reader()
+        retriever=Retriever()
+        # retriever.create_embeddings()
+        
+        results=retriever.retrieve_docs(query)
+        for num,i in enumerate(results):
+            answer=reader.answer_question(query,i)
+            results_dict[num]=answer
+        return jsonify(results_dict[0])
+ 
+
+
+# @app.route("/docs")
+# def docs_list():
+
+#         translator = Translator()
+#         page = requests.get('https://przybysz.duw.pl/en/documents-to-download/',verify=False)   
+#         soup = BeautifulSoup(page.text, 'html.parser')
+
+
+#         headers=[]
+#         head = soup.find_all('h4', attrs = {'class':''}) 
+#         for elem in head:
+#             elem_fixed=(elem.text).replace('\n\t\t\t\t','')
+#             headers.append(elem_fixed.replace('\n\t\t\t',''))
+#         headers.append("Others")
+#         categories = soup.find_all("div", class_="frame frame-default frame-type-uploads frame-layout-0")
+#         categories.pop(0)
+#         # result_dict={}
+#         big_dict=[]
+#         i=1
+#         for header,category in zip(headers,categories):
+#             dict={}
+#             experiment={}
+#             experiment["id"]=i
+#             experiment["category"]=header
+
+
+#             for row in category.find_all('div', attrs = {'class':''}) :
+#                 doc_title = translator.translate(row.span.text,src='pl',dest='en')
+#                 dict[doc_title.text]='https://przybysz.duw.pl'+row.a['href']
+#                 experiment["content"]=dict
+#             big_dict.append(experiment)
+#             # result_dict[header]=dict
+#             i=i+1
+            
+#             for key in big_dict:
+#                 cat = Category(category_name=key)
+#                 db.session.add(cat)
+#                 db.session.commit()
+#                 for name in big_dict[key]:
+#                     docs=Documents(link=big_dict[key][name],link_name=name,category=cat.id)
+#                     db.session.add(docs)
+#                     db.session.commit()
+#         return big_dict
+
 
 
 if __name__ == "__main__":
