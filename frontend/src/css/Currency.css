@@ -13,3 +13,14 @@
   margin: 30px 0;
   background: #fff;
 }
+
+.tableA {
+  border: 2px solid forestgreen;
+  width: 800px;
+  height: 200px;
+  
+}
+
+.tableA td, tr {
+  text-align: center;
+}
