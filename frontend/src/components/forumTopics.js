@@ -7,22 +7,20 @@ function ForumTopics() {
     <div className="text-center">
       <h1>Choose the topic</h1>
       <ListGroup variant="flush active">
-        <ListGroup.Item>Food&Entertainment</ListGroup.Item>
-        <ListGroup.Item>
-          International meetings
-         
-        </ListGroup.Item>
+        <ListGroup.Item action href='#0'>Foodie</ListGroup.Item>
+        <ListGroup.Item action href='#2'>
+          International meetings </ListGroup.Item>
 
-        <ListGroup.Item>Bank</ListGroup.Item>
-        <ListGroup.Item>Job</ListGroup.Item>
-        <ListGroup.Item>
-          Insurance
+        <ListGroup.Item action href='#1'>Entertainment&events </ListGroup.Item>
+        <ListGroup.Item action href='#2'>Shops</ListGroup.Item>
+        <ListGroup.Item action href='#3'>Parties
       
         </ListGroup.Item>
-        <ListGroup.Item>Help</ListGroup.Item>
-        <ListGroup.Item>General</ListGroup.Item>
+        <ListGroup.Item action href='#4'>Help</ListGroup.Item>
+        <ListGroup.Item action href='#5'>Off-topic</ListGroup.Item>
       </ListGroup>
     </div>
+    
   );
 }
 
