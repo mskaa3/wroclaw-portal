@@ -53,7 +53,7 @@ const TopicCard = ({ topic }) => {
     );
   }
   return (
-    <Segment vertical key={slug} color="grey">
+    <Segment vertical key={topic_id} color="grey">
       <Grid textAlign="left" padded="horizontally">
         <Grid.Column width={7}>
           <Grid.Row>

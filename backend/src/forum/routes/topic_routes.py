@@ -235,9 +235,7 @@ class TopicsApi(Resource):
         """
         print("in routes///////////////////")
         topics: list = TopicDao.get_topics()
-        print(type(topics))
-        res = topics_schema.dump(topics)
-        print(res)
+    
         return topics
         """
         if disciplines is None:

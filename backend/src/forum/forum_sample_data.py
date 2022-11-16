@@ -43,11 +43,18 @@ users_sample_data = [
     ("User 3", "user3@gmail.com", "user3"),
 ]
 threads_sample_data = [
-    ("Thread 1", "Content of thread 1", "2022-10-14", "2022-11-11", 1, 1, "false")
+    ("Thread 1", "Content of thread 1", "2022-10-14", "2022-11-11", 1, 1, "false"),
+    ("Thread 2", "Content of thread 2", "2022-10-16", "2022-11-12", 1, 2, "false"),
+    ("Thread 3", "Content of thread 3", "2022-10-18", "2022-11-13", 2, 1, "false"),
 ]
 posts_sample_data = [
     ("Post 1 content", "2022-10-16", None, 1, 2),
     ("Post 2 content", "2022-11-11", None, 1, 3),
+    ("Post 3 content", "2022-10-17", None, 2, 1),
+    ("Post 4 content", "2022-11-10", None, 2, 3),
+    ("Post 5 content", "2022-11-12", None, 2, 3),
+    ("Post 6 content", "2022-10-20", None, 3, 2),
+    ("Post 7 content", "2022-11-13", None, 3, 3),
 ]
 
 

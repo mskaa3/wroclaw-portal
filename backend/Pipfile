@@ -30,6 +30,9 @@ sqlalchemy-filters-plus = "*"
 sqlalchemy-filters = "*"
 flask-filter = "*"
 pylint-flask = "*"
+colorama = "*"
+flask-restful = "*"
+transformers = "*"
 
 [dev-packages]
 black = "*"
