@@ -27,3 +27,4 @@ yarn-error.log*
 # cache
 .eslintcache
 __pycache__/
+*.pyc
