@@ -13,6 +13,14 @@ main{
   
 }
 
+.forum-header{
+  
+  background-color:aliceblue;
+  padding:10px;
+  
+  
+}
+
 .image-container-top{
   display: block;
   height: 300 px;

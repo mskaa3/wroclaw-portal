@@ -1,0 +1,277 @@
+.homeContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: 40px;
+  margin-bottom: 30px;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
+}
+
+.home-list {
+  width: 100% !important;
+  
+}
+
+.homeContainer a:-webkit-any-link {
+  cursor: pointer;
+  color: black;
+  font-weight: bold;
+}
+
+.home-avatar {
+  width: 50px;
+  max-width: none !important; /*overrides semantic-ui-react max-width of 100% */
+  height: 50px;
+  border-radius: 5px;
+  margin-right: 10px;
+  margin-top: 4px;
+}
+
+.home-text {
+  vertical-align: middle;
+  text-align: left;
+}
+
+.home-vertical {
+  position: relative;
+  top: 10%;
+  
+}
+
+.home-row {
+  display: flex;
+  flex-direction: row;
+}
+.avatar {
+  border-radius: 10px;
+  width: 50px;
+  height: 50px;
+}
+
+.home-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.home-stats {
+  font-size: 14px;
+  vertical-align: middle;
+  left: 25%;
+}
+
+.home-meta a {
+  color: gray !important;
+  font-size: 12px;
+}
+
+.home-meta b{
+  color: gray !important;
+  font-size: 10px;
+}
+
+.home-error {
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 33%;
+  color: rgba(231, 76, 60,1.0);
+  font-size: 12px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.statusMessage-default {
+  text-align: center;
+  width: 33%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 40px;
+}
+
+.statusMessage-modal {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.loader {
+  width: 100%;
+  height: 49px;
+  text-align: center;
+}
+
+.loader-spinning-wheel {
+  width: 49px;
+  height: 49px;
+  margin: 0 auto;
+  border: 5px solid #cccccc;
+  border-radius: 50%;
+  border-top: 5px solid #1d4d8b;
+  animation: loader-spin infinite 1s linear;
+}
+
+@keyframes loader-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.forumContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
+}
+
+.forum-list {
+  width: 100% !important;
+}
+
+.forumContainer a:-webkit-any-link {
+  cursor: pointer;
+  color: black;
+  font-weight: bold;
+}
+
+.forum-avatar {
+  width: 50px;
+  max-width: none !important; /*overrides semantic-ui-react max-width of 100% */
+  height: 50px;
+  border-radius: 5px;
+  margin-right: 10px;
+  margin-top: 4px;
+}
+
+.forum-text {
+  vertical-align: middle;
+  text-align: left;
+}
+
+.forum-vertical {
+  position: relative;
+  top: 25%;
+}
+
+.forum-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.forum-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.forum-name {
+  font-weight: bold;
+}
+
+.forum-stats {
+  font-size: 14px;
+  vertical-align: middle;
+  left: 25%;
+}
+
+.forum-meta a {
+  color: gray !important;
+  font-size: 12px;
+}
+
+.forum-meta b{
+  color: gray !important;
+  font-size: 10px;
+}
+
+.forum-error {
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 33%;
+  color: rgba(231, 76, 60,1.0);
+  font-size: 12px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.newThread-show {
+  width: 100%;
+  display: flex;
+  font-family: Roboto;
+  align-items: center;
+  text-align: left;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.newThread-hidden {
+  display: flex;
+  width: 100%;
+  font-family: Roboto;
+  text-align: left;
+  margin-bottom: 5px;
+}
+
+.newThread-none {
+  margin-top: 40px;
+}
+
+.newThread-message {
+  margin-bottom: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 33%;
+  color: rgba(231, 76, 60,1.0);
+  text-align: center;
+}
+
+.newThread-message a:-webkit-any-link{
+  text-decoration:none;
+  cursor: pointer;
+  color: green;
+}
+
+.newThread-message a:-webkit-any-link:hover{
+  text-decoration:underline;
+}
+
+.newThread-wrapper {
+  width: 100% !important;
+  display: block !important;
+  margin-top: 10px !important;
+  margin-bottom: 25px !important;
+  line-height: normal !important;
+}
+
+.newThread-toolbar {
+  padding: 0px !important;
+  border: none !important;
+  display: flex;
+  justify-content: flex-start;
+  background: white;
+  flex-wrap: wrap;
+  font-size: 15px;
+  user-select: none;
+  margin-left: -3px;
+}
+
+.newThread-toolbar a {
+  color: black;
+}
+
+.newThread-editor {
+  height: auto !important;
+  padding: 0px !important;
+  border: none !important;
+  min-height: 100px;
+}
+
+.newThread-editor a{
+  color: blue;
+}

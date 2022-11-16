@@ -29,10 +29,7 @@
     "python.formatting.provider": "black",
     "[python]": {
         "editor.formatOnSave": true
-    },
-    "python.analysis.typeCheckingMode": "off",
-    "files.exclude": {
-        "**/__pycache__": true
-   }
+    }
+   
     
 }

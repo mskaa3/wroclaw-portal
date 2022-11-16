@@ -60,9 +60,9 @@ COURSES_DISCIPLINES_QUERY = (
     "INSERT INTO courses_disciplines(course_id_joint,discipline_id_joint) VALUES (?,?)"
 )
 
-INSTITUTION_DATA_STATUS_FILTER="1" #Działająca - Operating
-INSTITUTION_DATA_COUNTRY_FILTER="Polska"
-INSTITUTION_DATA_KIND_FILTER=16 #Federation
+INSTITUTION_DATA_STATUS_FILTER = "1"  # Działająca - Operating
+INSTITUTION_DATA_COUNTRY_FILTER = "Polska"
+INSTITUTION_DATA_KIND_FILTER = 16  # Federation
 
 
 # here id already exist in sourse
@@ -94,15 +94,17 @@ def load_institutions(source: str):
                 kind = int(item["iKindCd"])
             else:
                 kind = None
-            
+
             # select universities in active status, i Poland, not Federation kind
             if (
-                status == INSTITUTION_DATA_STATUS_FILTER and country == INSTITUTION_DATA_COUNTRY_FILTER and kind != INSTITUTION_DATA_KIND_FILTER
+                status == INSTITUTION_DATA_STATUS_FILTER
+                and country == INSTITUTION_DATA_COUNTRY_FILTER
+                and kind != INSTITUTION_DATA_KIND_FILTER
             ):  # Działająca - Operating, Polska, not Federation
-               
+
                 uni_uid = validate_string(item["institutionUuid"])
                 uni_name = validate_string(item["name"])
-                www = validate_string(item["www"])                
+                www = validate_string(item["www"])
                 phone_number = validate_string(item["phone"])
                 uni_email = validate_string(item["eMail"])
                 city = validate_string(item["city"])
@@ -124,7 +126,7 @@ def load_institutions(source: str):
                     postal_code,
                     voivodeship,
                 )
-                
+
                 data.append(elem)
 
     return data
@@ -209,7 +211,7 @@ def courses_disciplines_data(courses: list, courses_dict: dict):
     """create data for courses_disciplines joint table in database"""
     data = []
     courses_dict_reversed = dict((v, k) for k, v in courses_dict.items())
-    
+
     for item in courses:
         if "disciplines" in item:
             disciplines_list = item["disciplines"]
@@ -259,7 +261,7 @@ data_to_load_dict["disciplines"] = (
 # ?? int, string id: in 2 tables(languages and disciplines) id-string
 def load_dictionaries(initial_data: dict):
     """data to fill the dictionaries tables in database"""
-    
+
     data = defaultdict(list)
     for k, v in initial_data.items():
         response = get_json_from_url(v[0])
