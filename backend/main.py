@@ -1,7 +1,6 @@
 "main application configuration"
 import json
 from bs4 import BeautifulSoup
-import requests
 from googletrans import Translator
 # pip installpip
 # requests module will be used to CREATE client requests and send them to ANOTHER server
