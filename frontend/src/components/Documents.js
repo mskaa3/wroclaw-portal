@@ -20,6 +20,7 @@ const Documents = () => {
   //     })
   // },[]);
   const handleClick=(e)=>{
+    console.log(catID);
     setCatID(e.target.value);
     console.log(catID);
     
@@ -70,19 +71,22 @@ const Documents = () => {
       <DocumentCard /> 
       </div> */}
       <ListGroup variant="flush active" value={documents}>
-         {documents.filter(documents_arr => documents_arr[3]= catID).map((documents_arr)=>{
+         {documents.map((documents_arr)=>{
+           
           return(
             <div >
+         
              <ListGroup.Item 
              role="tabpanel"
              aria-labelledby={documents_arr[3]}
              id={documents_arr[3]}
              action href={documents_arr[2]}
              >{documents_arr[1]}</ListGroup.Item>
-          
+         
           </div>
             )
-         })}
+         }
+        )}
       </ListGroup>  
       </Col>  
       </Row>
