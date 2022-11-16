@@ -108,10 +108,13 @@ def qa():
             answers[num]=reader.answer_question(query,i)
         highest_score=0
         best_answer=''
-        for elem in answers:
+        ctx=''
+        for con,elem in zip(results,answers):
             if answers[elem]['score']>highest_score:
                 highest_score=answers[elem]['score']
                 best_answer=answers[elem]['answer']
+                ctx=con
+        print(ctx)      
         return jsonify(best_answer)
 
  
