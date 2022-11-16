@@ -1,5 +1,6 @@
 //import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
+import 'C:/7SEMESTER/wroclaw-portal/frontend/src/css/Currency.css';
 import {
   BrowserRouter as Router,
   Route,
