@@ -1,6 +1,6 @@
 "main application configuration"
 import json
-
+import sqlite3
 
 # pip installpip
 # requests module will be used to CREATE client requests and send them to ANOTHER server
@@ -12,7 +12,6 @@ from flask_sqlalchemy import SQLAlchemy
 from model.retriever import Retriever
 from model.reader import Reader
 from flask_cors import CORS
-# from docs_database import Category, Documents,db
 # from flask_oidc import OpenIDConnect
 # from okta import UsersClient
 
@@ -118,9 +117,18 @@ def qa():
  
 
 
-# @app.route("/docs")
-# def docs_list():
-     
+@app.route("/docs")
+def docs():
+    with sqlite3.connect('docs_db.db') as conn:
+        try:
+            cur = conn.cursor()
+            cur.execute(f"SELECT * FROM categories")
+            categories_data = cur.fetchall()
+            cur.execute(f"SELECT * FROM documents")
+            documents_data = cur.fetchall()
+            return jsonify(categories_data,documents_data)
+        except sqlite3.Error as er:
+            return er
 
 
 
