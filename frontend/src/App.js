@@ -15,8 +15,10 @@ import NewsScreen from './screens/NewsScreen';
 import QaScreen from './screens/QaScreen';
 import LoginScreen from './screens/LoginScreen';
 import CourseScreen from './screens/CourseScreen';
-
+import ForumScreen2 from './screens/ForumScreen2';
 import { UnivercityProvider } from './context/uni/UnivercityContext';
+import TopicContainer from './components/forum/TopicContainer';
+import ThreadContainer from './components/forum/ThreadContainer';
 //import { useState, useEffect } from 'react';
 //import Univercity from './components/Univercity';
 
@@ -41,6 +43,17 @@ const App = () => {
               <Route exact path="/qa" element={<QaScreen />} />
               <Route exact path="/login" element={<LoginScreen />} />
               <Route exact path="/courses/uni/:id" element={<CourseScreen />} />
+              <Route exact path="/forum2" element={<ForumScreen2 />} />
+              <Route
+                exact
+                path="forum/topics/:id"
+                element={<TopicContainer />}
+              />
+              <Route
+                exact
+                path="/thread/:thread"
+                element={<ThreadContainer />}
+              />
             </Routes>
           </Container>
         </main>

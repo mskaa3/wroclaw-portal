@@ -41,6 +41,10 @@ class Database:
         from src.uni.models.course_language_model import CourseLanguage
         from src.uni.models.discipline_model import Discipline
         from src.uni.models.course_model import Course
+        from src.user.user_model import User
+        from src.forum.models.post_model import Post
+        from src.forum.models.thread_model import Thread
+        from src.forum.models.topic_model import Topic
 
         # move to __init__
         # self.Base.metadata.create_all(bind=self.engine)

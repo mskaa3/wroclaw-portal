@@ -8,7 +8,9 @@ from flask_marshmallow import Marshmallow
 import connexion
 
 from src.uni.data_loader import fill_tables
+from src.forum.forum_sample_data import fill_forum_tables
 from database import Database
+
 
 # requests module will be used to CREATE client requests and send them to ANOTHER server
 # from crypt import methods
@@ -80,6 +82,12 @@ def create_app(config_class="config.DevConfig"):
 
         from src.uni.routes.search_routes import SearchUniApi, SearchCourseApi
 
+        from src.forum.routes.topic_routes import (
+            TopicIdApi,
+            TopicNameApi,
+            TopicsApi,
+        )
+
         api.add_resource(VoivodeshipIdApi, "/voivodeships/<id>")
         # api.add_resource(VoivodeshipNameApi,'/voivodeships/<name>')
         api.add_resource(VoivodeshipsApi, "/voivodeships")
@@ -111,6 +119,10 @@ def create_app(config_class="config.DevConfig"):
             "/search/courses",
         )
 
+        api.add_resource(TopicIdApi, "/forum/topics/<topic_id>")
+        api.add_resource(TopicNameApi, "/forum/topics/name/<topic_name>")
+        api.add_resource(TopicsApi, "/forum/topics")
+
         # from src.uni.models.uni_model import Uni
         # from src.uni.models.voivodeship_model import Voivodeship
 
@@ -122,6 +134,13 @@ def create_app(config_class="config.DevConfig"):
         # def create_tables():
         # db.Base.metadata.create_all(bind=db.engine)
         # fill_tables(db.engine.url.database)
+
+        # db.Base.metadata.reflect(db.engine)
+        # db.Base.metadata.tables["users"].create(bind=db.engine)
+        # db.Base.metadata.tables["topics"].create(bind=db.engine)
+        # db.Base.metadata.tables["threads"].create(bind=db.engine)
+        # db.Base.metadata.tables["posts"].create(bind=db.engine)
+        # fill_forum_tables(db.engine.url.database)
 
     return app
 

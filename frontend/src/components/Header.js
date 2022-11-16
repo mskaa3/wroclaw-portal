@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const Header = ({ title }) => {
   return (
     <>
-      <Navbar className="menu-back" expand="lg">
+      <Navbar className="menu-back mb-5" expand="lg">
         <Container fluid>
           <Navbar.Brand as={Link} to="#b">
             {title}
@@ -36,6 +36,10 @@ const Header = ({ title }) => {
 
               <Nav.Link as={Link} to="/forum">
                 <i className="fa-solid fa-message"></i> Forum
+              </Nav.Link>
+
+              <Nav.Link as={Link} to="/forum2">
+                <i className="fa-solid fa-message"></i> Forum2
               </Nav.Link>
 
               <Nav.Link as={Link} to="/docs">
