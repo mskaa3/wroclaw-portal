@@ -16,4 +16,4 @@ backend/.venv/
 instance/
 .webassets-cache
 db.sqlite3
-*.sqbprog
+*.sqbpro

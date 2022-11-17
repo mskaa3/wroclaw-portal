@@ -11,22 +11,19 @@ from src.uni.data_loader import fill_tables
 from src.forum.forum_sample_data import fill_forum_tables
 from database import Database
 
-from bs4 import BeautifulSoup
-import requests
 import sqlite3
 from googletrans import Translator
+
 # pip installpip
 # requests module will be used to CREATE client requests and send them to ANOTHER server
 # from crypt import methods
-import os
+
 from dotenv import load_dotenv
 from flask import Flask, request, jsonify
-import json
 
 
-
-from model.retriever import Retriever
-from model.reader import Reader
+# from model.retriever import Retriever
+# from model.reader import Reader
 
 # from flask_oidc import OpenIDConnect
 # from okta.client import Client as UsersClient
@@ -150,17 +147,17 @@ def create_app(config_class="config.DevConfig"):
         # db.Base.metadata.tables["threads"].create(bind=db.engine)
         # db.Base.metadata.tables["posts"].create(bind=db.engine)
         # fill_forum_tables(db.engine.url.database)
-        
-#@app.route("/")
-#def index():
-#    "function for initial testing"
-#    return "Hello from Wroclaw Portal"
 
+    # @app.route("/")
+    # def index():
+    #    "function for initial testing"
+    #    return "Hello from Wroclaw Portal"
 
+    from src.currency.currency_routes import currency_routes
+    from src.docs.docs_routes import docs_routes
 
-
-
-
+    app.register_blueprint(currency_routes)
+    app.register_blueprint(docs_routes, url_prefix="/docs")
 
     return app
 
@@ -227,4 +224,3 @@ def logout():
     return redirect(url_for(".index"))
 
 """
-

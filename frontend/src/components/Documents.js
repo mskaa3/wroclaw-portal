@@ -1,6 +1,5 @@
 /* eslint-disable prettier/prettier */
 import { useEffect, useState } from 'react';
-import Form from 'react-bootstrap/Form';
 import ListGroup from 'react-bootstrap/ListGroup';
 import {Col,Row} from 'react-bootstrap'
 import DocumentCard from '../components/DocumentCard';
@@ -49,7 +48,7 @@ const Documents = () => {
     <Row>
       
       <Col lg={3} md={6} sm={10} xs={10} >
-      <ListGroup variant="flush active" flex-column align-items-start active className='line' 
+      <ListGroup variant="flush active"  className='line flex-column align-items-start active' 
       value={categories} >
          {categories.map((category_arr)=>{
           return(

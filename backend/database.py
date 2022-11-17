@@ -5,8 +5,6 @@ from sqlalchemy.ext.declarative import declarative_base
 from greenlet import getcurrent as _get_ident
 from flask_sqlalchemy import SQLAlchemy
 
-# from app import app
-
 
 class Database:
     """define database configuration"""

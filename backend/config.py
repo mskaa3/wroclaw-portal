@@ -30,6 +30,7 @@ class ProdConfig(Config):
     DEBUG = False
     TESTING = False
     SQLALCHEMY_DATABASE_URI = environ.get("PROD_DATABASE_URI")
+    SQLALCHEMY_BINDS = {"docs_db": environ.get("PROD_DOCS_DATABASE_URI")}
 
 
 class DevConfig(Config):
@@ -40,5 +41,6 @@ class DevConfig(Config):
     DEBUG = False
     TESTING = True
     SQLALCHEMY_DATABASE_URI = environ.get("DEV_DATABASE_URI")
+    SQLALCHEMY_BINDS = {"docs_db": environ.get("DEV_DOCS_DATABASE_URI")}
 
     print("dev============================" + SQLALCHEMY_DATABASE_URI)
