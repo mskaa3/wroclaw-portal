@@ -2,66 +2,96 @@
 import { useEffect, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import ListGroup from 'react-bootstrap/ListGroup';
-import {Col} from 'react-bootstrap'
+import {Col,Row} from 'react-bootstrap'
 import DocumentCard from '../components/DocumentCard';
 import axios from 'axios';
+import '..\\frontend\\src\\css\\doc_component.css';
 
-const News = () => {
+const Documents = () => {
   const [categories,setCategories]=useState([]);
+  const [documents,setDocuments]=useState([]);
+  const [catID,setCatID]=useState();
+  // useEffect(()=>{
+  //   fetch("/docs").then(response=>{
+  //       return response.json();
+  //     }).then(data=>{
+  //       setCategories(data);
+  //       console.log(categories)
+  //     })
+  // },[]);
+  const handleClick=(e)=>{
+    console.log(catID);
+    setCatID(e.target.value);
+    console.log(catID);
+    
+  };
 
   useEffect(()=>{
-    fetch("/docs").then(
-      resp=>resp.json()).then(
-        data=>console.log(data))
-      // data=>{
-      //   setCategories(data);
-      //   console.log(data)
-      // }
+    const getData=async()=>{
+      const {data}  = await axios.get(
+        'http://localhost:5000/docs'
+      );
     
+      setCategories(data[0]);
+      setDocuments(data[1]);
+      console.log(documents[0])
+      console.log(categories[1][1])
+    };
+    getData();
   },[]);
-  // useEffect(()=>{
-  //   const getDocuments=async()=>{
-  //     const { data } = await axios.get(
-  //       '/docs'
-  //     );
-  //     setCategories(data);
-  //     console.log(data)
-  //   };
-  //   getDocuments();
-  // },[]);
   
   return (
   <div>    
-    <Form role="form" >
-    <center>
-    <h1>Documents </h1>
-    </center>
-    <Form.Group>              
-      <Col lg={6} md={6} sm={12} xs={12}>
-      <ListGroup variant="flush active" active className='line mb-3 w-25 mt-3' 
-      value={categories}>
-        <ListGroup.Item action href='#1'>Health</ListGroup.Item>
-        <ListGroup.Item action href='#2'>Politics</ListGroup.Item>
-        <ListGroup.Item action href='#3'>Education</ListGroup.Item>
-        <ListGroup.Item action href='#4'>Law</ListGroup.Item>
-        <ListGroup.Item action href='#6'>Business</ListGroup.Item>
-        <ListGroup.Item action href='#5'>Entertainment</ListGroup.Item>
-        <ListGroup.Item action href='#7'>Sport</ListGroup.Item>
-        <ListGroup.Item action href='#8'>Genecral</ListGroup.Item>
-         {/* {categories&&categories.map((item)=>{
+  
+    {/* <center>
+    <h1 className='doc_title'>Documents </h1>
+    </center> */}
+    <Row>
+      
+      <Col lg={3} md={6} sm={10} xs={10} >
+      <ListGroup variant="flush active" flex-column align-items-start active className='line' 
+      value={categories} >
+         {categories.map((category_arr)=>{
           return(
-            <ListGroup.Item key={item.id} value={item.category} action href='#8'>{item.category}</ListGroup.Item>
-          )
-         })} */}
-      </ListGroup>  
-      </Col>       
-      </Form.Group>  
+             <ListGroup.Item  
+             action onClick={handleClick}
+             key={category_arr[0]} 
+             value={category_arr[0]} 
+             >{category_arr[1]}</ListGroup.Item>
+          // <div>{category_arr[1]}</div>
+            )
+         })}
          
-    </Form>
-    <div>
-      <DocumentCard />
-    </div>   
+      </ListGroup>  
+      
+      </Col> 
+      
+      <Col >
+      {/* <div className='doc_component'>
+      <DocumentCard /> 
+      </div> */}
+      <ListGroup variant="flush active" value={documents}>
+         {documents.map((documents_arr)=>{
+           
+          return(
+            <div >
+         
+             <ListGroup.Item 
+             role="tabpanel"
+             aria-labelledby={documents_arr[3]}
+             id={documents_arr[3]}
+             action href={documents_arr[2]}
+             >{documents_arr[1]}</ListGroup.Item>
+         
+          </div>
+            )
+         }
+        )}
+      </ListGroup>  
+      </Col>  
+      </Row>
+
     </div>  
   );
 };
-export default News;
+export default Documents;

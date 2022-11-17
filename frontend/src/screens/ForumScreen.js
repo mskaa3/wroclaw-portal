@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import ForumTopics from '../components/forumTopics';
+import ForumTopics from '../components/ForumTopics';
 
 
 const ForumScreen = () => {
