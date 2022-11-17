@@ -1,7 +1,13 @@
+/* eslint-disable prettier/prettier */
 import React from 'react';
+import Login from '../components/Login';
 
 const LoginScreen = () => {
-  return <div>LoginScreen</div>;
+  return (
+    <div>
+      <Login></Login>
+    </div>
+  );
 };
 
 export default LoginScreen;
