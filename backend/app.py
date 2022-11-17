@@ -6,7 +6,7 @@ from main import create_app
 
 
 app = create_app()
-# from app import routes
+from src.currency import currency_routes
 
 # data_loader()
 
