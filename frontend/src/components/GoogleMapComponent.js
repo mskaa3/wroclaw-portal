@@ -1,33 +1,41 @@
 import React from 'react';
-//import { Wrapper, Status } from '@googlemaps/react-wrapper';
-import { GoogleMap, LoadScript } from '@react-google-maps/api';
+import { Wrapper, Status } from '@googlemaps/react-wrapper';
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 
 const containerStyle = {
   width: '700px',
   height: '600px',
 };
 const center = {
-  lat: 49.5612723349586,
-  lng: 25.603162164347435,
+  lat: 51.1077,
+  lng: 17.0625,
 };
 
-const GoogleMapComponent = () => {
+const onLoad = (marker) => {
+  console.log('marker: ', marker);
+};
+
+const GoogleMapComponent = (props) => {
+  //console.log(props.pinCategories);
   return (
     <center>
-      {' '}
       <br /> <br />
       <div>
-        <LoadScript googleMapsApiKey="AIzaSyBr6cQlTB8LQ1Rwf9ZZqIFfc7vl-2gxduk">
+        <Wrapper apiKey="AIzaSyBr6cQlTB8LQ1Rwf9ZZqIFfc7vl-2gxduk">
           <GoogleMap
+            id="map1"
             mapContainerStyle={containerStyle}
             center={center}
             zoom={10}
           >
-            {/* Child components, such as markers, info windows, etc. */}
-            <></>
+            {props.markerList.map((pin) => {
+              if (props.pinCategories.includes(pin.cat))
+                return <Marker id={pin} position={pin.position} />;
+            })}
           </GoogleMap>
-        </LoadScript>
+        </Wrapper>
       </div>
+      <div></div>
     </center>
   );
 };
