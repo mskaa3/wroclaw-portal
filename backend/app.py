@@ -2,11 +2,13 @@
 from distutils.log import debug
 from main import create_app
 
+# from src.currency import currency_routes
+
 # from src.uni import data_loader
 
 
 app = create_app()
-from src.currency import currency_routes
+
 
 # data_loader()
 
