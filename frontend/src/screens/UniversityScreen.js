@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React from 'react';
 import UniversitySearch from '../components/uni/UniversitySearch';
 import UniversityResults from '../components/uni/UniversityResults';

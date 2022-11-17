@@ -1,6 +1,12 @@
-//import './App.css';
+/* eslint-disable prettier/prettier */
+import './css/App.css';
 import 'bootstrap/dist/css/bootstrap.css';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 //import axios from 'axios';
 import Header from './components/Header';
@@ -14,15 +20,22 @@ import MapScreen from './screens/MapScreen';
 import NewsScreen from './screens/NewsScreen';
 import QaScreen from './screens/QaScreen';
 import LoginScreen from './screens/LoginScreen';
+import HomeContentScreen from './screens/HomeContentScreen';
 import CourseScreen from './screens/CourseScreen';
 import ForumScreen2 from './screens/ForumScreen2';
 import { UnivercityProvider } from './context/uni/UnivercityContext';
 import TopicContainer from './components/forum/TopicContainer';
 import ThreadContainer from './components/forum/ThreadContainer';
 //import { useState, useEffect } from 'react';
+import { NewsContextProvider } from './NewsContext';
+import News from './components/News';
+import SignupScreen from './screens/SignupScreen';
+import HomeTextComponent from './components/HomeTextComponent';
 //import Univercity from './components/Univercity';
 
 //const API_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:5000';
+
+
 
 const App = () => {
   return (
