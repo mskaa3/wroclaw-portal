@@ -84,3 +84,17 @@ class ThreadDao:
     @staticmethod
     def get_threads_count(self, topic_id: int):
         return Thread.query.filter_by(topic_id=topic_id).count()
+
+    @staticmethod
+    def get_threads_by_topic(topic_id: int) -> List[Thread]:
+        """
+        Retrieve all the threads of one topic in the database by topic id.
+        :param topic_id: The unique identifier for a topic.
+        :return: The result of the query.
+        """
+
+        return (
+            Thread.query.filter_by(topic=topic_id)
+            .order_by(Thread.thread_created_at)
+            .all()
+        )

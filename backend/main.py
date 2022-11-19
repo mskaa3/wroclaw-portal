@@ -92,6 +92,13 @@ def create_app(config_class="config.DevConfig"):
             TopicIdApi,
             TopicNameApi,
             TopicsApi,
+            TopicsInfoApi,
+        )
+
+        from src.forum.routes.thread_routes import (
+            ThreadIdApi,
+            ThreadsApi,
+            ThreadsByTopicApi,
         )
 
         api.add_resource(VoivodeshipIdApi, "/voivodeships/<id>")
@@ -128,6 +135,11 @@ def create_app(config_class="config.DevConfig"):
         api.add_resource(TopicIdApi, "/forum/topics/<topic_id>")
         api.add_resource(TopicNameApi, "/forum/topics/name/<topic_name>")
         api.add_resource(TopicsApi, "/forum/topics")
+        api.add_resource(TopicsInfoApi, "/forum/topics/info")
+
+        api.add_resource(ThreadIdApi, "/forum/treads/<thread_id>")
+        api.add_resource(ThreadsApi, "/forum/topics")
+        api.add_resource(ThreadsByTopicApi, "/forum/topics/<topic_id>/threads")
 
         # from src.uni.models.uni_model import Uni
         # from src.uni.models.voivodeship_model import Voivodeship

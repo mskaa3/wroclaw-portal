@@ -1,5 +1,5 @@
-"""Topic routes in the WroclawPortal API.
-Used for retrieving, adding, updating, and deleting topics ."""
+"""Thread routes in the WroclawPortal API.
+Used for retrieving, adding, updating, and deleting threads ."""
 from flask_restful import Resource, fields, marshal_with
 from flask import Response, request
 from flask.json import jsonify
@@ -7,54 +7,55 @@ from src.forum.dao.topic_dao import TopicDao
 from src.forum.dao.thread_dao import ThreadDao
 
 # from flask_jwt_extended import jwt_required
-from src.forum.models.topic_model import (
-    Topic,
-    TopicSchema,
-    topic_schema,
-    topics_schema,
+from src.forum.models.thread_model import (
+    Thread,
+    ThreadSchema,
+    thread_schema,
+    threads_schema,
 )
 
 resource_fields = {
-    "topic_id": fields.Integer,
-    "topic_name": fields.String,
-    "description": fields.String,
-    "slug": fields.String,
+    "thread_id": fields.Integer,
+    "thread_name": fields.String,
+    "thread_content": fields.String,
+    "thread_created_at": fields.DateTime,
+    "thread_creator": fields.Integer,
 }
 
 
-class TopicIdApi(Resource):
+class ThreadIdApi(Resource):
     # parser = reqparse.RequestParser()
     # parser.add_argument(
     #    "price", type=float, required=True, help="This field cannot be left blank!"
     # )
 
-    def get(self, topic_id):
+    def get(self, thread_id):
         """
-        Get a single topic with a unique ID.
-        :param topic_id: The unique identifier for a topic.
+        Get a single thread with a unique ID.
+        :param thread_id: The unique identifier for a thread.
         :return: A response object for the GET API request.
         """
-        topic = TopicDao.get_topic_by_id(topic_id=topic_id)
+        thread = ThreadDao.get_thread_by_id(thread_id=thread_id)
 
-        if topic is None:
+        if thread is None:
             response = jsonify(
                 {
-                    "self": f"/topics/{topic_id}",
-                    "topic": None,
+                    "self": f"/threads/{thread_id}",
+                    "thread": None,
                     # "log": None,
-                    "error": "there is no topic with this identifier",
+                    "error": "there is no thread with this identifier",
                 }
             )
             response.status_code = 400
             return response
         else:
-            topic_dict: dict = Topic(topic).__dict__
+            thread_dict: dict = Thread(thread).__dict__
             # comment_dict["time"] = str(comment_dict["time"])
 
             response = jsonify(
                 {
-                    "self": f"/topics/{topic_id}",
-                    "topic": topic_dict,
+                    "self": f"/threads/{thread_id}",
+                    "thread": thread_dict,
                     # "log": f'/v2/logs/{comment_dict.get("log_id")}',
                 }
             )
@@ -65,45 +66,45 @@ class TopicIdApi(Resource):
         # voivodeship = Voivodeship.objects.get(id=id).to_json()
         # return Response(voivodeship, mimetype="application/json", status=200)
 
-    def put(self, topic_id):
+    def put(self, thread_id):
         """
-        Update an existing topic.
-        :param topic_id: The unique identifier for a topic.
+        Update an existing thread.
+        :param thread_id: The unique identifier for a thread.
         :return: A response object for the PUT API request.
         """
-        old_topic: Topic = TopicDao.get_topic_by_id(topic_id=topic_id)
+        old_thread: Thread = ThreadDao.get_thread_by_id(thread_id=thread_id)
 
-        if old_topic is None:
+        if old_thread is None:
             response = jsonify(
                 {
-                    "self": f"/topics/{topic_id}",
+                    "self": f"/threads/{thread_id}",
                     "updated": False,
-                    "topic": None,
-                    "error": "there is no existing topic with this id",
+                    "thread": None,
+                    "error": "there is no existing thread with this id",
                 }
             )
             # response.status_code = 400
             # return response
             return Response(response, mimetype="application/json", status=400)
 
-        topic_data: dict = request.get_json()
-        new_topic = Topic(topic_data)
+        thread_data: dict = request.get_json()
+        new_thread = Thread(thread_data)
 
-        if old_topic != new_topic:
+        if old_thread != new_thread:
 
-            is_updated = TopicDao.update_topic(topic=new_topic)
+            is_updated = ThreadDao.update_thread(thread=new_thread)
 
             if is_updated:
-                updated_topic: Topic = TopicDao.get_topic_by_id(
-                    topic_id=new_topic.topic_id
+                updated_thread: Thread = ThreadDao.get_thread_by_id(
+                    thread_id=new_thread.thread_id
                 )
-                updated_topic_dict: dict = Topic(updated_topic).__dict__
+                updated_thread_dict: dict = Thread(updated_thread).__dict__
 
                 response = jsonify(
                     {
-                        "self": f"/topics/{topic_id}",
+                        "self": f"/threads/{thread_id}",
                         "updated": True,
-                        "topic": updated_topic_dict,
+                        "thread": updated_thread_dict,
                     }
                 )
                 # response.status_code = 200
@@ -112,10 +113,10 @@ class TopicIdApi(Resource):
             else:
                 response = jsonify(
                     {
-                        "self": f"/topics/{topic_id}",
+                        "self": f"/threads/{thread_id}",
                         "updated": False,
-                        "topic": None,
-                        "error": "the topic failed to update",
+                        "thread": None,
+                        "error": "the thread failed to update",
                     }
                 )
                 # response.status_code = 500
@@ -124,10 +125,10 @@ class TopicIdApi(Resource):
         else:
             response = jsonify(
                 {
-                    "self": f"/topics/{topic_id}",
+                    "self": f"/threads/{thread_id}",
                     "updated": False,
-                    "topic": None,
-                    "error": "the topic submitted is equal to the existing topic with the same id",
+                    "thread": None,
+                    "error": "the thread submitted is equal to the existing thread with the same id",
                 }
             )
             # response.status_code = 400
@@ -138,32 +139,32 @@ class TopicIdApi(Resource):
         # Voivodeship.objects.get(id=id).update(**body)
         # return "", 200
 
-    def delete(self, topic_id):
+    def delete(self, thread_id):
         """
-        Delete an existing topic.
-        :param topic_id: The unique identifier for a topic.
+        Delete an existing thread.
+        :param thread_id: The unique identifier for a thread.
         :return: A response object for the DELETE API request.
         """
-        existing_topic: Topic = TopicDao.get_topic_by_id(topic_id=topic_id)
+        existing_thread: Thread = ThreadDao.get_thread_by_id(thread_id=thread_id)
 
-        if existing_topic is None:
+        if existing_thread is None:
             response = jsonify(
                 {
-                    "self": f"/topics/{topic_id}",
+                    "self": f"/threads/{thread_id}",
                     "deleted": False,
-                    "error": "there is no existing topic with this id",
+                    "error": "there is no existing thread with this id",
                 }
             )
             # response.status_code = 400
             # return response
             return Response(response, mimetype="application/json", status=400)
 
-        is_deleted = TopicDao.delete_topic_by_id(topic_id=topic_id)
+        is_deleted = ThreadDao.delete_thread_by_id(thread_id=thread_id)
 
         if is_deleted:
             response = jsonify(
                 {
-                    "self": f"/topics/{topic_id}",
+                    "self": f"/threads/{thread_id}",
                     "deleted": True,
                 }
             )
@@ -173,9 +174,9 @@ class TopicIdApi(Resource):
         else:
             response = jsonify(
                 {
-                    "self": f"/topics/{topic_id}",
+                    "self": f"/threads/{thread_id}",
                     "deleted": False,
-                    "error": "failed to delete the topic",
+                    "error": "failed to delete the thread",
                 }
             )
             # response.status_code = 500
@@ -186,57 +187,18 @@ class TopicIdApi(Resource):
         # return "", 200
 
 
-class TopicNameApi(Resource):
-    # parser = reqparse.RequestParser()
-    # parser.add_argument(
-    #    "price", type=float, required=True, help="This field cannot be left blank!"
-    # )
-
-    # @jwt_required()
-    def get(self, name):
-        "get topic by name"
-        # voivodeship = Voivodeship.objects.get(name=name).to_json()
-        # if voivodeship:
-        #     return Response(voivodeship, mimetype="application/json", status=200)
-        # return {"message": "Uni not found"}, 404
-        topic = Topic.objects.get(name=name).to_json()
-        return Response(topic, mimetype="application/json", status=200)
-
-    def put(self, name):
-        # data = Uni.parser.parse_args()
-        # voivodeship = Voivodeship.objects.get(name=name)
-        # if voivodeship is None:
-        #    voivodeship = voivodeship(name, data["terc"])
-        # else:
-        #    voivodeship.terc = data["terc"]
-        # voivodeship.save_to_db()
-
-        body = request.get_json()
-        Topic.objects.get(name=name).update(**body)
-        return "", 200
-
-    def delete(self, name):
-        # voivodeship = Voivodeship.objects.get(name=name)
-        # if voivodeship:
-        #    voivodeship.delete()
-        # return {"message": "Uni deleted"}
-
-        topic = Topic.objects.get(name=name).delete()
-        return "", 200
-
-
-class TopicsApi(Resource):
+class ThreadsApi(Resource):
     # comments: list = CommentDao.get_comments()
     @marshal_with(resource_fields)
     def get(self):
         """
-        Get all the topics in the database.
+        Get all the threads in the database.
         :return: A response object for the GET API request.
         """
         print("in routes///////////////////")
-        topics: list = TopicDao.get_topics()
+        threads: list = ThreadDao.get_threads()
 
-        return topics
+        return threads
         """
         if disciplines is None:
             response = jsonify(
@@ -281,35 +243,35 @@ class TopicsApi(Resource):
 
         # return uni.json(), 201
         """
-        Create a new discipline.
+        Create a new thread.
         :return: A response object for the POST API request.
         """
-        topic_data: dict = request.get_json()
+        thread_data: dict = request.get_json()
 
-        if topic_data is None:
+        if thread_data is None:
             response = jsonify(
                 {
-                    "self": f"/topics",
+                    "self": f"/threads",
                     "added": False,
-                    "topic": None,
+                    "thread": None,
                     "error": "the request body isn't populated",
                 }
             )
             response.status_code = 400
             return response
-        topic_to_add = Topic(topic_data)
+        thread_to_add = Thread(thread_data)
 
-        topic_added_successfully: bool = TopicDao.add_topic(new_topic=topic_to_add)
+        thread_added_successfully: bool = ThreadDao.add_thread(new_thread=thread_to_add)
 
-        if topic_added_successfully:
-            topic_added = TopicDao.get_topic_by_id(topic_to_add.topic_id)
-            topic_added_dict: dict = Topic(topic_added).__dict__
+        if thread_added_successfully:
+            thread_added = ThreadDao.get_thread_by_id(thread_to_add.thread_id)
+            thread_added_dict: dict = Thread(thread_added).__dict__
 
             response = jsonify(
                 {
-                    "self": "/topics",
+                    "self": "/threads",
                     "added": True,
-                    "topic": topic_added_dict,
+                    "thread": thread_added_dict,
                 }
             )
             response.status_code = 200
@@ -317,10 +279,10 @@ class TopicsApi(Resource):
         else:
             response = jsonify(
                 {
-                    "self": "/topics",
+                    "self": "/threads",
                     "added": False,
-                    "topic": None,
-                    "error": "failed to create a new topic",
+                    "thread": None,
+                    "error": "failed to create a new thread",
                 }
             )
             response.status_code = 500
@@ -332,49 +294,23 @@ class TopicsApi(Resource):
         # return {"id": str(id)}, 200
 
 
-class TopicsInfoApi(Resource):
-    thread_last_activity_fields = {
-        "thread_id": fields.Integer,
-        "thread_name": fields.String,
-        "activity_time": fields.DateTime,
-        "pinned": fields.Boolean,
-        "thread_creator_name": fields.String,
-    }
-
-    resource_fields = {
-        "topic_id": fields.Integer,
-        "topic_name": fields.String,
-        "description": fields.String,
-        "slug": fields.String,
-        "posts_count": fields.Integer,
-        "threads_count": fields.Integer,
-        # "last_activity": fields.Nested(thread_last_activity_fields),
-    }
-
-    topic_info = {}
+class ThreadsByTopicApi(Resource):
 
     # def get_posts_count(self, obj):
     #    return PostDao.objects.filter(thread__forum=obj).count()
 
     @marshal_with(resource_fields)
-    def get(self):
+    def get(self, topic_id: int):
         """
-        Get all the topics in the database.
+        Get all the threads by topic in the database.
         :return: A response object for the GET API request.
         """
         print("in routes///////////////////")
-        topic_info = {}
-        # topics: list = TopicDao.get_topics()
-        topics: list = TopicDao.get_topics_info()
-        print(type(topics))
-        print(topics)
-        # for topic in topics:
-        #    topic.add(555)
-        #    threads_count = ThreadDao.get_threads_count(topic.topic_id)
-        # topic_info["topic_id"] = threads_count
-        # topic_info["topic_id"] = topics(3)
 
-        print(type(topics))
-        res = topics_schema.dump(topics)
-        print(res)
-        return topics
+        threads: list = ThreadDao.get_threads_by_topic(topic_id)
+        print(type(threads))
+        print(threads)
+
+        # res = threads_schema.dump(threads)
+        # print(res)
+        return threads

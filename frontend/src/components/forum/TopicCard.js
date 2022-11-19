@@ -38,7 +38,7 @@ const TopicCard = ({ topic }) => {
         />
         <div className="home-column">
           <div>
-            <Icon name={pinned ? 'pin' : 'talk outline'} />
+            <Icon name={pinned ? 'pin' : 'comment alternate outline'} />
             <Link to={`/thread/${thread_id}`}>{thread_name}</Link>
           </div>
           <div className="home-meta">

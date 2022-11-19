@@ -1,5 +1,5 @@
-import React from 'react';
-
+import React, { useParams, useEffect, useState } from 'react';
+import axios from 'axios';
 import TopicThreadList from './TopicThreadList';
 import NewThread from './NewThread';
 
@@ -13,43 +13,57 @@ import './style.css';
 //} from '../../actions';
 
 const TopicContainer = (props) => {
-  const {
-    isLoading,
-    name,
-    slug,
-    description,
-    threads,
-    error,
-    isAuthenticated,
-    newThreadLoading,
-    newThreadSuccess,
-    newThreadName,
-    newThreadContent,
-    newThreadId,
-    newThreadError,
-    newThreadShow,
-    createThread,
-    createThreadSave,
-    createThreadToggle,
-  } = this.props;
+  const { topic_id } = useParams();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [threads, setThreads] = useState(null);
+  const [topic, setTopic] = useState(null);
+
+  useEffect(() => {
+    const fetchTopic = async () => {
+      const { data } = await axios.get(
+        `http://127.0.0.1:5000/forum/topics/${topic_id}`
+      );
+
+      setTopic(data);
+    };
+
+    fetchTopic();
+  }, []);
+
+  useEffect(() => {
+    const fetchThreads = async () => {
+      const { data } = await axios.get(
+        `http://127.0.0.1:5000/forum/topics/${topic_id}/threads`
+      );
+
+      setThreads(data);
+    };
+
+    fetchThreads();
+  }, []);
+  //const {
+  //  isLoading,
+  //  name,
+  //  slug,
+  //  description,
+  //  threads,
+  //  error,
+  //isAuthenticated,
+  //newThreadLoading,
+  //newThreadSuccess,
+  //newThreadName,
+  //newThreadContent,
+  //newThreadId,
+  //newThreadError,
+  //newThreadShow,
+  //createThread,
+  //createThreadSave,
+  //createThreadToggle,
+  //} = this.props;
 
   return (
     <div>
-      <NewThread
-        forum={slug}
-        isAuthenticated={isAuthenticated}
-        isLoading={newThreadLoading}
-        success={newThreadSuccess}
-        name={newThreadName}
-        content={newThreadContent}
-        id={newThreadId}
-        error={newThreadError}
-        showEditor={newThreadShow}
-        createThread={createThread}
-        updateNewThread={createThreadSave}
-        toggleShowEditor={createThreadToggle}
-        maxLength={2000}
-      />
       <TopicThreadList
         isLoading={isLoading}
         name={name}
@@ -110,3 +124,20 @@ createThreadToggle: () => {
 },
 });
 */
+
+/*<NewThread
+        forum={slug}
+        isAuthenticated={isAuthenticated}
+        isLoading={newThreadLoading}
+        success={newThreadSuccess}
+        name={newThreadName}
+        content={newThreadContent}
+        id={newThreadId}
+        error={newThreadError}
+        showEditor={newThreadShow}
+        createThread={createThread}
+        updateNewThread={createThreadSave}
+        toggleShowEditor={createThreadToggle}
+        maxLength={2000}
+      />
+      */
