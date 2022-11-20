@@ -19,6 +19,8 @@ class Thread(db.Base):
     thread_creator = Column(Integer, ForeignKey("users.user_id"))
     pinned = Column(Boolean, default=False)
 
+    posts = relationship("Post", backref="posts")
+
     def __init__(self, thread: dict):
         # self.uni_id = uni.get("uni_id")
         self.thread_name = thread.get("thread_name")

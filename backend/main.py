@@ -1,5 +1,5 @@
 """Flask app factory"""
-from flask import Flask
+from flask import Flask, make_response
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask_migrate import Migrate
@@ -137,12 +137,9 @@ def create_app(config_class="config.DevConfig"):
         api.add_resource(TopicsApi, "/forum/topics")
         api.add_resource(TopicsInfoApi, "/forum/topics/info")
 
-        api.add_resource(ThreadIdApi, "/forum/treads/<thread_id>")
-        api.add_resource(ThreadsApi, "/forum/topics")
+        api.add_resource(ThreadIdApi, "/forum/threads/<thread_id>")
+        api.add_resource(ThreadsApi, "/forum/threads")
         api.add_resource(ThreadsByTopicApi, "/forum/topics/<topic_id>/threads")
-
-        # from src.uni.models.uni_model import Uni
-        # from src.uni.models.voivodeship_model import Voivodeship
 
         # db.create_all()
         print("db=====================================================")

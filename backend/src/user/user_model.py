@@ -10,7 +10,7 @@ class User(db.Base):
     __tablename__ = "users"
 
     user_id = Column(Integer, primary_key=True)
-    user_name = Column(String(100), nullable=False)
+    user_name = Column(String(100), nullable=False, unique=True)
     user_email = Column(String(64), unique=True, nullable=False)
     password = Column(String(100), nullable=False)
     # created_on=Column(DateTime(timezone=True), server_default=func.now())

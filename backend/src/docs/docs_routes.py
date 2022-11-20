@@ -1,5 +1,5 @@
 import sqlite3
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, Response
 from googletrans import Translator
 from model.retriever import Retriever
 from model.reader import Reader
@@ -28,6 +28,7 @@ def qa():
                 ctx = con
         print(ctx)
         return jsonify(best_answer)
+        # return Response(jsonify(best_answer), mimetype="application/json", status=200)
 
 
 @docs_routes.route("/")

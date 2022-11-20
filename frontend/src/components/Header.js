@@ -41,10 +41,6 @@ const Header = ({ title }) => {
                 <i className="fa-solid fa-message"></i> Forum
               </Nav.Link>
 
-              <Nav.Link as={Link} to="/forum2">
-                <i className="fa-solid fa-message"></i> Forum2
-              </Nav.Link>
-
               <Nav.Link as={Link} to="/docs">
                 <i className="fa-solid fa-file-invoice"></i> Documents
               </Nav.Link>

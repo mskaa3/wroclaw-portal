@@ -13,6 +13,7 @@ function QAform() {
     const query = { question };
     setIsPending(true);
     console.log(query);
+
     fetch('http://localhost:5000/qa', {
       method: 'POST',
       headers: { 'Content-type': 'application/json' },
@@ -32,6 +33,7 @@ function QAform() {
     // .then(res=>setAnswer(res))
     // .then(setIsPending(false));
   };
+
   return (
     <div className="QaComponents">
       <Form

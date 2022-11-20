@@ -22,6 +22,8 @@ class Config:
     OIDC_CALLBACK_ROUTE = "/oidc/callback"
     OIDC_SCOPES = ["openid", "email", "profile"]
 
+    CORS_HEADERS = "Content-Type"
+
 
 class ProdConfig(Config):
     """production specific configuration"""

@@ -27,7 +27,7 @@ class TopicIdApi(Resource):
     # parser.add_argument(
     #    "price", type=float, required=True, help="This field cannot be left blank!"
     # )
-
+    @marshal_with(resource_fields)
     def get(self, topic_id):
         """
         Get a single topic with a unique ID.
@@ -36,6 +36,9 @@ class TopicIdApi(Resource):
         """
         topic = TopicDao.get_topic_by_id(topic_id=topic_id)
 
+        print(topic)
+        return topic
+        """
         if topic is None:
             response = jsonify(
                 {
@@ -61,9 +64,7 @@ class TopicIdApi(Resource):
             # response.status_code = 200
             # return response
             return Response(response, mimetype="application/json", status=200)
-
-        # voivodeship = Voivodeship.objects.get(id=id).to_json()
-        # return Response(voivodeship, mimetype="application/json", status=200)
+        """
 
     def put(self, topic_id):
         """

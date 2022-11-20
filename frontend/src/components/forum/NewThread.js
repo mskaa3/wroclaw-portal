@@ -194,7 +194,7 @@ export default class NewThread extends Component {
           <div className="newThread-hidden">
             <Button
               size="small"
-              color="blue"
+              className="btn-custom"
               floated="left"
               onClick={this.toggleShowEditor}
             >
@@ -235,7 +235,7 @@ export default class NewThread extends Component {
             handlePastedText={this.handlePastedText}
           />
           <Button
-            color="blue"
+            color="#69a3ff"
             size="small"
             loading={isLoading}
             disabled={isLoading}

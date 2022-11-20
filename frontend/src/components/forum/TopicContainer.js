@@ -1,4 +1,5 @@
-import React, { useParams, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import TopicThreadList from './TopicThreadList';
 import NewThread from './NewThread';
@@ -14,34 +15,47 @@ import './style.css';
 
 const TopicContainer = (props) => {
   const { topic_id } = useParams();
+  console.log(topic_id);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [threads, setThreads] = useState(null);
   const [topic, setTopic] = useState(null);
+
+  const [newThreadState, setNewThreadState] = useState({
+    newThreadLoading: false,
+    newThreadSuccess: false,
+    newThreadName: '',
+    newThreadContent: '',
+    newThreadId: null,
+    newThreadError: null,
+    newThreadShow: false,
+  });
 
   useEffect(() => {
     const fetchTopic = async () => {
       const { data } = await axios.get(
         `http://127.0.0.1:5000/forum/topics/${topic_id}`
       );
-
+      console.log('topic data');
+      console.log(data);
       setTopic(data);
     };
 
     fetchTopic();
-  }, []);
+  }, [topic_id]);
 
   useEffect(() => {
     const fetchThreads = async () => {
       const { data } = await axios.get(
         `http://127.0.0.1:5000/forum/topics/${topic_id}/threads`
       );
-
+      console.log('threads data');
+      console.log(data);
       setThreads(data);
     };
 
     fetchThreads();
-  }, []);
+  }, [topic_id]);
   //const {
   //  isLoading,
   //  name,
@@ -54,7 +68,7 @@ const TopicContainer = (props) => {
   //newThreadSuccess,
   //newThreadName,
   //newThreadContent,
-  //newThreadId,
+  // newThreadId,
   //newThreadError,
   //newThreadShow,
   //createThread,
@@ -62,15 +76,37 @@ const TopicContainer = (props) => {
   //createThreadToggle,
   //} = this.props;
 
+  //const { topic_name, slug, description } = topic;
+
+  const isAuthenticated = () => {};
+
+  const createThread = (newThread) => {};
+
+  const createThreadSave = (newThread) => {};
+
+  const createThreadToggle = () => {};
   return (
     <div>
+      <NewThread
+        topic={topic_id}
+        isAuthenticated={isAuthenticated}
+        isLoading={newThreadState.newThreadLoading}
+        success={newThreadState.newThreadSuccess}
+        name={newThreadState.newThreadName}
+        content={newThreadState.newThreadContent}
+        id={newThreadState.newThreadId}
+        error={newThreadState.newThreadError}
+        showEditor={newThreadState.newThreadShow}
+        createThread={createThread}
+        updateNewThread={createThreadSave}
+        toggleShowEditor={createThreadToggle}
+        maxLength={2000}
+      />
       <TopicThreadList
         isLoading={isLoading}
-        name={name}
-        slug={slug}
-        description={description}
         threads={threads}
         error={error}
+        topic={topic}
       />
     </div>
   );

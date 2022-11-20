@@ -15,7 +15,7 @@ import './style.css';
 //import NewThread from '../../components/newthread';
 import BaseThread from './BaseThread';
 
-const TopicThreadList = ({ isLoading, error, threads }) => {
+const TopicThreadList = ({ isLoading, error, threads, topic }) => {
   //const {isLoading, error, threads} = this.props;
 
   if (error || !threads || isLoading || threads.length === 0) {
@@ -38,7 +38,7 @@ const TopicThreadList = ({ isLoading, error, threads }) => {
     <div className="forumContainer">
       <Segment.Group className="forum-list">
         {threads.map((thread) => {
-          return <BaseThread key={thread.id} thread={thread} />;
+          return <BaseThread key={thread.thread_id} thread={thread} />;
         })}
       </Segment.Group>
     </div>

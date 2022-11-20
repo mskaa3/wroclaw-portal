@@ -51,20 +51,18 @@ const App = () => {
               <Route exact path="/uni" element={<UniversityScreen />} />
               <Route exact path="/news" element={<NewsScreen />} />
               <Route exact path="/map" element={<MapScreen />} />
-              <Route exact path="/forum" element={<ForumScreen />} />
+              <Route exact path="/forum" element={<ForumScreen2 />} />
               <Route exact path="/docs" element={<DocumentsScreen />} />
               <Route exact path="/qa" element={<QaScreen />} />
               <Route exact path="/login" element={<LoginScreen />} />
               <Route exact path="/courses/uni/:id" element={<CourseScreen />} />
-              <Route exact path="/forum2" element={<ForumScreen2 />} />
+              
               <Route
-                exact
-                path="forum/topics/:id"
+                exact path="/forum/topics/:topic_id"
                 element={<TopicContainer />}
               />
               <Route
-                exact
-                path="/thread/:thread"
+                exact path="/threads/:thread_id"
                 element={<ThreadContainer />}
               />
             </Routes>

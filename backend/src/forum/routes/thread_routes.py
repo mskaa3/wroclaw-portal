@@ -20,6 +20,8 @@ resource_fields = {
     "thread_content": fields.String,
     "thread_created_at": fields.DateTime,
     "thread_creator": fields.Integer,
+    "topic": fields.Integer,
+    "pinned": fields.String,
 }
 
 
@@ -28,7 +30,7 @@ class ThreadIdApi(Resource):
     # parser.add_argument(
     #    "price", type=float, required=True, help="This field cannot be left blank!"
     # )
-
+    @marshal_with(resource_fields)
     def get(self, thread_id):
         """
         Get a single thread with a unique ID.
@@ -37,6 +39,9 @@ class ThreadIdApi(Resource):
         """
         thread = ThreadDao.get_thread_by_id(thread_id=thread_id)
 
+        print(thread)
+        return thread
+        """
         if thread is None:
             response = jsonify(
                 {
@@ -62,9 +67,7 @@ class ThreadIdApi(Resource):
             # response.status_code = 200
             # return response
             return Response(response, mimetype="application/json", status=200)
-
-        # voivodeship = Voivodeship.objects.get(id=id).to_json()
-        # return Response(voivodeship, mimetype="application/json", status=200)
+        """
 
     def put(self, thread_id):
         """
@@ -299,6 +302,31 @@ class ThreadsByTopicApi(Resource):
     # def get_posts_count(self, obj):
     #    return PostDao.objects.filter(thread__forum=obj).count()
 
+    thread_last_activity_fields = {
+        "thread": fields.Integer,
+        # "thread_name": fields.String,
+        # "activity_time": fields.DateTime,
+        # "pinned": fields.Boolean,
+        "post_creator_name": fields.String,
+    }
+
+    resource_fields = {
+        "thread_id": fields.Integer,
+        "thread_name": fields.String,
+        "thread_content": fields.String,
+        "thread_created_at": fields.String,
+        "thread_creator_name": fields.String,
+        "post_count": fields.Integer,
+        # "last_activity": fields.Nested(thread_last_activity_fields),
+        "last_activity": {
+            "thread_id": fields.Integer,
+            "thread_name": fields.String,
+            "post_created_at": fields.String,
+            "post_creator_name": fields.String,
+            "pinned": fields.String,
+        },
+    }
+
     @marshal_with(resource_fields)
     def get(self, topic_id: int):
         """
@@ -310,6 +338,8 @@ class ThreadsByTopicApi(Resource):
         threads: list = ThreadDao.get_threads_by_topic(topic_id)
         print(type(threads))
         print(threads)
+        for thread in threads:
+            print(thread)
 
         # res = threads_schema.dump(threads)
         # print(res)
