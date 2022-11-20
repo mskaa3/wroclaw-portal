@@ -57,6 +57,7 @@ const App = () => {
               <Route exact path="/login" element={<LoginScreen />} />
               <Route exact path="/courses/uni/:id" element={<CourseScreen />} />
               <Route exact path="/forum2" element={<ForumScreen2 />} />
+              <Route exact path="/" element={<HomeContentScreen />} />
               <Route
                 exact
                 path="forum/topics/:id"

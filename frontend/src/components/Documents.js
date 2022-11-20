@@ -4,7 +4,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import {Col,Row} from 'react-bootstrap'
 import DocumentCard from '../components/DocumentCard';
 import axios from 'axios';
-import '..\\frontend\\src\\css\\doc_component.css';
+// import '..\\frontend\\src\\css\\doc_component.css';
 
 const Documents = () => {
   const [categories,setCategories]=useState([]);

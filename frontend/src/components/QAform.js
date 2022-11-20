@@ -13,7 +13,7 @@ function QAform() {
     const query = { question };
     setIsPending(true);
     console.log(query);
-    fetch('http://localhost:5000/qa', {
+    fetch('http://127.0.0.1:5000/qa', {
       method: 'POST',
       headers: { 'Content-type': 'application/json' },
       body: JSON.stringify(query),
