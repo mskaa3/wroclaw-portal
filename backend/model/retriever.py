@@ -10,7 +10,6 @@ import pickle
 
 dirname = ".\\backend\\model\\docs\\"
 ext = "txt"
-threshold = 250
 
 embed_path_dir=os.path.dirname(os.path.realpath(__file__))
 embed_path=os.path.join(embed_path_dir, "embeddings.pkl")
