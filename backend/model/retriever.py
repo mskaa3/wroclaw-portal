@@ -12,6 +12,8 @@ dirname = ".\\backend\\model\\docs\\"
 ext = "txt"
 threshold = 250
 
+embed_path_dir=os.path.dirname(os.path.realpath(__file__))
+embed_path=os.path.join(embed_path_dir, "embeddings.pkl")
 
 class Retriever:
     def __init__(self):
@@ -39,7 +41,7 @@ class Retriever:
                 continue
             self.paragraphs = content_divided
             embeddings = self.model.encode(content_divided)
-            with open(".\\backend\\model\\embeddings.pkl", "wb") as fOut:
+            with open(embed_path, "wb") as fOut:
                 pickle.dump(
                     {"sentences": content_divided, "embeddings": embeddings},
                     fOut,
@@ -50,7 +52,7 @@ class Retriever:
 
     def retrieve_docs(self, query):
 
-        with open(".\\backend\\model\\embeddings.pkl", "rb") as fIn:
+        with open(embed_path, "rb") as fIn:
             stored_data = pickle.load(fIn)
             content = stored_data["sentences"]
             embeddings = stored_data["embeddings"]

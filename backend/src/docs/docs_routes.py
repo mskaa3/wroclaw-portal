@@ -1,13 +1,10 @@
 import sqlite3
 from flask import Blueprint, request, jsonify
-from googletrans import Translator
-from model.retriever import Retriever
-from model.reader import Reader
 
 docs_routes = Blueprint("docs_routes", __name__)
 
 
-@docs_routes.route("/docs")
+@docs_routes.route("/docs",methods=['GET'])
 def docs():
     with sqlite3.connect("docs_db.db") as conn:
         try:

@@ -10,7 +10,7 @@ import connexion
 from src.uni.data_loader import fill_tables
 from src.forum.forum_sample_data import fill_forum_tables
 from database import Database
-
+from flask import make_response
 import sqlite3
 from googletrans import Translator
 
@@ -157,10 +157,9 @@ def create_app(config_class="config.DevConfig"):
     from src.docs.docs_routes import docs_routes
     from src.qa.qa_routes import qa_routes
     app.register_blueprint(currency_routes)
-    app.register_blueprint(docs_routes, url_prefix="/docs")
-    app.register_blueprint(qa_routes, url_prefix="/qa")
+    app.register_blueprint(docs_routes)
+    app.register_blueprint(qa_routes)
     return app
-
 
 # @app.before_first_request
 # @with_appcontext
@@ -224,3 +223,4 @@ def logout():
     return redirect(url_for(".index"))
 
 """
+
