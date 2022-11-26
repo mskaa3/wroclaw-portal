@@ -17,3 +17,9 @@ instance/
 .webassets-cache
 db.sqlite3
 *.sqbpro
+
+.cache/
+instance/
+.webassets-cache
+db.sqlite3
+*.sqbpro
