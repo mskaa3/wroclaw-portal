@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="D:/StudyProjects/wroclaw-portal/backend/wp.db" readonly="0" foreign_keys="" case_sensitive_like="" temp_store="" wal_autocheckpoint="" synchronous=""/><attached/><window><main_tabs open="browser pragmas structure query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="125"/><column_width id="3" width="5165"/><column_width id="4" width="0"/></tab_structure><tab_browse><current_table name="0,0:"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1">select  * from unis 
+join 
+studies
+on uni_uid=studies.institutions 
+join
+(select * from studies_study_disciplines
+JOIN
+study_disciplines
+on studies_study_disciplines.study_discipline_id_joint=study_disciplines.study_discipline_id) as st
+on study_uid=st.study_id_joint
+where study_discipline_name='informatyka'
+
+
+
+select institution, uni_uid from courses
+left join unis
+on uni_uid=institution
+
+
+
+select * from studies_study_disciplines
+JOIN
+study_disciplines
+on studies_study_disciplines.study_discipline_id_joint=study_disciplines.study_discipline_id
+join studies
+on study_discipline_id_joint=study_id
+left join  unis
+on uni_uid=institutions
+where study_discipline_name='informatyka'
+
+select uni_id,uni_uid,uni_name,www,phone_number,uni_email,city,building,postal_code,course_uid,course_name,course_isced_name,course_level_id,course_level_name,course_title_id,course_title_name,course_form_id,course_form_name,course_language_id,course_language_name from unis
+join 
+(select * from courses
+join course_levels on course_level_id=level
+join course_titles on course_title_id=title
+join course_forms on course_form_id=form
+join course_languages on course_language_id=language) as c
+on uni_uid=institution
+
+select distinct course_id,course_name,title,form,language, semesters_number,ects,main_discipline,uni_id,uni_uid,uni_name,kind,www,phone_number,uni_email,city,street,building,postal_code 
+from courses
+join courses_disciplines
+on courses.course_id=courses_disciplines.course_id_joint
+join disciplines
+on discipline_id=courses_disciplines.discipline_id_joint
+join unis
+on uni_uid=institution
+where main_discipline='DS010601N' and courses.level=2 and city='Wrocław'
+group by uni_id
+
+</sql><current_tab id="0"/></tab_sql></sqlb_project>

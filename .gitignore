@@ -1,5 +1,6 @@
 # misc
 .DS_Store
+.env
 .env.local
 .env.development.local
 .env.test.local
@@ -17,3 +18,8 @@ instance/
 db.sqlite3
 *.sqbpro
 
+.cache/
+instance/
+.webassets-cache
+db.sqlite3
+*.sqbpro
