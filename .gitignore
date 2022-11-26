@@ -5,4 +5,15 @@
 .env.test.local
 .env.production.local
 
+__pycache__/
+__pycache__
+.venv/
+backend/.venv/
+*.pyc
+
+.cache/
+instance/
+.webassets-cache
+db.sqlite3
+*.sqbpro
 
