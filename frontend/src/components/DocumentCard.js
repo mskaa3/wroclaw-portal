@@ -4,13 +4,15 @@ import Form from 'react-bootstrap/Form';
 import ListGroup from 'react-bootstrap/ListGroup';
 import {Col} from 'react-bootstrap'
 import DocumentCard from '../components/DocumentCard';
+import Card from 'react-bootstrap/Card';
 
 const fun = () => {
   return (
   <div>    
- 
-    <h1>component</h1>
-    
+
+    <Card>
+      <Card.Body>This is some text within a card body.</Card.Body>
+    </Card>
     </div>  
   );
 };

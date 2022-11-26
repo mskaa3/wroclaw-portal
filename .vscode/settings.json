@@ -20,9 +20,19 @@
     "python.linting.pycodestyleArgs": [
         "--max-line-length=88"
     ],
+    "python.linting.pylintArgs": [
+        "--load-plugins",
+        "pylint_flask_sqlalchemy",
+        "pylint-flask",
+        "--init-hook"
+    ],
     "python.formatting.provider": "black",
     "[python]": {
         "editor.formatOnSave": true
-    }
+    },
+    "python.analysis.extraPaths": [
+        "./backend/src/currency"
+    ]
+   
     
 }

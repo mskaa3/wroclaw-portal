@@ -1,15 +1,10 @@
-import 'C:/7SEMESTER/wroclaw-portal/frontend/src/css/Currency.css';
-
-import { useEffect, useState } from 'react';
+/* eslint-disable prettier/prettier */
+import React,{ useEffect, useState } from 'react';
 import Axios from 'axios';
-import React from 'react';
-import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Dropdown from 'react-dropdown';
-//import Dropdown from 'react-bootstrap/Dropdown';
 
 import '../css/Currency.css';
-//import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 
 function CurrencyCalculator() {
