@@ -29,8 +29,14 @@ const GoogleMapComponent = (props) => {
             zoom={10}
           >
             {props.markerList.map((pin) => {
-              if (props.pinCategories.includes(pin.cat))
-                return <Marker id={pin} position={pin.position} />;
+              if (props.pinCategories.includes(pin.cat.key))
+                return (
+                  <Marker
+                    id={pin}
+                    position={pin.position}
+                    icon={pin.cat.icon}
+                  />
+                );
             })}
           </GoogleMap>
         </Wrapper>

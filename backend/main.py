@@ -70,7 +70,7 @@ def hello():
     "function for initial testing"
     return "Hello from Wroclaw Portal"
 
-@app.route("/currency", methods=["GET", "POST"])
+@app.route("/currency", methods=["GET"])
 def currency_table():
     URL = "https://m.centkantor.pl/"
     page = requests.get(URL)
@@ -98,10 +98,6 @@ def currency_table():
     soup2 = BeautifulSoup(page2.content, "html.parser")
     soup3 = BeautifulSoup(page3.content, "html.parser")
 
-
-    results = soup.find(id="ex_table")
-    results2 = soup2.find_all("table")
-    results3 = soup3.find_all("table")
     currencies_names = soup.find_all("td", class_="c_symbol")
     currencies_buy = soup.find_all("td", class_= "c_buy")
     currencies_sell = soup.find_all("td", class_= "c_sell")

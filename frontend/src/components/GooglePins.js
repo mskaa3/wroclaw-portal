@@ -19,7 +19,7 @@ const GooglePins = (props) => {
       <h1>Markers</h1>
 
       {Object.entries(props.pinCategories).map((entry) => {
-        //console.log(entry);
+        console.log(entry[1].key);
         return (
           <div>
             <input

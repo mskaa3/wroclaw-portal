@@ -4,19 +4,27 @@ import GooglePins from '../components/GooglePins';
 import { useState, useEffect } from 'react';
 
 const pinCategories = {
-  uni: { key: 'uni', name: 'Universities' },
+  uni: {
+    key: 'uni',
+    name: 'Universities',
+    icon: 'http://maps.gstatic.com/mapfiles/ms2/micons/red.png',
+  },
   gov: {
     key: 'gov',
     name: 'Governmental buildings',
-    icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+    icon: 'http://maps.gstatic.com/mapfiles/ms2/micons/lightblue.png',
   },
-  dorm: { key: 'dorm', name: 'Dormentories' },
+  dorm: {
+    key: 'dorm',
+    name: 'Dormentories',
+    icon: 'http://maps.gstatic.com/mapfiles/ms2/micons/purple.png',
+  },
 };
 
 const pinData = [
   {
     id: 'pwrPosition',
-    cat: pinCategories.uni.key,
+    cat: pinCategories.dorm,
     position: {
       lat: 51.1077,
       lng: 17.0625,
@@ -24,7 +32,7 @@ const pinData = [
   },
   {
     id: 'uniOfWroclaw',
-    cat: pinCategories.uni.key,
+    cat: pinCategories.uni,
     position: {
       lat: 51.114,
       lng: 17.0345,
@@ -32,7 +40,7 @@ const pinData = [
   },
   {
     id: 'uniOfEconomics',
-    cat: pinCategories.uni.key,
+    cat: pinCategories.uni,
     position: {
       lat: 51.0901,
       lng: 17.0278,
@@ -40,7 +48,7 @@ const pinData = [
   },
   {
     id: 'uniOfMedical',
-    cat: pinCategories.uni.key,
+    cat: pinCategories.uni,
     position: {
       lat: 51.1089,
       lng: 17.0689,
@@ -48,7 +56,7 @@ const pinData = [
   },
   {
     id: 'uniOfEnvironment',
-    cat: pinCategories.uni.key,
+    cat: pinCategories.uni,
     position: {
       lat: 51.1114,
       lng: 17.0643,
@@ -56,7 +64,7 @@ const pinData = [
   },
   {
     id: 'uniOfMilitary',
-    cat: pinCategories.uni.key,
+    cat: pinCategories.uni,
     position: {
       lat: 51.1501,
       lng: 17.0586,
@@ -64,7 +72,7 @@ const pinData = [
   },
   {
     id: 'uniOfArt',
-    cat: pinCategories.uni.key,
+    cat: pinCategories.uni,
     position: {
       lat: 51.11139,
       lng: 17.04361,
@@ -72,7 +80,7 @@ const pinData = [
   },
   {
     id: 'uniOfLogistics',
-    cat: pinCategories.uni.key,
+    cat: pinCategories.uni,
     position: {
       lat: 51.141261495243285,
       lng: 17.071594869314776,
@@ -80,7 +88,7 @@ const pinData = [
   },
   {
     id: 'uniOfFilology',
-    cat: pinCategories.uni.key,
+    cat: pinCategories.uni,
     position: {
       lat: 51.118106724596146,
       lng: 17.04895667616702,
@@ -88,7 +96,7 @@ const pinData = [
   },
   {
     id: 'uniOfMusic',
-    cat: pinCategories.uni.key,
+    cat: pinCategories.uni,
     position: {
       lat: 51.111224453329754,
       lng: 17.02138369445129,
@@ -96,7 +104,7 @@ const pinData = [
   },
   {
     id: 'wroclawMainHall',
-    cat: pinCategories.gov.key,
+    cat: pinCategories.gov,
     position: {
       lat: 51.109978082186494,
       lng: 17.04956507875505,
