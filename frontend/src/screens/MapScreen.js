@@ -1,6 +1,6 @@
 import React from 'react';
-import GoogleMapComponent from '../components/GoogleMapComponent';
-import GooglePins from '../components/GooglePins';
+import GoogleMapComponent from '../components/map/GoogleMapComponent';
+import GooglePins from '../components/map/GooglePins';
 import { useState, useEffect } from 'react';
 
 const pinCategories = {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import '../css/Currency.css';
+import '../../css/Currency.css';
 
 const CurrencyTable = () => {
   const [tablearray, setTableArray] = useState();

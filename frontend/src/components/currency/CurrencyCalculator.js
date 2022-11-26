@@ -4,7 +4,7 @@ import Axios from 'axios';
 import Form from 'react-bootstrap/Form';
 import Dropdown from 'react-dropdown';
 
-import '../css/Currency.css';
+import '../../css/Currency.css';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 
 function CurrencyCalculator() {

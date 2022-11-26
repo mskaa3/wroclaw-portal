@@ -1,6 +1,6 @@
 import React from 'react';
-import CurrencyCalculator from '../components/CurrencyCalculator';
-import CurrencyTable from '../components/CurrencyTable';
+import CurrencyCalculator from '../components/currency/CurrencyCalculator';
+import CurrencyTable from '../components/currency/CurrencyTable';
 
 const CurrencyScreen = () => {
   return (
