@@ -13,6 +13,15 @@ def docs():
             categories_data = cur.fetchall()
             cur.execute(f"SELECT * FROM documents")
             documents_data = cur.fetchall()
-            return jsonify(categories_data, documents_data)
+            documents_list=[]
+            for elem in documents_data:
+                elem_dict={ "id" : elem[0],
+                            "name":elem[1],
+                            "link":elem[2],
+                            "categoryID":elem[3]}
+                documents_list.append(elem_dict)           
+
+
+            return jsonify(categories_data, documents_list)
         except sqlite3.Error as er:
             return er

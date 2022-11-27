@@ -1,15 +1,17 @@
 /* eslint-disable prettier/prettier */
-import { useEffect, useState } from 'react';
+import { useEffect, useState ,useMemo} from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
+import Dropdown from 'react-bootstrap/Dropdown';
 import {Col,Row} from 'react-bootstrap'
 import DocumentCard from '../components/DocumentCard';
 import axios from 'axios';
-// import '..\\frontend\\src\\css\\doc_component.css';
+import 'C:\\Users\\Asus\\Documents\\GitHub\\wroclawportal\\wroclaw-portal\\frontend\\src\\css\\doc_component.css';
 
 const Documents = () => {
   const [categories,setCategories]=useState([]);
   const [documents,setDocuments]=useState([]);
   const [catID,setCatID]=useState();
+  // const [filteredDocs,setFilteredDocs]=useState([]);
   // useEffect(()=>{
   //   fetch("/docs").then(response=>{
   //       return response.json();
@@ -19,11 +21,25 @@ const Documents = () => {
   //     })
   // },[]);
   const handleClick=(e)=>{
+    setCatID( parseInt(e.target.value));
     console.log(catID);
-    setCatID(e.target.value);
-    console.log(catID);
+
+
+    
     
   };
+
+  function getFilteredList() {
+    if (!setCatID) {
+      return NaN;
+    }
+        
+    return documents.filter(doc=>doc.categoryID===catID);
+   
+  }
+  var filteredDocs = useMemo(getFilteredList, [catID, documents]);
+
+  
 
   useEffect(()=>{
     const getData=async()=>{
@@ -33,11 +49,11 @@ const Documents = () => {
     
       setCategories(data[0]);
       setDocuments(data[1]);
-      console.log(documents[0])
-      console.log(categories[1][1])
+      // console.log(documents[0])
+      
     };
     getData();
-  },[]);
+  },[categories,documents]);
   
   return (
   <div>    
@@ -48,45 +64,46 @@ const Documents = () => {
     <Row>
       
       <Col lg={3} md={6} sm={10} xs={10} >
+      <h2>Categories</h2>
       <ListGroup variant="flush active"  className='line flex-column align-items-start active' 
       value={categories} >
          {categories.map((category_arr)=>{
-          return(
+          return (
              <ListGroup.Item  
              action onClick={handleClick}
+             
              key={category_arr[0]} 
              value={category_arr[0]} 
              >{category_arr[1]}</ListGroup.Item>
-          // <div>{category_arr[1]}</div>
             )
          })}
-         
+
       </ListGroup>  
+
       
       </Col> 
       
       <Col >
-      {/* <div className='doc_component'>
-      <DocumentCard /> 
-      </div> */}
+      <div className='documents' >
       <ListGroup variant="flush active" value={documents}>
-         {documents.map((documents_arr)=>{
+         {filteredDocs.map((documents_arr)=>{
            
           return(
             <div >
          
              <ListGroup.Item 
              role="tabpanel"
-             aria-labelledby={documents_arr[3]}
-             id={documents_arr[3]}
-             action href={documents_arr[2]}
-             >{documents_arr[1]}</ListGroup.Item>
+             key={documents_arr.id}
+             id={documents_arr.id}
+             action href={documents_arr.link}
+             >{documents_arr.name}</ListGroup.Item>
          
           </div>
             )
          }
         )}
-      </ListGroup>  
+      </ListGroup> 
+      </div> 
       </Col>  
       </Row>
 
