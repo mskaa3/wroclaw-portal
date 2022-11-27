@@ -1,15 +1,20 @@
+/* eslint-disable prettier/prettier */
 import Button from 'react-bootstrap/Button';
 import React from 'react';
 import Form from 'react-bootstrap/Form';
 import { useState } from 'react';
-import axios from 'axios';
+import ListGroup from 'react-bootstrap/ListGroup';
+import 'C:\\Users\\Asus\\Documents\\GitHub\\wroclawportal\\wroclaw-portal\\frontend\\src\\css\\qa.css'
+import Card from 'react-bootstrap/Card';
+
+
+
 function QAform() {
   const [question, setQuestion] = useState('');
-  const [answer, setAnswer] = useState('Some answer');
+  const [answers, setAnswers] = useState([]);
   const [isPending, setIsPending] = useState(false);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setAnswer('');
     const query = { question };
     setIsPending(true);
     console.log(query);
@@ -19,18 +24,14 @@ function QAform() {
       body: JSON.stringify(query),
     })
       .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setAnswer(data);
-        console.log(answer);
+                                                                        
+       response.json().then((data)=>{
+        console.log(data);
+        setAnswers(data);
         setIsPending(false);
-      });
+       })
+      })
 
-    // .then(res => res.json())
-    // .then(res => console.log(res))
-    // .then(res=>setAnswer(res))
-    // .then(setIsPending(false));
   };
   return (
     <div className="QaComponents">
@@ -43,9 +44,9 @@ function QAform() {
         <center>
           <div className="col-sm-6">
             <Form.Group className="mb-3" controlId="question">
-              <Form.Label>
+              <h3>
                 Have any questions? We will try to answer them!
-              </Form.Label>
+              </h3>
               <Form.Control
                 type="question"
                 placeholder="Type your question..."
@@ -67,15 +68,33 @@ function QAform() {
           )}
         </center>
       </Form>
-      <center>
-        <div className="qa-answer">
-          <p value={answer}>
-            {' '}
-            <br /> <br />
-            {answer}
-          </p>{' '}
+      
+
+        <div className='answers-component'>
+      <ListGroup>
+     {answers.map((answ)=>{
+           
+           return(
+             <div className='single-answer'>
+          
+          <Card key={answ.id}>
+          <Card.Body>
+           <Card.Title>{answ.answer}</Card.Title>
+            <Card.Text>
+          ...{answ.context}...
+            </Card.Text>
+            <Card.Link href={answ.link}>Read more...</Card.Link>
+            
+      </Card.Body>
+     </Card>
+          
+           </div>
+             )
+          }
+         )}
+          </ListGroup> 
         </div>
-      </center>
+
     </div>
   );
 }

@@ -22,29 +22,39 @@ def qa():
         for num, i in enumerate(results):
             answers[num] = reader.answer_question(query, i)
         
-        final_results={}
+        final_results=[]
         for answer,result,link in zip(answers,results,links):
             answ=answers[answer]['answer']
             score=answers[answer]['score']
             context=result
             ln=link
-            res=Result(answ,context,ln,score)
-            final_results[answer]=res
-        sorted_final=['','','']
+            elem_dict={ "answer" : answ,
+                            "score":score,
+                            "context":context,
+                            "link":ln}
+            final_results.append(elem_dict)
+            # res=Result(answ,context,ln,score)
+            # final_results[answer]=res
+        
         highest=0
         for elem in final_results:
-            print(final_results[elem].result_as_dict())
+            if elem["score"]>highest:
+                 best=elem
+                 highest=elem["score"]
+        final_results.pop(final_results.index(best))  
+        highest=0
+        for elem in final_results:
+            if elem["score"]>highest:
+                 second=elem
+                 highest=elem["score"]
+        final_results.pop(final_results.index(second))  
+        sorted_final=[best,second,final_results[0]]
+
         et = time.time()
         elapsed_time = et - st
         print('Execution time:', elapsed_time, 'seconds')
-        # for num,elem in enumerate(final_results):
-        #     if final_results[num].score>highest:
-        #         sorted_final[2]=sorted_final[1]
-        #         sorted_final[1]=sorted_final[0]
-        #         sorted_final[0]=final_results[num]
-        #         highest=final_results[num].score
-
-        return jsonify(sorted_final[0]['answer'])
+      
+        return jsonify(sorted_final)
 
 
         
