@@ -1,15 +1,12 @@
-from pathlib import Path
-from sentence_transformers import SentenceTransformer
-from transformers import AutoTokenizer
+
 import faiss
 import numpy as np
 import os
 import pickle
 import pandas as pd
 from rank_bm25 import BM25Okapi
-from gensim.utils import simple_preprocess
-from gensim.parsing.preprocessing import preprocess_documents, preprocess_string
-
+from gensim.parsing.preprocessing import preprocess_string
+from main import sentence_model
 
 
 dirname = ".\\backend\\model\\docs\\"
@@ -18,11 +15,12 @@ ext = "txt"
 embed_path_dir=os.path.dirname(os.path.realpath(__file__))
 embed_path=os.path.join(embed_path_dir, "embeddings.pkl")
 corpus_path=os.path.join(embed_path_dir,"corpus.csv")
-model_path=os.path.join(embed_path_dir,"LaBSE")
+model_path=os.path.join(embed_path_dir,"labse.pt")
 
 class Retriever:
     def __init__(self):
-        self.model = SentenceTransformer(model_path)        
+            
+            self.model=sentence_model
 
     def create_embeddings(self):
         df = pd.read_csv(corpus_path, encoding='latin-1',sep=';')

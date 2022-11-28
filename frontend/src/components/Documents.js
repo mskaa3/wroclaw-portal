@@ -5,7 +5,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import {Col,Row} from 'react-bootstrap'
 import DocumentCard from '../components/DocumentCard';
 import axios from 'axios';
-import 'C:\\Users\\Asus\\Documents\\GitHub\\wroclawportal\\wroclaw-portal\\frontend\\src\\css\\doc_component.css';
+import '../css/doc_component.css';
 
 const Documents = () => {
   const [categories,setCategories]=useState([]);

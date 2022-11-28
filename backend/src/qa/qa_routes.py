@@ -3,19 +3,20 @@ from flask import Blueprint, request, jsonify
 import time
 from model.retriever import Retriever
 from model.reader import Reader
-from model.result import Result
+
 qa_routes = Blueprint("qa_routes", __name__)
 
 
 @qa_routes.route("/qa", methods=["POST"])
 def qa():
+    
     st = time.time()
+    reader = Reader()
+    retriever = Retriever()
     if request.method == "POST":
         query = request.json["question"]
-        reader = Reader()
-        retriever = Retriever()
-        # retriever.create_embeddings()
         
+        # retriever.create_embeddings()
         answers = {}
         results,links = retriever.retrieve_docs(query)
 

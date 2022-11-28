@@ -1,23 +1,22 @@
 """Flask app factory"""
-from flask import Flask
+from flask import Flask,session,current_app
+import flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_restful import Api
 from flask_marshmallow import Marshmallow
-import connexion
-
 from src.uni.data_loader import fill_tables
 from src.forum.forum_sample_data import fill_forum_tables
 from database import Database
 from flask import make_response
 import sqlite3
 from googletrans import Translator
-
+from transformers import AutoTokenizer, AutoModelForQuestionAnswering
 # pip installpip
 # requests module will be used to CREATE client requests and send them to ANOTHER server
 # from crypt import methods
-
+from sentence_transformers import SentenceTransformer
 from dotenv import load_dotenv
 from flask import Flask, request, jsonify
 
@@ -28,13 +27,14 @@ from flask import Flask, request, jsonify
 # from flask_oidc import OpenIDConnect
 # from okta.client import Client as UsersClient
 
-
 # Globally accessible libraries
 # db = SQLAlchemy()
 db = Database()
 migrate = Migrate()
 ma = Marshmallow()
-
+QAmodel=AutoModelForQuestionAnswering.from_pretrained("bert-large-uncased-whole-word-masking-finetuned-squad")
+sentence_model = SentenceTransformer("sentence-transformers/LaBSE")
+tokenizer=AutoTokenizer.from_pretrained("bert-large-uncased-whole-word-masking-finetuned-squad")
 
 def create_app(config_class="config.DevConfig"):
     "initiate core application"
@@ -49,6 +49,7 @@ def create_app(config_class="config.DevConfig"):
     db.init_app(app)
     migrate.init_app(app, db)
     ma.init_app(app)
+  
 
     with app.app_context():
         # include routes
@@ -131,11 +132,10 @@ def create_app(config_class="config.DevConfig"):
 
         # from src.uni.models.uni_model import Uni
         # from src.uni.models.voivodeship_model import Voivodeship
-
+        
         # db.create_all()
         print("db=====================================================")
         print(db.engine.url.database)
-
         # @app.before_first_request
         # def create_tables():
         # db.Base.metadata.create_all(bind=db.engine)

@@ -4,7 +4,7 @@ import React from 'react';
 import Form from 'react-bootstrap/Form';
 import { useState } from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
-import 'C:\\Users\\Asus\\Documents\\GitHub\\wroclawportal\\wroclaw-portal\\frontend\\src\\css\\qa.css'
+import '../css/qa.css'
 import Card from 'react-bootstrap/Card';
 
 
@@ -13,6 +13,7 @@ function QAform() {
   const [question, setQuestion] = useState('');
   const [answers, setAnswers] = useState([]);
   const [isPending, setIsPending] = useState(false);
+  const [isAnswered, setIsAnswered]=useState(false);
   const handleSubmit = async (e) => {
     e.preventDefault();
     const query = { question };
@@ -29,6 +30,7 @@ function QAform() {
         console.log(data);
         setAnswers(data);
         setIsPending(false);
+        setIsAnswered(true)
        })
       })
 
@@ -71,6 +73,7 @@ function QAform() {
       
 
         <div className='answers-component'>
+        { isAnswered&&(<h2>Most relevant results:</h2>)}
       <ListGroup>
      {answers.map((answ)=>{
            
