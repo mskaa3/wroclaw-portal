@@ -1,75 +1,80 @@
-from pathlib import Path
-from sentence_transformers import SentenceTransformer
-from transformers import AutoTokenizer, AutoModelForQuestionAnswering
+
 import faiss
 import numpy as np
-import time
 import os
 import pickle
+import pandas as pd
+from rank_bm25 import BM25Okapi
+from gensim.parsing.preprocessing import preprocess_string
+from main import sentence_model
 
 
 dirname = ".\\backend\\model\\docs\\"
 ext = "txt"
-threshold = 250
 
+embed_path_dir=os.path.dirname(os.path.realpath(__file__))
+embed_path=os.path.join(embed_path_dir, "embeddings.pkl")
+corpus_path=os.path.join(embed_path_dir,"corpus.csv")
+model_path=os.path.join(embed_path_dir,"labse.pt")
 
 class Retriever:
     def __init__(self):
-        self.model = SentenceTransformer("sentence-transformers/LaBSE")
-        self.tokenizer = AutoTokenizer.from_pretrained("sentence-transformers/LaBSE")
+            
+            self.model=sentence_model
 
     def create_embeddings(self):
-        content_divided = []
-        for files in os.listdir(dirname):
-            if files.endswith(ext):
-                print(files)
-                file = open(os.path.join(dirname, files), "r", encoding="utf-8")
-                content = file.read()
-                ct_list = content.split(" ")
-                temp_paragraph = ""
-                for i, chunk in enumerate(ct_list):
-                    if i != 0 and i % 150 == 0:
-                        content_divided.append(temp_paragraph)
-                        temp_paragraph = ""
-                    else:
-                        temp_paragraph = temp_paragraph + " " + chunk
-
-                content_divided.append(temp_paragraph)
-            else:
-                continue
-            self.paragraphs = content_divided
-            embeddings = self.model.encode(content_divided)
-            with open(".\\backend\\model\\embeddings.pkl", "wb") as fOut:
-                pickle.dump(
-                    {"sentences": content_divided, "embeddings": embeddings},
-                    fOut,
-                    protocol=pickle.HIGHEST_PROTOCOL,
-                )
-
-    # najpeirw elastic search na np 20 zapytań a potem sentence-transformer
+        df = pd.read_csv(corpus_path, encoding='latin-1',sep=';')
+        content_divided=df['content'].tolist()
+        indexes=list(range(0, len(content_divided)))
+        embeddings = self.model.encode(content_divided)
+        with open(embed_path, "wb") as fOut:
+                 pickle.dump({'paragraphs': content_divided, 'embeddings': embeddings, 'indexes':indexes}, fOut, protocol=pickle.HIGHEST_PROTOCOL)
+        return True
 
     def retrieve_docs(self, query):
-
-        with open(".\\backend\\model\\embeddings.pkl", "rb") as fIn:
+        df = pd.read_csv(corpus_path, encoding='latin-1',sep=';')
+        meta_df_tokens = df.content.fillna('').apply(preprocess_string)
+        bm25_index = BM25Okapi(meta_df_tokens.tolist())
+        # found_indexes = self.search(num_results=10,search_string=meta_df_tokens,bm25_index=bm25)
+        search_tokens = preprocess_string(query)
+        scores = bm25_index.get_scores(search_tokens)
+        top_indexes = np.argsort(scores)[::-1][:10]
+        filtered_content=[]
+        new_index_to_old={}
+        filtered_embeddings=np.zeros((len(top_indexes), 768))
+        
+        with open(embed_path, "rb") as fIn:
             stored_data = pickle.load(fIn)
-            content = stored_data["sentences"]
-            embeddings = stored_data["embeddings"]
+            content_divided = stored_data['paragraphs']
+            embeddings = stored_data['embeddings']
+            sentence_indexes=stored_data['indexes']
+
+        for num,index in enumerate(top_indexes):
+            filtered_content.append(content_divided[index])
+            new_index_to_old[num]=index
+            filtered_embeddings[num]=embeddings[index]
 
         index = faiss.IndexIDMap(faiss.IndexFlatIP(768))
-        index.add_with_ids(
-            embeddings, np.array(range(0, len(content))).astype(np.int64)
-        )
-        t = time.time()
+        index.add_with_ids(filtered_embeddings, np.array(range(0, len(filtered_content))).astype(np.int64))
+        
+        # t = time.time()
+        # print("totaltime: {}".format(time.time() - t))
         query_vector = self.model.encode([query])
-        k = 5
+        k = 3
         top_k = index.search(query_vector, k)
-        print("totaltime: {}".format(time.time() - t))
-        return [content[_id] for _id in top_k[1].tolist()[0]]
+        res=[filtered_content[_id] for _id in top_k[1].tolist()[0]]
+        res_index=[filtered_content.index(filtered_content[_id]) for _id in top_k[1].tolist()[0]]
+        final_idx=[]
+        final_links=[]
+        for index in res_index:
+            final_idx.append(new_index_to_old[index])
+        for index in final_idx:
+            final_links.append(df['source_link'].values[index])
+        return res,final_links
+ 
 
-        # query=str("Can students work while studying?")
-        # query=str("Is there a cinema for foreigners?")
-        # query=str("When I sent document by post I need to come in person to have my fingerprints taken")
-        # results=search(query)
-        # print('results :')
-        # for result in results:
-        #    print('\t',result)
+    def search(search_string,bm25_index, num_results):
+        search_tokens = preprocess_string(search_string)
+        scores = bm25_index.get_scores(search_tokens)
+        top_indexes = np.argsort(scores)[::-1][:num_results]
+        return top_indexes
