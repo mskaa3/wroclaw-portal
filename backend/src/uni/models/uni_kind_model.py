@@ -9,14 +9,10 @@ class UniKind(db.Base):
     __tablename__ = "uni_kinds"
 
     kind_id = Column(Integer, primary_key=True)
-    # kind_key = Column(String(64), unique=True)
-    # kind_key = Column(String(64))
     kind_name = Column(String(64), index=True, unique=True)
-    # kind_name = Column(String(64), index=True)
     unis = relationship("Uni", backref="kinds")
 
     def __init__(self, uni_kind: dict):
-        # self.kind_key = uni_kind.get("kind_key")
         self.kind_name = uni_kind.get("kind_name")
 
     # def json(self):

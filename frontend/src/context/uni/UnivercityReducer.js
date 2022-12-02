@@ -32,6 +32,16 @@ const univercityReducer = (state, action) => {
         ...state,
         discipline: action.payload,
       };
+    case 'SET_WORD_FILTER':
+      return {
+        ...state,
+        search: action.payload,
+      };
+    case 'SET_WORD':
+      return {
+        ...state,
+        search: action.payload,
+      };
     case 'CLEAR_UNIS':
       return {
         ...state,

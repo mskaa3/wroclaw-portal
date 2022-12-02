@@ -1,3 +1,4 @@
+"""not used for now"""
 import os.path
 
 from migrate.versioning import api

@@ -1,7 +1,6 @@
 """post table shema"""
 from main import db, ma
 from sqlalchemy import Column, Integer, String, ForeignKey, Text, DateTime, Boolean
-from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
 
@@ -47,6 +46,9 @@ class Post(db.Base):
             f"thread: {self.thread},post_creator: {self.post_creator}]"
         )
 
+    def to_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
 
 """
     @classmethod
@@ -67,6 +69,7 @@ class Post(db.Base):
 
 # def json(self):
 #    return {"name":self.name,...}
+# @staticmethod
 
 
 class PostSchema(ma.Schema):

@@ -14,14 +14,6 @@ class Config:
     SQL_ALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_MIGRATE_REPO = path.join(basedir, "db_repository")
 
-    OKTA_ORG_URL = "https://dev-73352242.okta.com/"
-    OKTA_AUTH_TOKEN = "00wypJxwIxxILACoZp3bnbxPFHh34UN1khVKFdN55e"
-
-    OIDC_CLIENT_SECRETS = "client_secrets.json"
-    OIDC_COOKIE_SECURE = False
-    OIDC_CALLBACK_ROUTE = "/oidc/callback"
-    OIDC_SCOPES = ["openid", "email", "profile"]
-
     CORS_HEADERS = "Content-Type"
 
 
@@ -43,6 +35,6 @@ class DevConfig(Config):
     DEBUG = False
     TESTING = True
     SQLALCHEMY_DATABASE_URI = environ.get("DEV_DATABASE_URI")
-    SQLALCHEMY_BINDS = {"docs_db": environ.get("DEV_DOCS_DATABASE_URI")}
+    # SQLALCHEMY_BINDS = {"docs_db": environ.get("DEV_DOCS_DATABASE_URI")}
 
     print("dev============================" + SQLALCHEMY_DATABASE_URI)

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   formatDistanceToNow,
   parseISO,
@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 import { Segment, Grid, Icon } from 'semantic-ui-react';
 import Avatar from './Avatar';
 import './style.css';
+import axios from 'axios';
 
 const BaseThread = ({ thread }) => {
   const {
@@ -19,7 +20,7 @@ const BaseThread = ({ thread }) => {
     pinned,
     thread_creator_name,
     thread_created_at,
-    //avatar,
+    avatar,
     //naturaltime,
     post_count,
     last_activity,
@@ -84,14 +85,14 @@ const BaseThread = ({ thread }) => {
             <div className="forum-row">
               <Avatar
                 className="forum-avatar"
-                avatar={'avatar'}
+                avatar={avatar}
                 centered={false}
                 link={`/user/${thread_creator_name}`}
               />
               <div className="forum-column">
                 <div>
                   <Icon name={pinned ? 'pin' : 'comment alternate outline'} />
-                  <Link to={`/threads/${thread_id}`}>
+                  <Link to={`/forum/threads/${thread.thread_id}`}>
                     {thread_name_corrected}
                   </Link>
                 </div>

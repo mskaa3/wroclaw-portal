@@ -3,11 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import UniversityDetailCard from '../components/uni/UniversityDetailCard';
 
-//const API_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:5000';
-
 const CourseScreen = ({ uni }) => {
-  //const { unis, loading, dispatch, searchUniResults, city, level, discipline } =
-  //  useContext(UnivercityContext);
   const navigate = useNavigate();
 
   return (
@@ -21,12 +17,9 @@ const CourseScreen = ({ uni }) => {
         <i className="fa-solid fa-left-long"></i> Back to search results
       </Button>
 
-      <UniversityDetailCard uni={uni} />
+      <UniversityDetailCard />
     </>
   );
-
-  //return <h2>Course</h2>;
-  // <CourseCard />
 };
 
 export default CourseScreen;

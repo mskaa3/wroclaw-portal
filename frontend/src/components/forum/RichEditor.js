@@ -6,6 +6,10 @@ import { Editor } from 'react-draft-wysiwyg';
 //import { imageUploadApi } from '../../api/image';
 
 //const RichEditor = () => {
+
+//  const [editorState, setEditorState] = useState(
+//    () => EditorState.createEmpty(),
+//  );
 //  return (
 //    <div>RichEditor</div>
 //  )

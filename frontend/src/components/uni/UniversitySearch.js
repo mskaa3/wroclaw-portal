@@ -1,19 +1,12 @@
 import React, { useEffect, useState, useContext } from 'react';
+import axios from 'axios';
 import { Form, Button } from 'react-bootstrap';
 import UnivercityContext from '../../context/uni/UnivercityContext';
 
-import {
-  searchUnisByWord,
-  getStudyDisciplines,
-  getUnis,
-  searchUnisByFilters,
-} from '../../context/uni/UnivercityActions';
-import axios from 'axios';
+import { searchUnisByFilters } from '../../context/uni/UnivercityActions';
 
-const UniversitySearch = () => {
-  const [uniSearchWord, setUniSearchWord] = useState('');
-
-  const { unis, dispatch, city, level, discipline } =
+const UniversitySearch = (props) => {
+  const { dispatch, city, level, discipline, search } =
     useContext(UnivercityContext);
 
   const [disciplines, setDisciplines] = useState([]);
@@ -28,32 +21,7 @@ const UniversitySearch = () => {
     searched: false,
   });
 */
-  const handleWordChange = (e) => {
-    setUniSearchWord(e.target.value);
-  };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    dispatch({ type: 'SET_LOADING' });
-    //const unis = await searchUnis(uniSearchWord);
-    const disciplines = await getStudyDisciplines();
-    //console.log('from univercity try to print disciplines');
-    //console.log(disciplines);
-    if (!Array.isArray(disciplines)) {
-      console.log(
-        'From Univercity: Not an array There was an error loading your data!'
-      );
-    }
-
-    dispatch({ type: 'GET_STUDY_DISCIPLINES', payload: disciplines });
-
-    //setStudyDiscipline(event.target.value);
-
-    //handleSearchUni(uniSearchWord);
-    //getUnis();
-    //setUniSearchWord('');
-  };
   useEffect(() => {
     const fetchDisciplines = async () => {
       const { data } = await axios.get('http://127.0.0.1:5000/disciplines');
@@ -77,81 +45,24 @@ const UniversitySearch = () => {
   }, []);
 
   const handleChange = (name) => (event) => {
-    //setValues({ ...values, [name]: event.target.value });
     dispatch({
       type: 'SET_' + name.toUpperCase() + '_FILTER',
       payload: event.target.value,
     });
   };
-  /*
-  const handleSubmit1 = async (e) => {
-    e.preventDefault();
 
-    dispatch({ type: 'SET_LOADING' });
-    //const unis = await searchUnis(uniSearchWord);
-    const unis = await getUnis(uniSearchWord);
-    //console.log('from univercity try to print unis');
-    //console.log(unis);
-    if (!Array.isArray(unis)) {
-      console.log(
-        'From Univercity: Not an array There was an error loading your data!'
-      );
-    }
-
-    dispatch({ type: 'GET_UNIS', payload: unis });
-
-    setUniSearchWord('');
-
-    //handleSearchUni(uniSearchWord);
-    //getUnis();
-    //setUniSearchWord('');
-  };
-*/
-  //'http://127.0.0.1:5000/unis/search?' + query,
-  /*
-  const list = async (params) => {
-    const query = queryString.stringify(params);
-    //console.log(query);
-    try {
-      //let response = await axios.get('http://127.0.0.1:5000/unis?'+query, {
-      let response = await axios.get(
-        'http://localhost:5000/unis/search?' + query,
-        {
-          method: 'GET',
-        }
-      );
-      //console.log(response.data);
-      return response.data;
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const search = () => {
-    //if (values.search) {
-    list({
-      //search: values.search || undefined,
-      discipline_name: values.discipline,
-      level: values.level,
-      city: values.city,
-    }).then((data) => {
-      if (data.error) {
-        console.log(data.error);
-      } else {
-        setValues({ ...values, results: data, searched: true });
-      }
-    });
-    //}
-  };
-*/
   const handleSearch = async (e) => {
     e.preventDefault();
 
     dispatch({ type: 'SET_LOADING' });
-    //const unis = await searchUnis(uniSearchWord);
-    const searchResults = await searchUnisByFilters(discipline, level, city);
-    //console.log('result from searchUnisByFilters');
-    //console.log(searchResults);
+
+    const searchResults = await searchUnisByFilters(
+      discipline,
+      level,
+      city,
+      search
+    );
+
     if (!Array.isArray(searchResults)) {
       console.log(
         'From Univercity after search: Not an array There was an error loading your data!'
@@ -160,32 +71,29 @@ const UniversitySearch = () => {
 
     dispatch({ type: 'SEARCH_UNIS_BY_FILTERS', payload: searchResults });
 
-    setUniSearchWord('');
-
-    //handleSearchUni(uniSearchWord);
-    //getUnis();
     //setUniSearchWord('');
   };
-  /*
+
   const enterKey = (e) => {
     if (e.keyCode === 13) {
       e.preventDefault();
-      search();
+      handleSearch();
     }
   };
-*/
+
   return (
     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 align-left ">
       <h2 className="mt-4">Explore study options</h2>
-      <Form onSubmit={handleSubmit}>
+      <Form>
         <Form.Control
           type="text"
-          value={uniSearchWord}
-          onChange={handleWordChange}
+          //name="uniSearchWord"
+          value={search}
+          onChange={handleChange('word')}
           placeholder="Enter search keywords"
           className="mt-4 "
           aria-label="SearchUni"
-          //onKeyDown={enterKey}
+          onKeyDown={enterKey}
         />
         <Form.Text id="orText" className="mt-1 mb-1 text-center">
           or
@@ -248,7 +156,7 @@ const UniversitySearch = () => {
           className="mt-2 w-100"
           variant="custom"
           type="submit"
-          //onClick={search}
+          onClick={handleSearch}
         >
           Search - does not work yet
         </Button>

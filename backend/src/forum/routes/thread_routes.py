@@ -1,10 +1,13 @@
 """Thread routes in the WroclawPortal API.
 Used for retrieving, adding, updating, and deleting threads ."""
 from flask_restful import Resource, fields, marshal_with
-from flask import Response, request
+from flask import Response, request, make_response
 from flask.json import jsonify
 from src.forum.dao.topic_dao import TopicDao
 from src.forum.dao.thread_dao import ThreadDao
+from src.user.dao.user_dao import UserDao
+import json
+from marshmallow import pprint
 
 # from flask_jwt_extended import jwt_required
 from src.forum.models.thread_model import (
@@ -12,13 +15,14 @@ from src.forum.models.thread_model import (
     ThreadSchema,
     thread_schema,
     threads_schema,
+    thread_info_schema,
 )
 
 resource_fields = {
     "thread_id": fields.Integer,
     "thread_name": fields.String,
     "thread_content": fields.String,
-    "thread_created_at": fields.DateTime,
+    "thread_created_at": fields.String,
     "thread_creator": fields.Integer,
     "topic": fields.Integer,
     "pinned": fields.String,
@@ -38,7 +42,8 @@ class ThreadIdApi(Resource):
         :return: A response object for the GET API request.
         """
         thread = ThreadDao.get_thread_by_id(thread_id=thread_id)
-
+        # thread = ThreadDao.get_thread_by_id(thread_id=thread_id)
+        print(type(thread))
         print(thread)
         return thread
         """
@@ -344,3 +349,75 @@ class ThreadsByTopicApi(Resource):
         # res = threads_schema.dump(threads)
         # print(res)
         return threads
+
+
+class ThreadIdInfoApi(Resource):
+    # parser = reqparse.RequestParser()
+    # parser.add_argument(
+    #    "price", type=float, required=True, help="This field cannot be left blank!"
+    # )
+
+    resource_fields_user = {
+        "user_id": fields.Integer,
+        "user_name": fields.String,
+        "user_email": fields.String,
+        "avatar": fields.String,
+    }
+
+    # @marshal_with(resource_fields_user, resource_fields)
+    def get(self, thread_id):
+        """
+        Get a single thread with a unique ID with user info.
+        :param thread_id: The unique identifier for a thread.
+        :return: A response object for the GET API request.
+        """
+
+        # thread = ThreadDao.get_thread_info_by_id(thread_id=thread_id)
+        thread = ThreadDao.get_thread_by_id(thread_id=thread_id)
+        user = UserDao.get_user_by_id(user_id=thread.thread_creator)
+        print("thread info")
+        print(type(thread))
+        print(thread)
+        print("user info")
+        print(type(user))
+        print(user)
+        thread_dict: dict = thread.to_dict()
+        user_dict: dict = user.to_dict()
+        thread_dict.update(user_dict)
+        print(thread_dict)
+
+        # res = thread_info_schema.dump(thread)
+        # res = ThreadSchema().dump(thread)
+
+        # pprint(res)
+        # resp=make_response(json.dumps(thread),200)
+        # return thread_dict
+        return jsonify(thread_dict)
+        # return Response(thread, mimetype="application/json", status=200)
+        """
+        if thread is None:
+            response = jsonify(
+                {
+                    "self": f"/threads/{thread_id}",
+                    "thread": None,
+                    # "log": None,
+                    "error": "there is no thread with this identifier",
+                }
+            )
+            response.status_code = 400
+            return response
+        else:
+            thread_dict: dict = Thread(thread).__dict__
+            # comment_dict["time"] = str(comment_dict["time"])
+
+            response = jsonify(
+                {
+                    "self": f"/threads/{thread_id}",
+                    "thread": thread_dict,
+                    # "log": f'/v2/logs/{comment_dict.get("log_id")}',
+                }
+            )
+            # response.status_code = 200
+            # return response
+            return Response(response, mimetype="application/json", status=200)
+        """

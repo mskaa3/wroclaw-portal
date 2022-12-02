@@ -4,8 +4,7 @@ import UniversityCard from './UniversityCard';
 import UnivercityContext from '../../context/uni/UnivercityContext';
 
 const UniversityResults = (props) => {
-  const { unis, loading, dispatch, searchUniResults, city, level, discipline } =
-    useContext(UnivercityContext);
+  const { loading, searchUniResults } = useContext(UnivercityContext);
 
   if (!Array.isArray(searchUniResults)) {
     return <h3>There was an error loading your data!</h3>;

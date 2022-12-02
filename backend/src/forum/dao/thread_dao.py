@@ -1,5 +1,5 @@
 """Thread data access from the database.
-Contains SQL queries related to topic."""
+Contains SQL queries related to thread."""
 
 from main import db
 from typing import List
@@ -7,6 +7,7 @@ from typing import List
 from src.uni.dao.basic_dao import BasicDao
 from src.forum.models.thread_model import Thread
 from src.user.user_model import User
+from src.forum.models.post_model import Post
 
 
 class ThreadDao:
@@ -32,6 +33,36 @@ class ThreadDao:
         print(res)
 
         return Thread.query.filter_by(thread_id=thread_id).first()
+
+    @staticmethod
+    def get_thread_info_by_id(thread_id: str) -> Thread:
+        """
+        Retrieve a single thread by its unique id
+        :param thread_id: The unique identifier for a thread.
+        :return: The result of the query.
+        """
+        """
+        res = (
+            Thread.query.join(User, Thread.thread_creator == User.user_id)
+            .filter(thread_id == thread_id)
+            .with_entities(
+                Thread.thread_id,
+                Thread.thread_name,
+                Thread.thread_content,
+                Thread.thread_created_at,
+                Thread.pinned,
+                Thread.thread_creator,
+                User.user_name,
+                User.user_email,
+                User.avatar,
+            )
+            .first()
+        )
+        """
+        res = Thread.query.join(User).filter(thread_id == thread_id).first()
+        print(res)
+        return res
+        # return Thread.query.join(User).filter(thread_id == thread_id).first()
 
     @staticmethod
     def get_thread_by_name(thread_name: str) -> Thread:

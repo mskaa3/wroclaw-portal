@@ -18,7 +18,7 @@ const UniversityCard = ({ uni, uni_key }) => {
               </Col>
             </Row>
 
-            <Row>
+            <Row className="d-flex align-items-baseline mb-3">
               <Col className="text-left ">
                 <Link to={`/courses/uni/${uni_key}`}>View Courses</Link>
               </Col>
@@ -26,7 +26,21 @@ const UniversityCard = ({ uni, uni_key }) => {
                 <Card.Link href={uni.www}>Visit Vebsite</Card.Link>
               </Col>
               <Col className="text-align-center">
-                <Card.Link href="#">Contact this institution</Card.Link>
+                <Card.Text>{uni.uni_email}</Card.Text>
+              </Col>
+            </Row>
+            <Row className="d-flex align-items-baseline mb-3">
+              <Col className="text-align-center" lg={8} md={6} sm={6} xs={6}>
+                <Card.Text>
+                  <strong>Address:</strong> {uni.postal_code}, {uni.city},&nbsp;
+                  {uni.street}, {uni.building}
+                </Card.Text>
+              </Col>
+
+              <Col className="text-align-center">
+                <Card.Text>
+                  <strong>Phone:</strong> {uni.phone_number}
+                </Card.Text>
               </Col>
             </Row>
           </Container>
@@ -37,3 +51,4 @@ const UniversityCard = ({ uni, uni_key }) => {
 };
 
 export default UniversityCard;
+//<Link to={`/courses/uni/${uni_key}`} state={{ word }}>

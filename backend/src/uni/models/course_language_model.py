@@ -8,15 +8,12 @@ class CourseLanguage(db.Base):
     __tablename__ = "course_languages"
 
     course_language_id = Column(String(10), primary_key=True)
-    # course_language_id = Column(Integer, primary_key=True)
 
     course_language_name = Column(String(64), index=True, unique=True)
-    # course_language_code = Column(String(10), index=True, unique=True)
 
     # course = relationship("Course", backref="courses")
 
     def __init__(self, course_language: dict):
-        # self.kind_key = uni_kind.get("kind_key")
         self.course_language_id = course_language.get("course_language_id")
         self.course_language_name = course_language.get("course_language_name")
 
@@ -45,9 +42,6 @@ class CourseLanguage(db.Base):
 class CourseLanguageSchema(ma.Schema):
     class Meta:
         model = CourseLanguage
-        # sqla_session = db.session
-        # load_instance = True
-        # fields = ["level"]
 
 
 course_language_schema = CourseLanguageSchema()

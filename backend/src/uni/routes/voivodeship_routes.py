@@ -7,13 +7,8 @@ from src.uni.dao.voivodeship_dao import VoivodeshipDao
 # from flask_jwt_extended import jwt_required
 from src.uni.models.voivodeship_model import Voivodeship
 
-
 class VoivodeshipIdApi(Resource):
-    # parser = reqparse.RequestParser()
-    # parser.add_argument(
-    #    "price", type=float, required=True, help="This field cannot be left blank!"
-    # )
-
+  
     def get(self, voiv_id):
         """
         Get a single voivodeship with a unique ID.
@@ -178,48 +173,9 @@ class VoivodeshipIdApi(Resource):
         # return "", 200
 
 
-class VoivodeshipNameApi(Resource):
-    # parser = reqparse.RequestParser()
-    # parser.add_argument(
-    #    "price", type=float, required=True, help="This field cannot be left blank!"
-    # )
-
-    # @jwt_required()
-    def get(self, name):
-        "get voivodeship by name"
-        # voivodeship = Voivodeship.objects.get(name=name).to_json()
-        # if voivodeship:
-        #     return Response(voivodeship, mimetype="application/json", status=200)
-        # return {"message": "Uni not found"}, 404
-        voivodeship = Voivodeship.objects.get(name=name).to_json()
-        return Response(voivodeship, mimetype="application/json", status=200)
-
-    def put(self, name):
-        # data = Uni.parser.parse_args()
-        # voivodeship = Voivodeship.objects.get(name=name)
-        # if voivodeship is None:
-        #    voivodeship = voivodeship(name, data["terc"])
-        # else:
-        #    voivodeship.terc = data["terc"]
-        # voivodeship.save_to_db()
-
-        body = request.get_json()
-        Voivodeship.objects.get(name=name).update(**body)
-        return "", 200
-
-    def delete(self, name):
-        # voivodeship = Voivodeship.objects.get(name=name)
-        # if voivodeship:
-        #    voivodeship.delete()
-        # return {"message": "Uni deleted"}
-
-        voivodeship = Voivodeship.objects.get(name=name).delete()
-        return "", 200
-
 
 class VoivodeshipsApi(Resource):
-    # comments: list = CommentDao.get_comments()
-
+    
     def get(self):
         """
         Get all the voivodeships in the database.

@@ -13,7 +13,7 @@ import './style.css';
 //  createThread,
 //} from '../../actions';
 
-const TopicContainer = (props) => {
+const TopicContainer = () => {
   const { topic_id } = useParams();
   console.log(topic_id);
   const [isLoading, setIsLoading] = useState(false);
@@ -56,6 +56,7 @@ const TopicContainer = (props) => {
 
     fetchThreads();
   }, [topic_id]);
+
   //const {
   //  isLoading,
   //  name,
@@ -87,7 +88,20 @@ const TopicContainer = (props) => {
   const createThreadToggle = () => {};
   return (
     <div>
-      <NewThread
+      <TopicThreadList
+        isLoading={isLoading}
+        threads={threads}
+        error={error}
+        topic={topic}
+      />
+    </div>
+  );
+};
+
+export default TopicContainer;
+
+/*
+<NewThread
         topic={topic_id}
         isAuthenticated={isAuthenticated}
         isLoading={newThreadState.newThreadLoading}
@@ -102,17 +116,7 @@ const TopicContainer = (props) => {
         toggleShowEditor={createThreadToggle}
         maxLength={2000}
       />
-      <TopicThreadList
-        isLoading={isLoading}
-        threads={threads}
-        error={error}
-        topic={topic}
-      />
-    </div>
-  );
-};
-
-export default TopicContainer;
+*/
 
 //componentDidMount() {
 //  const {forum} = this.props.match.params;

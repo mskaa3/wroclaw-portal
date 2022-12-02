@@ -31,8 +31,9 @@ def qa():
         # return Response(jsonify(best_answer), mimetype="application/json", status=200)
 
 
-@docs_routes.route("/")
+@docs_routes.route("/docs", methods=["GET"])
 def docs():
+    print("in /docs route")
     with sqlite3.connect("docs_db.db") as conn:
         try:
             cur = conn.cursor()

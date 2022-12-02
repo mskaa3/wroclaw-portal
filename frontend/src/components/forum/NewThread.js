@@ -181,7 +181,9 @@ export default class NewThread extends Component {
         success={success}
         successClassName="newThread-message"
         successMessage={
-          <Link to={`/thread/${id}`}>{'Successful on creating thread'}</Link>
+          <Link to={`/forum/threads/${id}`}>
+            {'Successful on creating thread'}
+          </Link>
         }
         type="modal"
       />
