@@ -23,7 +23,7 @@ class Database:
             autocommit=False, autoflush=False, bind=self.engine
         )
         # set up scoped_session registry
-        # #add ability to access scoped session registry (implicitly)
+        # add ability to access scoped session registry (implicitly)
         # self.session = scoped_session(self.sessionmaker, scopefunc=_get_ident)
         self.session = scoped_session(self.sessionmaker)
         # add ability to query against the tables in database
@@ -44,10 +44,7 @@ class Database:
         from src.forum.models.thread_model import Thread
         from src.forum.models.topic_model import Topic
 
-        # move to __init__
-        # self.Base.metadata.create_all(bind=self.engine)
-
-        # app.teardown_request(self.remove_session)
+    # app.teardown_request(self.remove_session)
 
     # @app.teardown_appcontext
     # def shutdown_session(exception=None):

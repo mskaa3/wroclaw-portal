@@ -3,11 +3,15 @@
 import sqlite3
 import json
 
+# install passlib
+from passlib.hash import pbkdf2_sha256 as sha256
+
 # import requests
 # from requests.exceptions import HTTPError
 from urllib.request import urlopen, Request
 from urllib.error import HTTPError, URLError
 import socket
+
 
 def get_json_from_url(source: str):
     """load data from source url and tramsform it to json format"""
@@ -74,3 +78,10 @@ def sql_data_to_dict(path_to_db, select_query):
     finally:
         connection.close()
 
+
+def generate_hash(password):
+    return sha256.hash(password)
+
+
+def verify_hash(password, hash):
+    return sha256.verify(password, hash)

@@ -4,21 +4,17 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 
 
-# class Voivodeship(db.Model):
 class Voivodeship(db.Base):
     "voivodeshiip table schema"
     __tablename__ = "voivodeships"
 
     voiv_id = Column(Integer, primary_key=True)
     voiv_name = Column(String(64), index=True, unique=True)
-    # voiv_name = Column(String(64), index=True)
-    # terc = Column(Integer, unique=True)
-    # terc = Column(Integer)
+
     unis = relationship("Uni", backref="voivodeships")
 
     def __init__(self, voivodeship: dict):
         self.voiv_name = voivodeship.get("voiv_name")
-        # self.terc = voivodeship.get("terc")
 
     # def json(self):
     #  return {'name':self.name,...}

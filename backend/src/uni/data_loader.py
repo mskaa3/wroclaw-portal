@@ -10,59 +10,10 @@ from collections import defaultdict
 from src.utils.validators import validate_string
 from src.utils.helpers import get_json_from_url
 from src.utils.helpers import sql_data_to_dict
+from src.uni import constants as CONST
 
 # get column names from table
 # columns = [column.name for column in inspect(model).c]
-
-
-UNI_DATA_API_URL = "https://radon.nauka.gov.pl/opendata/polon"
-
-VOIVODESHIP_DATA_URL = UNI_DATA_API_URL + "/dictionaries/shared/voivodeships"
-INSTITUTION_KINDS_DATA_URL = (
-    UNI_DATA_API_URL + "/dictionaries/institution/institutionKinds"
-)
-
-COURSE_LEVELS_DATA_URL = UNI_DATA_API_URL + "/dictionaries/course/levels"
-COURSE_TITLES_DATA_URL = UNI_DATA_API_URL + "/dictionaries/course/professionalTitles"
-COURSE_FORMS_DATA_URL = UNI_DATA_API_URL + "/dictionaries/course/instanceForms"
-COURSE_LANGUAGES_DATA_URL = (
-    UNI_DATA_API_URL + "/dictionaries/course/philologicalLanguages"
-)
-DISCIPLINES_DATA_URL = UNI_DATA_API_URL + "/dictionaries/shared/disciplines"
-COURSES_DATA_URL = UNI_DATA_API_URL + "/courses"
-INSTITUTIONS_DATA_URL = UNI_DATA_API_URL + "/institutions"
-
-
-VOIVODESHIPS_QUERY = "INSERT INTO voivodeships(voiv_id,voiv_name) VALUES (?,?)"
-INSTITUTION_KINDS_QUERY = "INSERT INTO uni_kinds(kind_id,kind_name) VALUES (?,?)"
-COURSE_LEVELS_QUERY = (
-    "INSERT INTO course_levels(course_level_id,course_level_name) VALUES (?,?)"
-)
-
-COURSE_TITLES_QUERY = (
-    "INSERT INTO course_titles(course_title_id,course_title_name) VALUES (?,?)"
-)
-COURSE_FORMS_QUERY = (
-    "INSERT INTO course_forms(course_form_id,course_form_name) VALUES (?,?)"
-)
-COURSE_LANGUAGES_QUERY = (
-    "INSERT INTO course_languages(course_language_id,course_language_name) VALUES (?,?)"
-)
-DISCIPLINES_QUERY = (
-    "INSERT INTO disciplines(discipline_id,discipline_name) VALUES (?,?)"
-)
-
-COURSES_QUERY = "INSERT INTO courses(course_uid,course_name,course_isced_name,level,title,form,language,semesters_number,ects,main_discipline,institution) VALUES (?,?,?,?,?,?,?,?,?,?,?)"
-
-UNIS_QUERY = "INSERT INTO unis(uni_uid,uni_name,kind,www,phone_number,uni_email,city,street,building,postal_code,voivodeship)  VALUES (?,?,?,?,?,?,?,?,?,?,?)"
-
-COURSES_DISCIPLINES_QUERY = (
-    "INSERT INTO courses_disciplines(course_id_joint,discipline_id_joint) VALUES (?,?)"
-)
-
-INSTITUTION_DATA_STATUS_FILTER = "1"  # Działająca - Operating
-INSTITUTION_DATA_COUNTRY_FILTER = "Polska"
-INSTITUTION_DATA_KIND_FILTER = 16  # Federation
 
 
 # here id already exist in sourse
@@ -78,13 +29,11 @@ def load_institutions(source: str):
 
         response = get_json_from_url(source + query_string)
         if response["results"]:
-            # print("count:" + str(count))
             token = response["pagination"]["token"]
-            # print(token)
-            # count = count + 1
         else:
             is_continue = False
             break
+
         # parse json data to SQL insert
         for item in response["results"]:
 
@@ -97,10 +46,10 @@ def load_institutions(source: str):
 
             # select universities in active status, i Poland, not Federation kind
             if (
-                status == INSTITUTION_DATA_STATUS_FILTER
-                and country == INSTITUTION_DATA_COUNTRY_FILTER
-                and kind != INSTITUTION_DATA_KIND_FILTER
-            ):  # Działająca - Operating, Polska, not Federation
+                status == CONST.INSTITUTION_DATA_STATUS_FILTER
+                and country == CONST.INSTITUTION_DATA_COUNTRY_FILTER
+                and kind != CONST.INSTITUTION_DATA_KIND_FILTER
+            ):
 
                 uni_uid = validate_string(item["institutionUuid"])
                 uni_name = validate_string(item["name"])
@@ -138,16 +87,13 @@ def load_courses_list(source: str):
     data = []
     token = ""
     is_continue = True
-    count = 1
+
     while is_continue:
         query_string = "?token=" + token if token else ""
 
         response = get_json_from_url(source + query_string)
         if response["results"]:
-            print("count:" + str(count))
             token = response["pagination"]["token"]
-            # print(token)
-            count = count + 1
         else:
             is_continue = False
             break
@@ -157,12 +103,9 @@ def load_courses_list(source: str):
 
             status = item["currentStatusCode"]
 
-            if status == "3":  # prowadzone - active
-                # print(type(item))  # dict
-                # elem = (uni_uid, uni_name)
-                # elem = uni_uid
+            if status == CONST.COURSE_DATA_STATUS_FILTER:  # prowadzone - active
                 data.append(item)
-            # print(data[0])
+
     return data
 
 
@@ -229,36 +172,40 @@ def courses_disciplines_data(courses: list, courses_dict: dict):
 
 
 data_to_load_dict = {}
-data_to_load_dict["voivodeships"] = (VOIVODESHIP_DATA_URL, "voiv_id", "voiv_name")
-data_to_load_dict["uni_kinds"] = (INSTITUTION_KINDS_DATA_URL, "kind_id", "kind_name")
+data_to_load_dict["voivodeships"] = (CONST.VOIVODESHIP_DATA_URL, "voiv_id", "voiv_name")
+data_to_load_dict["uni_kinds"] = (
+    CONST.INSTITUTION_KINDS_DATA_URL,
+    "kind_id",
+    "kind_name",
+)
 data_to_load_dict["course_levels"] = (
-    COURSE_LEVELS_DATA_URL,
+    CONST.COURSE_LEVELS_DATA_URL,
     "course_level_id",
     "course_level_name",
 )
 data_to_load_dict["course_titles"] = (
-    COURSE_TITLES_DATA_URL,
+    CONST.COURSE_TITLES_DATA_URL,
     "course_title_id",
     "course_title_name",
 )
 data_to_load_dict["course_forms"] = (
-    COURSE_FORMS_DATA_URL,
+    CONST.COURSE_FORMS_DATA_URL,
     "course_form_id",
     "course_form_name",
 )
 data_to_load_dict["course_languages"] = (
-    COURSE_LANGUAGES_DATA_URL,
+    CONST.COURSE_LANGUAGES_DATA_URL,
     "course_language_id",
     "course_language_name",
 )
 data_to_load_dict["disciplines"] = (
-    DISCIPLINES_DATA_URL,
+    CONST.DISCIPLINES_DATA_URL,
     "discipline_id",
     "discipline_name",
 )
 
 
-# ?? int, string id: in 2 tables(languages and disciplines) id-string
+# int, string id: in 2 tables(languages and disciplines) id-string
 def load_dictionaries(initial_data: dict):
     """data to fill the dictionaries tables in database"""
 
@@ -294,28 +241,25 @@ def fill_tables(db):
         conn.commit()
         print(k + " table filled")
 
-    cursor.executemany(UNIS_QUERY, load_institutions(INSTITUTIONS_DATA_URL))
+    cursor.executemany(CONST.UNIS_QUERY, load_institutions(CONST.INSTITUTIONS_DATA_URL))
     conn.commit()
     print("unis table filled ======================================")
 
-    courses_list = load_courses_list(COURSES_DATA_URL)
+    courses_list = load_courses_list(CONST.COURSES_DATA_URL)
     print("courses list created-------------------------------------------------")
 
     courses_data = load_courses(courses_list)
     print("courses data created-------------------------------------------------")
-    print(courses_data[0])
 
-    cursor.executemany(COURSES_QUERY, courses_data)
+    cursor.executemany(CONST.COURSES_QUERY, courses_data)
     conn.commit()
     print("courses table filled +++++++++++++++++++++++++++++++++++++++++")
 
-    COURSES_SELECT_QUERY = "SELECT course_id, course_uid FROM courses"
-
-    courses_dict_from_db = sql_data_to_dict(db, COURSES_SELECT_QUERY)
+    courses_dict_from_db = sql_data_to_dict(db, CONST.COURSES_SELECT_QUERY)
     print("courses query executed=========================================")
 
     cursor.executemany(
-        COURSES_DISCIPLINES_QUERY,
+        CONST.COURSES_DISCIPLINES_QUERY,
         courses_disciplines_data(courses_list, courses_dict_from_db),
     )
     conn.commit()

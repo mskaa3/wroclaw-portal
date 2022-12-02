@@ -42,9 +42,6 @@ class CourseTitleSchema(ma.Schema):
 
     class Meta:
         model = CourseTitle
-        # sqla_session = db.session
-        # load_instance = True
-        # fields = ["level"]
 
 
 course_title_schema = CourseTitleSchema()

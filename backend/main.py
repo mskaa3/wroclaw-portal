@@ -1,40 +1,39 @@
 """Flask app factory"""
-from flask import Flask,session,current_app
-import flask
+from flask import Flask, make_response, Response
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_restful import Api
 from flask_marshmallow import Marshmallow
+from flask_jwt_extended import JWTManager
+
 from src.uni.data_loader import fill_tables
-from src.forum.forum_sample_data import fill_forum_tables
 from database import Database
-from flask import make_response
-import sqlite3
+
 from googletrans import Translator
 from transformers import AutoTokenizer, AutoModelForQuestionAnswering
-# pip installpip
+
 # requests module will be used to CREATE client requests and send them to ANOTHER server
 # from crypt import methods
 from sentence_transformers import SentenceTransformer
 from dotenv import load_dotenv
-from flask import Flask, request, jsonify
-
 
 # from model.retriever import Retriever
 # from model.reader import Reader
-
-# from flask_oidc import OpenIDConnect
-# from okta.client import Client as UsersClient
-
 # Globally accessible libraries
 # db = SQLAlchemy()
 db = Database()
 migrate = Migrate()
 ma = Marshmallow()
-QAmodel=AutoModelForQuestionAnswering.from_pretrained("bert-large-uncased-whole-word-masking-finetuned-squad")
+QAmodel = AutoModelForQuestionAnswering.from_pretrained(
+    "bert-large-uncased-whole-word-masking-finetuned-squad"
+)
 sentence_model = SentenceTransformer("sentence-transformers/LaBSE")
-tokenizer=AutoTokenizer.from_pretrained("bert-large-uncased-whole-word-masking-finetuned-squad")
+tokenizer = AutoTokenizer.from_pretrained(
+    "bert-large-uncased-whole-word-masking-finetuned-squad"
+)
+jwt = JWTManager()
+
 
 def create_app(config_class="config.DevConfig"):
     "initiate core application"
@@ -49,15 +48,11 @@ def create_app(config_class="config.DevConfig"):
     db.init_app(app)
     migrate.init_app(app, db)
     ma.init_app(app)
-  
-
+    jwt.init_app(app)
     with app.app_context():
         # include routes
-        # from . import routes
-        # from src.uni.resources.uni_routes import Vo
         from src.uni.routes.voivodeship_routes import (
             VoivodeshipIdApi,
-            # VoivodeshipNameApi,
             VoivodeshipsApi,
         )
 
@@ -93,10 +88,25 @@ def create_app(config_class="config.DevConfig"):
             TopicIdApi,
             TopicNameApi,
             TopicsApi,
+            TopicsInfoApi,
         )
 
+        from src.forum.routes.thread_routes import (
+            ThreadIdApi,
+            ThreadsApi,
+            ThreadsByTopicApi,
+            ThreadIdInfoApi,
+        )
+
+        from src.forum.routes.post_routes import (
+            PostIdApi,
+            PostsApi,
+            PostsByThreadApi,
+        )
+
+        from src.user.routes.user_routes import UserIdApi, UsersApi, UserAuthApi
+
         api.add_resource(VoivodeshipIdApi, "/voivodeships/<id>")
-        # api.add_resource(VoivodeshipNameApi,'/voivodeships/<name>')
         api.add_resource(VoivodeshipsApi, "/voivodeships")
 
         api.add_resource(DisciplineIdApi, "/disciplines/<discipline_id>")
@@ -117,28 +127,41 @@ def create_app(config_class="config.DevConfig"):
         api.add_resource(CourseLevelNameApi, "/courses/levels/name/<level_name>")
         api.add_resource(CourseLevelsApi, "/courses/levels")
 
-        api.add_resource(
-            SearchUniApi,
-            "/search/unis",
-        )
-        api.add_resource(
-            SearchCourseApi,
-            "/search/courses",
-        )
+        api.add_resource(SearchUniApi, "/search/unis")
+        api.add_resource(SearchCourseApi, "/search/courses")
 
         api.add_resource(TopicIdApi, "/forum/topics/<topic_id>")
         api.add_resource(TopicNameApi, "/forum/topics/name/<topic_name>")
         api.add_resource(TopicsApi, "/forum/topics")
+        api.add_resource(TopicsInfoApi, "/forum/topics/info")
 
-        # from src.uni.models.uni_model import Uni
-        # from src.uni.models.voivodeship_model import Voivodeship
-        
+        api.add_resource(ThreadIdApi, "/forum/threads/<thread_id>")
+        api.add_resource(ThreadsApi, "/forum/threads")
+        api.add_resource(ThreadsByTopicApi, "/forum/topics/<topic_id>/threads")
+        api.add_resource(ThreadIdInfoApi, "/forum/threads/<thread_id>/info")
+
+        api.add_resource(PostIdApi, "/forum/posts/<post_id>")
+        api.add_resource(PostsApi, "/forum/posts")
+        api.add_resource(PostsByThreadApi, "/forum/threads/<thread_id>/posts")
+
+        api.add_resource(UserIdApi, "/users/<user_id>")
+        api.add_resource(UsersApi, "/users")
+        api.add_resource(UserAuthApi, "/users/login")
+
+        from src.currency.currency_routes import currency_routes
+        from src.docs.docs_routes import docs_routes
+
+        app.register_blueprint(currency_routes)
+        app.register_blueprint(docs_routes)
+
         # db.create_all()
         print("db=====================================================")
         print(db.engine.url.database)
+
         # @app.before_first_request
+        # @with_appcontext
         # def create_tables():
-        # db.Base.metadata.create_all(bind=db.engine)
+        #    db.Base.metadata.create_all(bind=db.engine)
         # fill_tables(db.engine.url.database)
 
         # db.Base.metadata.reflect(db.engine)
@@ -148,79 +171,16 @@ def create_app(config_class="config.DevConfig"):
         # db.Base.metadata.tables["posts"].create(bind=db.engine)
         # fill_forum_tables(db.engine.url.database)
 
-    # @app.route("/")
-    # def index():
-    #    "function for initial testing"
-    #    return "Hello from Wroclaw Portal"
+    @app.after_request
+    def after_request(response: Response) -> Response:
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        response.headers.add(
+            "Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+        )
+        response.headers.add("Access-Control-Allow-Headers", "x-csrf-token")
+        response.headers.add("Access-Control-Allow-Headers", "Content-Type")
+        # response.access_control_allow_headers = "Origin, Content-Type"
+        # "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+        return response
 
-    from src.currency.currency_routes import currency_routes
-    from src.docs.docs_routes import docs_routes
-    from src.qa.qa_routes import qa_routes
-    app.register_blueprint(currency_routes)
-    app.register_blueprint(docs_routes)
-    app.register_blueprint(qa_routes)
     return app
-
-# @app.before_first_request
-# @with_appcontext
-# def create_tables():
-#    db.create_all()
-
-"""
-
-app.config["OIDC_CLIENT_SECRETS"] = "client_secrets.json"
-app.config["OIDC_COOKIE_SECURE"] = False
-app.config["OIDC_CALLBACK_ROUTE"] = "/oidc/callback"
-app.config["OIDC_SCOPES"] = ["openid", "email", "profile"]
-app.config["SECRET_KEY"] = "super secret"
-oidc = OpenIDConnect(app)
-# app.config["SECRET_KEY"] = "{{ LONG_RANDOM_STRINGS }}"
-# okta_client = UsersClient("{{ OKTA_ORG_URL }}", "{{ OKTA_AUTH_TOKEN }}")
-okta_client = UsersClient(
-    {
-        "orgUrl": "https://dev-73352242.okta.com/",
-        "token": "00wypJxwIxxILACoZp3bnbxPFHh34UN1khVKFdN55e",
-    }
-)
-# okta_client = UsersClient(
-#    os.environ.get("OKTA_ORG_URL"), os.environ.get("OKTA_AUTH_TOKEN")
-# )
-# okta_client = UsersClient(app.config["OKTA_ORG_URL"], app.config["OKTA_AUTH_TOKEN"])
-
-# app.config["DEBUG"] = DEBUG
-
-
-@app.before_request
-def inject_user_into_each_request():
-    if oidc.user_loggedin:
-        g.user = okta_client.get_user(oidc.user_getfield("sub"))
-    else:
-        g.user = None
-    print(g.user)
-
-
-# @app.route("/greet")
-# @oidc.require_login
-def greet():
-    time = datetime.now().hour
-    if time >= 0 and time < 12:
-        return "Good Morning!"
-    if time >= 12 and time < 16:
-        return "Good Afternoon!"
-
-    return "Good Evening!"
-
-
-@app.route("/login")
-@oidc.require_login
-def login():
-    return redirect(url_for(".greet"))
-
-
-@app.route("/logout")
-def logout():
-    oidc.logout()
-    return redirect(url_for(".index"))
-
-"""
-

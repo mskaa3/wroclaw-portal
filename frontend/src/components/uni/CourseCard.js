@@ -2,15 +2,8 @@ import React from 'react';
 
 import { Container, Card, Col, Row } from 'react-bootstrap';
 import '../../css/index.css';
-//import UnivercityContext from '../../context/uni/UnivercityContext';
 
 const CourseCard = ({ course }) => {
-  // const { unis, dispatch, searchUniResults, city, level, discipline } =
-  //  useContext(UnivercityContext);
-
-  //const [courses, setCourses] = useState([]);
-  //const { id } = useParams();
-
   return (
     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt-3 mb-3">
       <Card border="info" className="w-100">

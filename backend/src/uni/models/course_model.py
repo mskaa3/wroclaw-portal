@@ -4,8 +4,6 @@ from main import db, ma
 from sqlalchemy import Column, ForeignKey, Integer, String, Table
 from sqlalchemy.orm import relationship
 
-# from src.uni.models.discipline_model import Discipline
-
 
 courses_disciplines = Table(
     "courses_disciplines",
@@ -25,53 +23,25 @@ class Course(db.Base):
 
     course_id = Column(Integer, primary_key=True)
     course_uid = Column(String(30))
-    # course_code = Column(String(10))
     course_name = Column(String(64), index=True)
     course_isced_name = Column(String(64))
     level = Column(Integer, ForeignKey("course_levels.course_level_id"))
     title = Column(Integer, ForeignKey("course_titles.course_title_id"))
     form = Column(Integer, ForeignKey("course_forms.course_form_id"))
-
     language = Column(String(10), ForeignKey("course_languages.course_language_id"))
     semesters_number = Column(Integer)
     ects = Column(Integer)
     main_discipline = Column(String(10))
-    # institution = Column(String(64), ForeignKey("unis.uni_id"))
     institution = Column(String(64), ForeignKey("unis.uni_uid"))
     course_disciplines = relationship(
         "Discipline", secondary=courses_disciplines, backref="courses", lazy="dynamic"
     )
-    """
-    def __init__(
-        self,
-        study_uid,
-        course_id,
-        study_name,
-        level,
-        profile,
-        title,
-        forms,
-        main_discipline,
-        institutions,
-    ):
-        self.study_uid = study_uid
-        self.course_id = course_id
-        self.study_name = study_name
-        self.level = level
-        self.profile = profile
-        self.title = title
-        self.forms = forms
-        self.main_discipline = main_discipline
-        self.institutions = institutions
-    """
 
     def __init__(self, course: dict):
         self.course_uid = course.get("course_uid")
-        # self.course_id = study.get("course_id")
         self.course_name = course.get("course_name")
         self.course_isced_name = course.get("course_isced_name")
         self.level = course.get("level")
-        # self.profile = course.get("profile")
         self.title = course.get("title")
         self.form = course.get("form")
         self.language = course.get("language")
@@ -118,20 +88,6 @@ class CourseSchema(ma.Schema):
         # sqla_session = db.session
         # load_instance = True
         # fields = ["level"]
-        """
-        fields = (
-            "study_id",
-            "study_uid",
-            "course_id",
-            "study_name",
-            "level",
-            "profile",
-            "title",
-            "forms",
-            "main_discipline",
-            "institutions",
-        )
-        """
 
 
 course_schema = CourseSchema()

@@ -107,102 +107,48 @@ class CourseDao:
     @staticmethod
     def filter_courses(params: dict) -> List[Course]:
         """method to filter courses using parameners from query string"""
-        # query = db.session.query(Foo).join(Bar)
+
         print("params from query")
         print(params)
-        print(params["uni_uid"])
 
-        return (
-            # db.session.query(Course, courses_disciplines, Discipline)
+        query = (
             Course.query.join(CourseLanguage)
             .join(CourseForm)
             .join(CourseTitle)
             .join(CourseLevel)
-            # .join(CourseLanguage, Course.language==CourseLanguage.course_language_id)
-            # .join(CourseForm,Course.form==CourseForm.course_form_id)
-            # .join(CourseTitle,Course.title==CourseForm.course_form_id)
-            .filter(
-                and_(
+            .filter(Course.institution == params["uni_uid"])
+        )
+        # .join(CourseLanguage, Course.language==CourseLanguage.course_language_id)
+        # .join(CourseForm,Course.form==CourseForm.course_form_id)
+        # .join(CourseTitle,Course.title==CourseForm.course_form_id)
+
+        # .with_entities(
+        #    Course.course_id,
+        #    Course.course_name,
+        #    Course.main_discipline,
+        #    Course.semesters_number,
+        #    Course.ects,
+        #    CourseForm.course_form_name,
+        #    CourseLanguage.course_language_name,
+        #    CourseTitle.course_title_name,
+        # )
+
+        if "search" in params:
+            search = "%{}%".format(params["search"])
+            query = query.filter(
+                # Course.course_name == params["search"],
+                Course.course_name.ilike(search)
+            )
+        else:
+            if "discipline_name" in params:
+                query = query.filter(
                     Course.main_discipline == params["discipline_name"],
+                )
+            if "level" in params:
+                query = query.filter(
                     Course.level == params["level"],
-                    Course.institution == params["uni_uid"],
                 )
-            )
-            # .with_entities(
-            #    Course.course_id,
-            #    Course.course_name,
-            #    Course.main_discipline,
-            #    Course.semesters_number,
-            #    Course.ects,
-            #    CourseForm.course_form_name,
-            #    CourseLanguage.course_language_name,
-            #    CourseTitle.course_title_name,
-            # )
-            .all()
-        )
-        """
-        return Course.query.filter(
-            Course.course_disciplines.any(
-                Discipline.discipline_name == params["discipline_name"]
-            )
-        ).all()
-        """
-        """
-        return (
-            Course.query.join(courses_disciplines)
-            .join(Discipline)
-            .filter(
-                (courses_disciplines.c.course_id_joint == Course.course_id)
-                & (
-                    courses_disciplines.c.discipline_id_joint
-                    == Discipline.discipline_id
-                )
-            )
-            .join(Uni, Uni.uni_uid == Course.institution)
-            .filter(
-                Uni.city
-                == params["city"]
-                # Course.level == params["level"],
-                # Discipline.discipline_name.like("%"+ params["discipline_name"] + "%"),
-            )
-            .all()
-        )
-        """
-        # filt = UniFilter(data=params)
-        # q = filt.apply()
 
-        # query = db.session.query(Uni).join(Course).join(Discipline)
-        filter_dict = {
-            "city": {"model": "Uni", "field": "city", "op": "==", "value": ""},
-            "discipline_name": {
-                "model": "Discipline",
-                "field": "discpline_name",
-                "op": "ilike",
-                "value": "",
-            },
-            "level": {"model": "Course", "field": "level", "op": "==", "value": ""},
-        }
-        filter_spec = []
-        for key, value in params.items():
-            if value and value != "":
-                filter_dict[key]["value"] = value
-                filter_spec.append(filter_dict[key])
-        print("filter_spec")
-        print(filter_spec)
+        result = query.all()
 
-        """
-        filter_spec = [
-            {"model": "Uni", "field": "city", "op": "==", "value": "name_1"},
-            {
-                "model": "Discipline",
-                "field": "discpline_name",
-                "op": "ilike",
-                "value": 5,
-            },
-            {"model": "Course", "field": "level", "op": "==", "value": 5},
-        ]
-        """
-
-        # filtered_query = apply_filters(query, filter_spec)
-
-        # result = filtered_query.all()
+        return result

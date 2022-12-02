@@ -43,9 +43,6 @@ class CourseLevelSchema(ma.Schema):
 
     class Meta:
         model = CourseLevel
-        # sqla_session = db.session
-        # load_instance = True
-        # fields = ["level"]
 
 
 course_level_schema = CourseLevelSchema()

@@ -1,8 +1,8 @@
 """thread table shema"""
 from main import db, ma
 from sqlalchemy import Column, Integer, String, ForeignKey, Text, DateTime, Boolean
-from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
+from src.user.user_model import UserShortSchema, user_short_schema
 
 
 class Thread(db.Base):
@@ -31,6 +31,10 @@ class Thread(db.Base):
 
     # def json(self):
     #  return {'name':self.name,...}
+
+    def to_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
     def __repr__(self):
         """
         String representation of the thread.
@@ -83,5 +87,28 @@ class ThreadSchema(ma.Schema):
         # load_instance = True
 
 
+class ThreadInfoSchema(ma.Schema):
+    """schema for Thread"""
+
+    user = ma.Nested(UserShortSchema)
+
+    class Meta:
+        model = Thread
+        # sqla_session = db.session
+        # load_instance = True
+
+    fields = (
+        "tread_id",
+        "tread_name",
+        "thread_content",
+        "topic",
+        "tread_creator",
+        "tread_created_at",
+        "user",
+    )
+    ordered = True
+
+
 thread_schema = ThreadSchema()
 threads_schema = ThreadSchema(many=True)
+thread_info_schema = ThreadInfoSchema()

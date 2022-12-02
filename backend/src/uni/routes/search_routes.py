@@ -1,5 +1,4 @@
-"""Voivodeship routes in the WroclawPortal API.
-Used for retrieving, adding, updating, and deleting voivodeships ."""
+"""Search routes in the WroclawPortal API."""
 from flask_restful import Resource, fields, marshal_with
 from flask import Response, request
 from flask.json import jsonify
@@ -23,13 +22,19 @@ class SearchUniApi(Resource):
         "course_id": fields.Integer,
         "course_name": fields.String,
         "course_level_name": fields.String,
-        "level_name": fields.String,
+        # "level_name": fields.String,
         "discipline_name": fields.String,
         "main_discipline": fields.String,
         # "uni_id": fields.Integer,
         "uni_uid": fields.String,
         "uni_name": fields.String,
         "city": fields.String,
+        "street": fields.String,
+        "building": fields.String,
+        "postal_code": fields.String,
+        "uni_email": fields.String,
+        "phone_number": fields.String,
+        "www": fields.String,
     }
 
     @marshal_with(response_fields)
@@ -43,25 +48,14 @@ class SearchUniApi(Resource):
         error = None
         query = request.args
         if query and query != "":
-            # print("args")
-            # print(type(query))
+            print("query from request")
             print(query)
         else:
+            # ?? or return all without filtering
             error = "Empty query string."
 
         result = UniDao.filter_unis(query)
         return result
-        """
-        parser = reqparse.RequestParser()
-        parser.add_argument("discipline_id", type=str)
-        parser.add_argument("course_level_id", type=int)
-        parser.add_argument("city", type=str)
-
-        args = parser.parse_args()
-        print("parse")
-        # print(type(args))
-        print(args["city"])
-        """
 
         def post(self):
             return {}
@@ -89,6 +83,7 @@ class SearchCourseApi(Resource):
         "ects": fields.Integer,
         # "discipline_name": fields.String,
         "main_discipline": fields.String,
+        # "city": fields.String,
     }
 
     @marshal_with(response_fields)
@@ -102,8 +97,7 @@ class SearchCourseApi(Resource):
         error = None
         query = request.args
         if query and query != "":
-            print("args")
-            print(type(query))
+            print("args.............................")
             print(query)
         else:
             error = "Empty query string."

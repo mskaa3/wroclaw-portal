@@ -4,6 +4,7 @@ import { Navbar, Container, Nav } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import '../css/index.css';
 import Image from 'react-bootstrap/Image';
+import UserMenu from './auth/UserMenu';
 
 const Header = ({ title }) => {
   return (
@@ -63,7 +64,9 @@ const Header = ({ title }) => {
             </Nav>
           </Navbar.Collapse>
         </Container>
+        <UserMenu/>
       </Navbar>
+      
     </>
     
   );

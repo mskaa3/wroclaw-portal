@@ -10,3 +10,14 @@ root.render(
     <App />
   </React.StrictMode>
 );
+
+/*
+import { render } from 'react-dom'; // add this
+
+render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById('root')
+);
+*/

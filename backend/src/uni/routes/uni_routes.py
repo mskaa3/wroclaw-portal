@@ -494,11 +494,11 @@ class CitiesApi(Resource):
         :return: A response object for the GET API request.
         """
         cities: list = UniDao.get_cities()
-        print(";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;")
-        print(cities)
-        print(";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;")
-        res = cities_schema.dump(cities)
-        print(res)
+        # print(";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;")
+        # print(cities)
+        # print(";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;")
+        # res = cities_schema.dump(cities)
+        # print(res)
 
         return cities
 

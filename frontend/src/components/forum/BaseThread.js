@@ -1,24 +1,131 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import {
+  formatDistanceToNow,
+  parseISO,
+  toDate,
+  intervalToDuration,
+  formatDuration,
+} from 'date-fns';
+//import { toDate, format } from 'date-fns-tz';
 import { Link } from 'react-router-dom';
 import { Segment, Grid, Icon } from 'semantic-ui-react';
 import Avatar from './Avatar';
 import './style.css';
+import axios from 'axios';
 
 const BaseThread = ({ thread }) => {
-  let {
-    id,
-    name,
+  const {
+    thread_id,
+    thread_name,
     pinned,
-    creator,
+    thread_creator_name,
+    thread_created_at,
     avatar,
-    naturaltime,
-    replies_count,
+    //naturaltime,
+    post_count,
     last_activity,
   } = thread;
 
-  name = name.length > 57 ? name.substring(0, 55) + '...' : name;
+  const thread_name_corrected =
+    thread_name.length > 57
+      ? thread_name.substring(0, 55) + '...'
+      : thread_name;
+
+  /*
+  console.log(
+    format(toDate(last_activity.post_created_at)),
+    'yyyy/MM/dd kk:mm:ss'
+  );
+*/
+  const post_date_humanized = formatDuration(
+    intervalToDuration({
+      start: toDate(parseISO(last_activity.post_created_at)),
+      end: Date.now(),
+    }),
+    { format: ['years', 'months', 'days', 'hours', 'minutes'] }
+  );
+  //console.log(post_date_humanized);
+
+  const thread_date_humanized = formatDuration(
+    intervalToDuration({
+      start: toDate(parseISO(thread_created_at)),
+      end: Date.now(),
+    }),
+    { format: ['years', 'months', 'days', 'hours', 'minutes'] }
+  );
 
   let lastActivity = last_activity ? (
+    <div className="forum-row">
+      <Avatar
+        className="forum-avatar"
+        avatar={last_activity.avatar}
+        centered={false}
+        link={`/user/${last_activity.post_creator_name}`}
+      />
+      <div className="forum-column">
+        <div className="forum-name">{last_activity.post_creator_name}</div>
+        <div className="forum-meta">
+          <Link to={`/user/${last_activity.post_creator_name}`}>
+            <Icon name="user" />
+            {last_activity.post_creator_name}
+          </Link>
+          <b> - {post_date_humanized} ago</b>
+        </div>
+      </div>
+    </div>
+  ) : (
+    <div className="forum-text forum-vertical">{'—  No activity —'}</div>
+  );
+
+  return (
+    <Segment vertical key={thread_id}>
+      <Grid textAlign="left" padded="horizontally">
+        <Grid.Column width={7}>
+          <Grid.Row>
+            <div className="forum-row">
+              <Avatar
+                className="forum-avatar"
+                avatar={avatar}
+                centered={false}
+                link={`/user/${thread_creator_name}`}
+              />
+              <div className="forum-column">
+                <div>
+                  <Icon name={pinned ? 'pin' : 'comment alternate outline'} />
+                  <Link to={`/forum/threads/${thread.thread_id}`}>
+                    {thread_name_corrected}
+                  </Link>
+                </div>
+                <div className="forum-meta">
+                  <Link to={`/user/${last_activity.post_creator_name}`}>
+                    <Icon name="user" />
+                    {last_activity.post_creator_name}
+                  </Link>
+                  <b> - {thread_date_humanized} ago</b>
+                </div>
+              </div>
+            </div>
+          </Grid.Row>
+        </Grid.Column>
+        <Grid.Column width={3}>
+          <div className="forum-column forum-stats forum-vertical">
+            <div style={{ paddingBottom: '5px' }}>
+              <Icon name="comment outline" />
+              {post_count}
+              {post_count > 1 ? ' replies' : ' reply'}
+            </div>
+          </div>
+        </Grid.Column>
+        <Grid.Column width={6}>{lastActivity}</Grid.Column>
+      </Grid>
+    </Segment>
+  );
+};
+
+export default BaseThread;
+
+/*
+let lastActivity = last_activity ? (
     <div className="forum-row">
       <Avatar
         className="forum-avatar"
@@ -27,13 +134,13 @@ const BaseThread = ({ thread }) => {
         link={`/user/${last_activity.username}`}
       />
       <div className="forum-column">
-        <div className="forum-name">{last_activity.name}</div>
+        <div className="forum-name">{last_activity.thread_name}</div>
         <div className="forum-meta">
           <Link to={`/user/${last_activity.username}`}>
             <Icon name="user" />
             {last_activity.username}
           </Link>
-          <b>{`  —  ${last_activity.naturaltime}`}</b>
+          <b>{`  —  ${last_activity.post_cretated_at}`}</b>
         </div>
       </div>
     </div>
@@ -51,15 +158,15 @@ const BaseThread = ({ thread }) => {
                 className="forum-avatar"
                 avatar={avatar}
                 centered={false}
-                link={`/user/${creator}`}
+                link={`/user/${last_activity.post_creator_name}`}
               />
               <div className="forum-column">
                 <div>
                   <Icon name={pinned ? 'pin' : 'talk outline'} />
-                  <Link to={`/thread/${id}`}>{name}</Link>
+                  <Link to={`/thread/${thread_id}`}>{thread_name}</Link>
                 </div>
                 <div className="forum-meta">
-                  <Link to={`/user/${creator}`}>
+                  <Link to={`/user/${last_activity.post_creator_name}`}>
                     <Icon name="user" />
                     {creator}
                   </Link>
@@ -73,8 +180,8 @@ const BaseThread = ({ thread }) => {
           <div className="forum-column forum-stats forum-vertical">
             <div style={{ paddingBottom: '5px' }}>
               <Icon name="comment outline" />
-              {replies_count}
-              {replies_count > 1 ? ' replies' : ' reply'}
+              {post_count}
+              {post_count > 1 ? ' replies' : ' reply'}
             </div>
           </div>
         </Grid.Column>
@@ -83,5 +190,4 @@ const BaseThread = ({ thread }) => {
     </Segment>
   );
 };
-
-export default BaseThread;
+*/
