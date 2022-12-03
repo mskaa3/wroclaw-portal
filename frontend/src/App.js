@@ -42,6 +42,7 @@ const App = () => {
                   <Route exact path="/uni" element={<UniversityScreen />} />
                   <Route exact path="/news" element={<NewsScreen />} />
                   <Route exact path="/map" element={<MapScreen />} />
+                  <Route exact path="/" element={<HomeContentScreen />} />
                   <Route element={<ProtectedRoute />}>
                     <Route exact path="/forum" element={<ForumScreen />} />
                     <Route
