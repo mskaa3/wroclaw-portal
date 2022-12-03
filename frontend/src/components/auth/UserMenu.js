@@ -4,12 +4,11 @@ import GuestNav from './GuestNav';
 import UserNav from './UserNav';
 
 const UserMenu = () => {
-  const { isLogin, isAuthenticated, user, isLoading } = useContext(AuthContext);
+  const { isAuthenticated, isLoading } = useContext(AuthContext);
 
   if (isAuthenticated) {
     return (
       <UserNav
-        user={user}
         //logout={logout}
         //showEditProfile={showEditProfile}
         isLoading={isLoading}

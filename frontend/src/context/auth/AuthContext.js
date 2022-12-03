@@ -5,7 +5,6 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const initialState = {
-    //isLogin: null,
     isAuthenticated: false,
     user: null,
     isLoading: false,

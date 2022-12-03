@@ -1,16 +1,8 @@
 import React, { useState } from 'react';
-import {
-  Form,
-  Icon,
-  Message,
-  Button,
-  Checkbox,
-  Input,
-} from 'semantic-ui-react';
+import { Form, Icon, Message, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import StatusMessage from '../forum/StatusMessage';
 import './style.css';
-import Modal from './Modal';
 import { registerUser } from '../../context/auth/AuthActions';
 
 const Register = (props) => {

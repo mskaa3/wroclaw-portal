@@ -4,11 +4,7 @@ import StatusMessage from './StatusMessage';
 import TopicCard from './TopicCard';
 import './style.css';
 
-//export default class TopicList extends Component {
-//  render() {
 const TopicList = ({ isLoading, error, topics }) => {
-  //const { isLoading, error, forums } = this.props;
-
   if (error || !topics || isLoading || topics.length === 0) {
     return (
       <StatusMessage
@@ -25,10 +21,6 @@ const TopicList = ({ isLoading, error, topics }) => {
     );
   }
 
-  //const topicCardList = forums.map((topic) => {
-  //  return <TopicCard topic={topic} />;
-  //});
-
   return (
     <div className="homeContainer">
       <Segment.Group className="home-list ">
@@ -38,13 +30,6 @@ const TopicList = ({ isLoading, error, topics }) => {
       </Segment.Group>
     </div>
   );
-  /*      
-    return (
-      <div className="homeContainer">
-        <Segment.Group className="home-list">{topicCardList}</Segment.Group>
-      </div>
-    );
-*/
 };
 
 export default TopicList;

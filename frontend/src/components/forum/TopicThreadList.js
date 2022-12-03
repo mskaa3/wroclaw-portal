@@ -1,23 +1,11 @@
 import React from 'react';
-
 import { Segment } from 'semantic-ui-react';
 import StatusMessage from './StatusMessage';
-
 import './style.css';
 
-//import {
-//  createThreadSave,
-// createThreadToggle,
-//  fetchForum,
-//  createThread,
-//} from '../../actions';
-//import ThreadList from '../../components/threadlist';
-//import NewThread from '../../components/newthread';
 import BaseThread from './BaseThread';
 
 const TopicThreadList = ({ isLoading, error, threads, topic }) => {
-  //const {isLoading, error, threads} = this.props;
-
   if (error || !threads || isLoading || threads.length === 0) {
     return (
       <StatusMessage

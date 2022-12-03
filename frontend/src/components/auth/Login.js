@@ -1,15 +1,15 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Form, Icon, Message, Button } from 'semantic-ui-react';
 import StatusMessage from '../forum/StatusMessage';
 import AuthContext from '../../context/auth/AuthContext';
-import { loginUser, logout } from '../../context/auth/AuthActions';
+import { loginUser } from '../../context/auth/AuthActions';
 import './style.css';
 
-const Login = (props) => {
+const Login = ({ showRegister }) => {
   const { dispatch, isAuthenticated, isLoading, error } =
     useContext(AuthContext);
-  const { showRegister } = props;
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -30,9 +30,8 @@ const Login = (props) => {
     return isFormValid;
   };
 
-  //const handleSubmit = async (e) => {
-  const handleSubmit = async () => {
-    //e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     if (isFormValid()) {
       const data = {
         user_name: values.username,
@@ -43,8 +42,7 @@ const Login = (props) => {
 
       try {
         const response = await dispatch(loginUser(dispatch, data));
-        console.log('response');
-        console.log(response);
+
         if (!response.user) return;
         //props.history.push('/dashboard') //navigate to dashboard on success
         if (location.state?.from) {
