@@ -66,7 +66,7 @@ class UserIdApi(Resource):
             return Response(response, mimetype="application/json", status=200)
         """
 
-    @marshal_with(resource_fields)
+    # @marshal_with(resource_fields)
     def put(self, user_id):
         """
         Update an existing user.
@@ -111,17 +111,17 @@ class UserIdApi(Resource):
                 updated_user_dict: dict = updated_user.to_dict()
                 print("updated user dict")
                 print(updated_user_dict)
-                response = jsonify(
-                    {
-                        "self": f"/users/{user_id}",
-                        "updated": True,
-                        "user": updated_user_dict,
-                    }
-                )
+                return {
+                    "self": f"/users/{user_id}",
+                    "updated": True,
+                    # "user": updated_user_dict,
+                    "user": updated_user.json(),
+                }
+
                 # response.status_code = 200
                 # return response
                 # return Response(response, mimetype="application/json", status=200)
-                return updated_user_dict
+                # return updated_user_dict
                 # return Response(
                 #    updated_user_dict, mimetype="application/json", status=200
                 # )

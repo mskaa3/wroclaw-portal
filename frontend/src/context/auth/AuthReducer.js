@@ -1,10 +1,5 @@
 const authReducer = (state, action) => {
   switch (action.type) {
-    //case 'SET_IS_LOGIN':
-    //  return {
-    //    ...state,
-    //    isLogin: action.payload,
-    //  };
     case 'SET_IS_AUTHENTICATED':
       return {
         ...state,
@@ -34,10 +29,10 @@ const authReducer = (state, action) => {
         isAuthenticated: false,
         token: null,
         error: null,
-        //isEditing: false,
-        //editError: null,
-        //editSuccess: false,
-        //registerError: false,
+        isEditing: false,
+        editError: null,
+        editSuccess: false,
+        registerError: false,
         modalType: null,
         modalProps: {},
       };
@@ -98,10 +93,7 @@ const authReducer = (state, action) => {
         isEditing: false,
         editError: null,
         editSuccess: true,
-        //avatar: action.avatar || state.avatar,
-        //name: action.name || state.name,
-        //?? or action.payload.user
-        user: action.payload,
+        user: action.payload.user,
       };
     case 'EDIT_PROFILE_FAILURE':
       return {

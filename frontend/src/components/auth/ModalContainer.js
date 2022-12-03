@@ -5,7 +5,7 @@ import EditProfileModal from './EditProfileModal';
 import AuthContext from '../../context/auth/AuthContext';
 
 const ModalContainer = () => {
-  const { modalType, modalProps } = useContext(AuthContext);
+  const { modalType } = useContext(AuthContext);
 
   switch (modalType) {
     case 'REGISTER':

@@ -15,28 +15,18 @@ import { editProfile } from '../../context/auth/AuthActions';
 import StatusMessage from '../forum/StatusMessage';
 import './style.css';
 
-const EditProfile = (props) => {
+const EditProfile = ({ isLoading, error, editSuccess }) => {
   const { dispatch, user } = useContext(AuthContext);
-  const { isLoading, error, editSuccess } = props;
-  //const { user } = useLocation();
-  //const { user } = state;
-  console.log('user in edit profile');
-  console.log(user);
-  const acceptedFileTypes =
-    'image/x-png,image/png,image/jpg,image/jpeg,image/gif,image/svg+xml';
 
-  const [avatar, setAvatar] = useState(
-    //null
-    user.avatar
-    //|| 'https://i.imgur.com/7o5cwt8.png'
-  );
+  console.log('initial user data in edit profile');
+  console.log(user);
+
+  const [avatar, setAvatar] = useState(user.avatar);
   const [imgSrc, setImgSrc] = useState(null);
   const [values, setValues] = useState({
     //name: name,
     newPassword: '',
     currentPassword: '',
-    //avatar: user.avatar,
-    //avatar: '',
     avatarFile: null,
     avatarError: null,
     avatarUploading: false,
@@ -76,19 +66,17 @@ const EditProfile = (props) => {
     setValues({ ...values, avatarFile: acceptedFiles[0] });
   }, []);
   */
-  const handleEditProfile = () => {
+  const handleEditProfile = async () => {
     const password =
       values.newPassword !== '' ? values.newPassword : values.currentPassword;
     const newProfile = {
       user_name: user.user_name,
       user_email: user.user_email,
       password: password,
-      //avatar: values.avatar,
       avatar: avatar,
     };
-    console.log('newProfile');
-    console.log(newProfile);
-    editProfile(dispatch, newProfile, user.user_id);
+
+    await dispatch(editProfile(dispatch, newProfile, user.user_id));
 
     setValues({ ...values, currentPassword: '' });
   };
@@ -97,6 +85,8 @@ const EditProfile = (props) => {
     if (values.avatarUploading || values.avatarFile == null) return;
     console.log('in use effect');
     console.log(avatar);
+    console.log('updated values');
+    console.log(values);
     handleEditProfile();
   }, [avatar]);
 
@@ -115,25 +105,18 @@ const EditProfile = (props) => {
         imageUploadApi(avatarFile)
           .then((response) => {
             console.log('response from imageUpload');
-            console.log(response);
             console.log(response.data);
             const new_avatar = response.data.secure_url;
-            console.log('new avatar');
-            console.log(new_avatar);
-            //user.avatar = new_avatar;
+
             setValues({
               ...values,
-              //avatar: response.data.secure_url,
-              //avatar: new_avatar,
               avatarUploading: false,
             });
 
             setAvatar(new_avatar);
-            console.log('updated values');
-            console.log(values);
-            //handleEditProfile();
           })
           .catch((error) => {
+            console.log('error in submit');
             console.log(error);
             setValues({
               ...values,
@@ -157,9 +140,8 @@ const EditProfile = (props) => {
       type="modal"
     />
   );
-  const avatarURL = values.avatarFile
-    ? values.avatarFile.preview
-    : values.avatar;
+
+  const avatarURL = values.avatarFile ? values.avatarFile.preview : avatar;
 
   return (
     <div>
@@ -183,11 +165,7 @@ const EditProfile = (props) => {
                   />
                 </div>
               ) : (
-                <Dropzone
-                  onDrop={onImageDrop}
-                  multiple={false}
-                  accept={acceptedFileTypes}
-                >
+                <Dropzone onDrop={onImageDrop} multiple={false}>
                   {({ getRootProps, getInputProps }) => {
                     return (
                       <div {...getRootProps()}>
