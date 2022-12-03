@@ -18,3 +18,4 @@ instance/
 db.sqlite3
 *.sqbpro
 
+Pipfile.lock

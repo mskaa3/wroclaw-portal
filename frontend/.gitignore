@@ -28,3 +28,5 @@ yarn-error.log*
 .eslintcache
 __pycache__/
 *.pyc
+
+Pipfile.lock

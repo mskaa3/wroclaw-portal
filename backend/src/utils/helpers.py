@@ -1,13 +1,7 @@
 """helpers methods common fpr application"""
-# import urllib.request
 import sqlite3
 import json
-
-# install passlib
 from passlib.hash import pbkdf2_sha256 as sha256
-
-# import requests
-# from requests.exceptions import HTTPError
 from urllib.request import urlopen, Request
 from urllib.error import HTTPError, URLError
 import socket
@@ -23,7 +17,6 @@ def get_json_from_url(source: str):
     try:
         # with urlopen(source, timeout=100) as url:
         with urlopen(request, timeout=100) as response:
-            # print(response.status)
             result = json.load(response)
             return result
     except HTTPError as http_err:
@@ -42,7 +35,6 @@ def get_json_from_url(source: str):
 
 
 def sql_data_to_list_of_dicts(path_to_db, select_query):
-    # def sql_data_to_list_of_dicts(connection, select_query):
     """Returns data from an SQL query as a list of dicts."""
 
     try:
@@ -60,14 +52,12 @@ def sql_data_to_list_of_dicts(path_to_db, select_query):
 
 
 def sql_data_to_dict(path_to_db, select_query):
-    # def sql_data_to_list_of_dicts(connection, select_query):
     """Returns data from an SQL query as a list of dicts."""
     data = {}
     try:
         connection = sqlite3.connect(path_to_db)
-        # connection.row_factory = sqlite3.Row
         results = connection.execute(select_query).fetchall()
-        # unpacked = [{k: item[k] for k in item.keys()} for item in results]
+
         for row in results:
             data[row[0]] = row[1]
 
