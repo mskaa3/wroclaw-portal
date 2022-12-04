@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import Button from 'react-bootstrap/Button';
 import React from 'react';
 import Form from 'react-bootstrap/Form';
@@ -39,7 +40,7 @@ function QAform() {
       >
         <center>
           <div className="col-sm-6">
-            <Form.Group className="mb-3" controlId="question">
+            <Form.Group className="mb-3 mt-4" controlId="question" >
               <h3>Have any questions? We will try to answer them!</h3>
               <Form.Control
                 type="question"

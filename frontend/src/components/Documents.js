@@ -3,7 +3,6 @@ import { useEffect, useState ,useMemo} from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
 import {Col,Row} from 'react-bootstrap'
-import DocumentCard from '../components/DocumentCard';
 import axios from 'axios';
 import '../css/doc_component.css';
 
@@ -64,8 +63,8 @@ const Documents = () => {
     <Row>
       
       <Col lg={3} md={6} sm={10} xs={10} >
-      <h2>Categories</h2>
-      <ListGroup variant="flush active"  className='line flex-column align-items-start active' 
+      
+      <ListGroup variant="flush active"  className='line flex-column align-items-start active mt-5' 
       value={categories} >
          {categories.map((category_arr)=>{
           return (
