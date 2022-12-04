@@ -32,7 +32,7 @@ class Course(db.Base):
     semesters_number = Column(Integer)
     ects = Column(Integer)
     main_discipline = Column(String(10))
-    institution = Column(String(64), ForeignKey("unis.uni_uid"))
+    institution = Column(String(30), ForeignKey("unis.uni_uid"))
     course_disciplines = relationship(
         "Discipline", secondary=courses_disciplines, backref="courses", lazy="dynamic"
     )

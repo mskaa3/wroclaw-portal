@@ -1,8 +1,22 @@
 """users table schema"""
 from main import db, ma
-from sqlalchemy import Column, Integer, String, ForeignKey, Text, DateTime, Boolean
+from sqlalchemy import (
+    Column,
+    Integer,
+    String,
+    ForeignKey,
+    Text,
+    DateTime,
+    Boolean,
+    Enum,
+)
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
+
+
+class Role(Enum):
+    USER = "User"
+    ADMIN = "Admin"
 
 
 class User(db.Base):
@@ -14,6 +28,7 @@ class User(db.Base):
     user_email = Column(String(64), unique=True, nullable=False)
     password = Column(String(100), nullable=False)
     avatar = Column(Text)
+    # role = Column(Enum(Role))
     # created_on=Column(DateTime(timezone=True), server_default=func.now())
     # last_login=Column(DateTime(timezone=True), onupdate=func.now())
     threads = relationship("Thread", backref="tread", lazy="dynamic")
