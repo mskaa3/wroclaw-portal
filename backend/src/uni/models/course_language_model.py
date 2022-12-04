@@ -8,7 +8,6 @@ class CourseLanguage(db.Base):
     __tablename__ = "course_languages"
 
     course_language_id = Column(String(10), primary_key=True)
-
     course_language_name = Column(String(64), index=True, unique=True)
 
     # course = relationship("Course", backref="courses")
