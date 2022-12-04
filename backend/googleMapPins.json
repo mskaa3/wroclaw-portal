@@ -1,0 +1,354 @@
+[
+  {
+    "id": "pwrPosition",
+    "cat": "uni",
+    "position": {
+      "lat": 51.1077,
+      "lng": 17.0625
+    }
+  },
+  {
+    "id": "uniOfWroclaw",
+    "cat": "uni",
+    "position": {
+      "lat": 51.114,
+      "lng": 17.0345
+    }
+  },
+  {
+    "id": "uniOfEconomics",
+    "cat": "uni",
+    "position": {
+      "lat": 51.0901,
+      "lng": 17.0278
+    }
+  },
+  {
+    "id": "uniOfMedical",
+    "cat": "uni",
+    "position": {
+      "lat": 51.1089,
+      "lng": 17.0689
+    }
+  },
+  {
+    "id": "uniOfEnvironment",
+    "cat": "uni",
+    "position": {
+      "lat": 51.1114,
+      "lng": 17.0643
+    }
+  },
+  {
+    "id": "uniOfMilitary",
+    "cat": "uni",
+    "position": {
+      "lat": 51.1501,
+      "lng": 17.0586
+    }
+  },
+  {
+    "id": "uniOfArt",
+    "cat": "uni",
+    "position": {
+      "lat": 51.11139,
+      "lng": 17.04361
+    }
+  },
+  {
+    "id": "uniOfLogistics",
+    "cat": "uni",
+    "position": {
+      "lat": 51.141261495243285,
+      "lng": 17.071594869314776
+    }
+  },
+  {
+    "id": "uniOfFilology",
+    "cat": "uni",
+    "position": {
+      "lat": 51.118106724596146,
+      "lng": 17.04895667616702
+    }
+  },
+  {
+    "id": "uniOfMusic",
+    "cat": "uni",
+    "position": {
+      "lat": 51.111224453329754,
+      "lng": 17.02138369445129
+    }
+  },
+  {
+    "id": "wroclawMainHall",
+    "cat": "gov",
+    "position": {
+      "lat": 51.109978082186494,
+      "lng": 17.04956507875505
+    }
+  },
+  {
+    "id": "cityHall2",
+    "cat": "gov",
+    "position": {
+      "lat": 51.101152435949345,
+      "lng": 17.026801842293917
+    }
+  },
+  {
+    "id": "cityTaxesDowntown",
+    "cat": "gov",
+    "position": {
+      "lat": 51.10275332891993, 
+      "lng": 17.02488917097893
+    }
+  },
+  {
+    "id": "cityHallMiejski",
+    "cat": "gov",
+    "position": {
+      "lat": 51.1009426284407,
+      "lng": 17.02863568587255
+    }
+  },
+  {
+    "id": "cityHallMiejskiSrodowiska",
+    "cat": "gov",
+    "position": {
+      "lat": 51.09377236323752,
+      "lng": 17.043265518137517
+    }
+  },
+  {
+    "id": "cityHallSkarbowyStareMiasto",
+    "cat": "gov",
+    "position": {
+      "lat": 51.11444639361292,
+      "lng": 17.012992792924866
+    }
+  },
+  {
+    "id": "registryOffice",
+    "cat": "gov",
+    "position": {
+      "lat": 51.11065340028338,
+      "lng": 17.02281940875343
+    }
+  },
+  {
+    "id": "urzondStatystyczny",
+    "cat": "gov",
+    "position": {
+      "lat": 51.108046136658366,
+      "lng": 17.036530975495708
+    }
+  },
+  {
+    "id": "urzondMiejskiSukiennice",
+    "cat": "gov",
+    "position": {
+      "lat": 51.110626655067996,
+      "lng": 17.031554550486476
+    }
+  },
+  {
+    "id": "urzondPodatkowOplat",
+    "cat": "gov",
+    "position": {
+      "lat": 51.11135632373723,
+      "lng": 17.03425778466875
+    }
+  },
+  {
+    "id": "urzondCentrumObslugiPodatnika",
+    "cat": "gov",
+    "position": {
+      "lat": 51.11139249881904,
+      "lng": 17.033997336826758
+    }
+  }, 
+  {
+    "id": "cityHallNowyTarg",
+    "cat": "gov",
+    "position": {
+      "lat": 51.11070641545415,
+      "lng": 17.037797845351403
+    }
+  },
+  {
+    "id": "marshallsOfiiceOfLowerSilesian",
+    "cat": "gov",
+    "position": {
+      "lat": 51.106958475214164,
+      "lng": 17.051051904775715
+    }
+  },
+  {
+    "id": "urzondObslugiMieszkanca",
+    "cat": "gov",
+    "position": {
+      "lat": 51.132953339425484,
+      "lng": 17.0642949472586
+    }
+  },
+  {
+    "id": "T17",
+    "cat": "dorm",
+    "position": {
+      "lat": 51.10359208916011,
+      "lng": 17.08627624298444
+    }
+  },
+  {
+    "id": "T19",
+    "cat": "dorm",
+    "position": {
+      "lat": 51.10320402842044,
+      "lng": 17.085586591414966
+    }
+  },
+  {
+    "id": "T15",
+    "cat": "dorm",
+    "position": {
+      "lat": 51.103173361495614, 
+      "lng": 17.084651096126912
+    }
+  },
+  {
+    "id": "T16",
+    "cat": "dorm",
+    "position": {
+      "lat": 51.1037401720442, 
+      "lng": 17.085051441933913
+    }
+  },
+  {
+    "id": "DomStudentckiRaj",
+    "cat": "dorm",
+    "position": {
+      "lat": 51.101160209658815, 
+      "lng": 17.099811639640407
+    }
+  },
+  {
+    "id": "StudentHousePrzegubowiec",
+    "cat": "dorm",
+    "position": {
+      "lat": 51.08925999920929, 
+      "lng": 17.025201090893578 
+    }
+  },
+  {
+    "id": "StudentHouseUniOfEcomonics",
+    "cat": "dorm",
+    "position": {
+      "lat": 51.0890583403556, 
+      "lng": 17.027733155275335 
+    }
+  },
+  {
+    "id": "StudentDepotWroclaw",
+    "cat": "dorm",
+    "position": {
+      "lat": 51.11263004256358, 
+      "lng": 16.995360888299302
+    }
+  },
+  {
+    "id": "Dwudziestolatka",
+    "cat": "dorm",
+    "position": {
+      "lat": 51.112542489812064, 
+      "lng": 17.06121896001355 
+    }
+  },
+  {
+    "id": "T2",
+    "cat": "dorm",
+    "position": {
+      "lat": 51.11352125795558, 
+      "lng": 17.063921600020738  
+    }
+  },
+  {
+    "id": "Slowianka",
+    "cat": "dorm",
+    "position": {
+      "lat": 51.11319558483506, 
+      "lng": 17.06444983669909  
+    }
+  },
+  {
+    "id": "Paranowiec",
+    "cat": "dorm",
+    "position": {
+      "lat": 51.113519349033, 
+      "lng": 17.065722462501057
+    }
+  },
+  {
+    "id": "Talizman",
+    "cat": "dorm",
+    "position": {
+      "lat": 51.113959110687006, 
+      "lng": 17.065450526620538 
+    }
+  },
+  {
+    "id": "Centaur",
+    "cat": "dorm",
+    "position": {
+      "lat": 51.11407519614128, 
+      "lng": 17.06604878555076
+    }
+  },
+  {
+    "id": "Olowek",
+    "cat": "dorm",
+    "position": {
+      "lat": 51.114136803402666, 
+      "lng": 17.06762381921705 
+    }
+  },
+  {
+    "id": "Zodiak",
+    "cat": "dorm",
+    "position": {
+      "lat": 51.1149669111241, 
+      "lng": 17.07073316984613 
+    }
+  },
+  {
+    "id": "Labirynt",
+    "cat": "dorm",
+    "position": {
+      "lat": 51.116058444049514, 
+      "lng": 17.07045498859532 
+    }
+  },
+  {
+    "id": "Azyl",
+    "cat": "dorm",
+    "position": {
+      "lat": 51.1120839557981, 
+      "lng": 17.069761272504657
+    }
+  },
+  {
+    "id": "Jubilatka",
+    "cat": "dorm",
+    "position": {
+      "lat": 51.11816648698661, 
+      "lng": 17.0731157965615
+    }
+  },
+  {
+    "id": "Blizniak",
+    "cat": "dorm",
+    "position": {
+      "lat": 51.11915372863997, 
+      "lng": 17.073696308115668
+    }
+  }
+]

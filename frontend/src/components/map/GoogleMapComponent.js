@@ -28,13 +28,13 @@ const GoogleMapComponent = (props) => {
             center={center}
             zoom={10}
           >
-            {props.markerList.map((pin) => {
-              if (props.pinCategories.includes(pin.cat.key))
+            {props.markerList?.map((pin) => {
+              if (props.pinCategories.includes(pin.cat))
                 return (
                   <Marker
                     id={pin}
                     position={pin.position}
-                    icon={pin.cat.icon}
+                    icon={props.rawPinCategories[pin.cat].icon}
                   />
                 );
             })}
