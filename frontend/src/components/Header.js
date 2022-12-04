@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React from 'react';
 import { Navbar, Container, Nav } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -7,7 +8,7 @@ import UserMenu from './auth/UserMenu';
 
 const Header = ({ title }) => {
   return (
-    <Navbar className="menu-back mb-5" expand="lg">
+    <Navbar className="menu-back mb-3" expand="lg" style={{ maxHeight: '50px' }}>
       <Container fluid>
         <Navbar.Brand as={Link} to="#b">
           {title}
@@ -16,8 +17,8 @@ const Header = ({ title }) => {
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav
-            className="ms-auto my-2 my-lg-0"
-            style={{ maxHeight: '100px' }}
+            className="ms-auto"
+            style={{ maxHeight: '50px' }}
             navbarScroll
           >
             <Nav.Link as={Link} to="/">
@@ -49,7 +50,7 @@ const Header = ({ title }) => {
             </Nav.Link>
 
             <Nav.Link as={Link} to="/qa">
-              <i className="fa-solid fa-clipboard-guestion"></i> Q&A
+            <i class="fa-sharp fa-solid fa-question"></i> Q&A
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>

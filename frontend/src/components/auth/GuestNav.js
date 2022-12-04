@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { useContext } from 'react';
 import Button from '../forum/Button';
 import AuthContext from '../../context/auth/AuthContext';
@@ -16,23 +17,23 @@ const GuestNav = () => {
 
   return (
     <div className="guestMenu">
-      <Button
+      <p
         className="btn-sign-in"
-        type="button"
+        style={{ opacity: 0.6}}
         onClick={handleLoginOnClick}
       >
         Login
-      </Button>
+      </p>
 
       <br />
 
-      <Button
+      <p
         className="btn-register"
-        type="button"
+        style={{ opacity: 0.6}}
         onClick={handleRegisterOnClick}
       >
         Register
-      </Button>
+      </p>
     </div>
   );
 };

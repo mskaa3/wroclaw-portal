@@ -5,7 +5,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 
 import Card from 'react-bootstrap/Card';
 import { CardImg } from 'react-bootstrap';
-
+import '../css/App.css';
 function HomeTextComponent() {
   return (
     
@@ -28,10 +28,10 @@ The uniqueness of the city is due in part to its long and entangled history. Sit
       </Card.Body>
 
        <Card.Body>
-        <Card.Title>Your first steps to move to Wrocław:</Card.Title>
+        <Card.Title className='title_list'>Your first steps to move to Wrocław:</Card.Title>
         
         <Card.Text>
-          <ListGroup variant="flush">
+          <ListGroup variant="flush" className='main_list'>
           <ListGroup.Item action href="/uni"> 1. Find yourself a university</ListGroup.Item>
           <ListGroup.Item action href="/docs"> 2. Learn about your legal stay</ListGroup.Item>
           <ListGroup.Item action href="/map"> 3. Get familiar with the city </ListGroup.Item>

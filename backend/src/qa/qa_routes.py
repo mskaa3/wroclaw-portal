@@ -1,8 +1,8 @@
 
 from flask import Blueprint, request, jsonify
 import time
-from model.retriever import Retriever
-from model.reader import Reader
+from .model.retriever import Retriever
+from .model.reader import Reader
 
 qa_routes = Blueprint("qa_routes", __name__)
 
