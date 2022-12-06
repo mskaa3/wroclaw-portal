@@ -31,6 +31,7 @@ sentence_model = SentenceTransformer("sentence-transformers/LaBSE")
 tokenizer = AutoTokenizer.from_pretrained(
     "bert-large-uncased-whole-word-masking-finetuned-squad"
 )
+
 jwt = JWTManager()
 
 
