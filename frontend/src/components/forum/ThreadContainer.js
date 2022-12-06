@@ -67,14 +67,14 @@ const ThreadContainer = () => {
       <Thread
         thread={currentThread}
         //id={thread_id}
-        isLoading={isLoading}
+        //isLoading={isLoading}
         //name={thread.thread_name}
         //content={thread.thread_content}
         //pinned={thread.pinned}
         //creator={thread.thread_creator}
         //createdAt={thread.thread_created_at}
         posts={posts}
-        error={error}
+        //error={error}
         //isAuthenticated={isAuthenticated}
         //createPost={createPost}
         //newPostSuccess={newPostSuccess}

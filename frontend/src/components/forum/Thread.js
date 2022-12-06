@@ -1,18 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { Segment, Icon } from 'semantic-ui-react';
 import StatusMessage from './StatusMessage';
 import Post from './Post';
 import NewPost from './NewPost';
+import AuthContext from '../../context/auth/AuthContext';
 
 const Thread = ({
-  isLoading,
-  error,
+  //isLoading,
+  //error,
   isDeleting,
   deleteError,
   thread,
   posts,
 }) => {
+  const { dispatch, isAuthenticated, isLoading, error } =
+    useContext(AuthContext);
   const {
     thread_id,
     thread_name,
@@ -91,7 +94,7 @@ const Thread = ({
           ))}
       </Segment.Group>
       <NewPost
-        //isAuthenticated={isAuthenticated}
+        isAuthenticated={isAuthenticated}
         threadID={thread_id}
         //createPost={createPost}
         //success={newPostSuccess}

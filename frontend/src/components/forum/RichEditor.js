@@ -3,7 +3,6 @@ import { EditorState, ContentState, convertFromRaw } from 'draft-js';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './style.css';
 import { Editor } from 'react-draft-wysiwyg';
-//import { imageUploadApi } from '../../api/image';
 
 //const RichEditor = () => {
 

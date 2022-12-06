@@ -2,6 +2,7 @@
 
 from os import environ, path
 from dotenv import load_dotenv
+from datetime import timedelta
 
 basedir = path.abspath(path.dirname(__file__))
 load_dotenv(path.join(basedir, ".env"))
@@ -15,6 +16,13 @@ class Config:
     SQLALCHEMY_MIGRATE_REPO = path.join(basedir, "db_repository")
 
     CORS_HEADERS = "Content-Type"
+
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(
+        hours=int(environ.get("JWT_ACCESS_TOKEN_EXPIRES"))
+    )
+    JWT_REFRESH_TOKEN_EXPIRES = timedelta(
+        days=int(environ.get("JWT_REFRESH_TOKEN_EXPIRES"))
+    )
 
 
 class ProdConfig(Config):
