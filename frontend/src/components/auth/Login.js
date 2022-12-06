@@ -42,8 +42,9 @@ const Login = ({ showRegister }) => {
 
       try {
         const response = await dispatch(loginUser(dispatch, data));
-
+        //error = response.error;
         if (!response.user) return;
+
         //props.history.push('/dashboard') //navigate to dashboard on success
         if (location.state?.from) {
           navigate(location.state.from);

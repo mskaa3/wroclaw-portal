@@ -143,8 +143,8 @@ def create_app(config_class="config.DevConfig"):
         api.add_resource(PostsApi, "/forum/posts")
         api.add_resource(PostsByThreadApi, "/forum/threads/<thread_id>/posts")
 
-        api.add_resource(UserIdApi, "/users/<user_id>")
-        api.add_resource(UsersApi, "/users")
+        api.add_resource(UsersApi, "/users", endpoint="users")
+        api.add_resource(UserIdApi, "/users/<user_id>", endpoint="user")
         api.add_resource(UserAuthApi, "/users/login")
 
         from src.currency.currency_routes import currency_routes
@@ -178,6 +178,7 @@ def create_app(config_class="config.DevConfig"):
         )
         response.headers.add("Access-Control-Allow-Headers", "x-csrf-token")
         response.headers.add("Access-Control-Allow-Headers", "Content-Type")
+        response.headers.add("Access-Control-Allow-Headers", "Authorization")
         # response.access_control_allow_headers = "Origin, Content-Type"
         # "Origin, X-Requested-With, Content-Type, Accept, Authorization"
         return response

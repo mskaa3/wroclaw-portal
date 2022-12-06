@@ -10,6 +10,9 @@ export const errorHandler = (error) => {
         }
         return erd.detail;
       }
+      if (erd.message) {
+        return erd.message;
+      }
       if (erd[0]) return erd[0];
       const key = Object.keys(erd)[0];
       const errorString = erd[key][0];

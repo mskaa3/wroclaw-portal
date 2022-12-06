@@ -31,8 +31,10 @@ class User(db.Base):
     # role = Column(Enum(Role))
     # created_on=Column(DateTime(timezone=True), server_default=func.now())
     # last_login=Column(DateTime(timezone=True), onupdate=func.now())
-    threads = relationship("Thread", backref="tread", lazy="dynamic")
-    posts = relationship("Post", backref="post", lazy=True)
+    threads = relationship(
+        "Thread", backref="Tread", lazy="dynamic", cascade="all,delete-orphan"
+    )
+    posts = relationship("Post", backref="Post", lazy=True, cascade="all,delete-orphan")
 
     def __init__(self, user: dict):
         self.user_name = user.get("user_name")
@@ -68,12 +70,16 @@ class User(db.Base):
         return (
             f"User: [user_id: {self.user_id},user_name: {self.user_name},"
             f"user_email:{self.user_email},password:{self.password},"
-            f"user_email:{self.avatar},password:{self.avatar}]"
+            f"avatar:{self.avatar}]"
         )
 
 
 # def json(self):
 #    return {"name":self.name,...}
+
+from marshmallow import fields
+
+# from src.forum.models.thread_model import ThreadSchema
 
 
 class UserSchema(ma.Schema):
@@ -81,8 +87,17 @@ class UserSchema(ma.Schema):
 
     class Meta:
         model = User
-        # sqla_session = db.session
+        sqla_session = db.session
+        # ordered = True
+        fields = ("user_id", "user_name", "user_email", "avatar")
         # load_instance = True
+
+    # user_id = fields.Integer()
+    # user_name = fields.String()
+    # user_email = fields.String()
+    # password = fields.String()
+    # avatar = fields.String()
+    # threads = fields.Nested(ThreadSchema, many=True)
 
 
 class UserShortSchema(ma.Schema):
@@ -90,6 +105,7 @@ class UserShortSchema(ma.Schema):
 
     class Meta:
         model = User
+        sqla_session = db.session
 
     fields = ("user_name", "user_email", "avatar")
 
@@ -97,3 +113,4 @@ class UserShortSchema(ma.Schema):
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)
 user_short_schema = UserShortSchema()
+# user_short_schema = UserSchema(only=["user_name", "user_email", "avatar"])
