@@ -1,11 +1,5 @@
 from transformers import pipeline
 import os
-
-embed_path_dir = os.path.dirname(os.path.realpath(__file__))
-tokenizer_path = os.path.join(embed_path_dir, "bert_tokenizer")
-model_path = os.path.join(embed_path_dir, "bert.pt")
-# "bert-large-uncased-whole-word-masking-finetuned-squad"
-from flask import session
 from main import QAmodel, tokenizer
 
 

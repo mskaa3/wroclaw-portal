@@ -14,8 +14,7 @@ def qa():
     reader = Reader()
     retriever = Retriever()
     if request.method == "POST":
-        query = request.json["question"]
-        
+        query = request.json["question"]     
         # retriever.create_embeddings()
         answers = {}
         results,links = retriever.retrieve_docs(query)
@@ -34,9 +33,7 @@ def qa():
                             "context":context,
                             "link":ln}
             final_results.append(elem_dict)
-            # res=Result(answ,context,ln,score)
-            # final_results[answer]=res
-        
+
         highest=0
         for elem in final_results:
             if elem["score"]>highest:
@@ -57,16 +54,4 @@ def qa():
       
         return jsonify(sorted_final)
 
-
-        
-        # highest_score = 0
-        # best_answer = ""
-        # ctx = ""
-        # for con, elem in zip(results, answers):
-        #     if answers[elem]["score"] > highest_score:
-        #         highest_score = answers[elem]["score"]
-        #         best_answer = answers[elem]["answer"]
-        #         ctx = con
-        # print(ctx)
-        
 

@@ -23,7 +23,7 @@ function QAform() {
       body: JSON.stringify(query),
     }).then((response) => {
       response.json().then((data) => {
-        console.log(data);
+        console.log(decodeURIComponent(escape((data[1].context))));
         setAnswers(data);
         setIsPending(false);
         setIsAnswered(true);
@@ -72,8 +72,8 @@ function QAform() {
               <div className="single-answer">
                 <Card key={answ.id}>
                   <Card.Body>
-                    <Card.Title>{answ.answer}</Card.Title>
-                    <Card.Text>...{answ.context}...</Card.Text>
+                    <Card.Title>{decodeURIComponent(escape(answ.answer))}</Card.Title>
+                    <Card.Text>...{decodeURIComponent(escape(answ.context))}...</Card.Text>
                     <Card.Link href={answ.link}>Read more...</Card.Link>
                   </Card.Body>
                 </Card>
