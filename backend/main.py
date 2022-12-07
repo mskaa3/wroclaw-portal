@@ -148,7 +148,6 @@ def create_app(config_class="config.DevConfig"):
         api.add_resource(UserIdApi, "/users/<user_id>", endpoint="user")
         api.add_resource(UserAuthApi, "/users/login")
 
-        # db.create_all()
         print("db=====================================================")
         print(db.engine.url.database)
 
