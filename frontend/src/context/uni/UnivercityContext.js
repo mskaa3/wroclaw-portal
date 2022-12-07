@@ -5,9 +5,6 @@ const UnivercityContext = createContext();
 
 export const UnivercityProvider = ({ children }) => {
   const initialState = {
-    //unis: [],
-    //uni: {},
-    //study_disciplines: [],
     discipline: '',
     search: '',
     level: '',

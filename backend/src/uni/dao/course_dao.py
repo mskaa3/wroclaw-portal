@@ -1,13 +1,8 @@
 """courses data access from the database.  Contains SQL queries related to courses."""
 from typing import List
-
-# from src.__init__ import db
 from main import db
 from sqlalchemy import and_
 
-# from sqlalchemy import Integer, String
-
-# from src impor app
 from src.uni.dao.basic_dao import BasicDao
 from src.uni.models.course_model import Course
 from src.uni.models.course_form_model import CourseForm
@@ -17,8 +12,6 @@ from src.uni.models.course_title_model import CourseTitle
 
 
 class CourseDao:
-    # engine = db.get_engine(app=app, bind="app")
-
     @staticmethod
     def get_courses() -> List[Course]:
         """
@@ -27,7 +20,6 @@ class CourseDao:
         """
 
         return Course.query.order_by(Course.course_name).all()
-        # return db.session.query(StudyDiscipline).all()
 
     @staticmethod
     def get_courses_by_name(course_name: str) -> List[Course]:
@@ -82,7 +74,6 @@ class CourseDao:
             {
                 "course_name": course.course_name,
             },
-            # bind=UniDao.engine,
         )
         return BasicDao.safe_commit()
 

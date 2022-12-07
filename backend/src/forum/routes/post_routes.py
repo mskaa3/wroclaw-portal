@@ -6,11 +6,9 @@ from flask.json import jsonify
 from src.forum.dao.post_dao import PostDao
 from src.forum.dao.thread_dao import ThreadDao
 from src.forum.models.post_model import Post
-
-# from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required
 from src.forum.models.post_model import (
     Post,
-    PostSchema,
     post_schema,
     posts_schema,
 )
@@ -26,10 +24,7 @@ resource_fields = {
 
 
 class PostIdApi(Resource):
-    # parser = reqparse.RequestParser()
-    # parser.add_argument(
-    #    "price", type=float, required=True, help="This field cannot be left blank!"
-    # )
+   
     @marshal_with(resource_fields)
     def get(self, post_id):
         """
@@ -86,8 +81,7 @@ class PostIdApi(Resource):
                     "error": "there is no existing post with this id",
                 }
             )
-            # response.status_code = 400
-            # return response
+           
             return Response(response, mimetype="application/json", status=400)
 
         post_data: dict = request.get_json()
@@ -108,8 +102,7 @@ class PostIdApi(Resource):
                         "post": updated_post_dict,
                     }
                 )
-                # response.status_code = 200
-                # return response
+                
                 return Response(response, mimetype="application/json", status=200)
             else:
                 response = jsonify(
@@ -120,8 +113,7 @@ class PostIdApi(Resource):
                         "error": "the post failed to update",
                     }
                 )
-                # response.status_code = 500
-                # return response
+                
                 return Response(response, mimetype="application/json", status=500)
         else:
             response = jsonify(
@@ -132,13 +124,9 @@ class PostIdApi(Resource):
                     "error": "the post submitted is equal to the existing post with the same id",
                 }
             )
-            # response.status_code = 400
-            # return response
+            
             return Response(response, mimetype="application/json", status=400)
 
-        # body = request.get_json()
-        # Voivodeship.objects.get(id=id).update(**body)
-        # return "", 200
 
     def delete(self, post_id):
         """
@@ -156,8 +144,7 @@ class PostIdApi(Resource):
                     "error": "there is no existing post with this id",
                 }
             )
-            # response.status_code = 400
-            # return response
+            
             return Response(response, mimetype="application/json", status=400)
 
         is_deleted = PostDao.delete_post_by_id(post_id=post_id)
@@ -169,8 +156,7 @@ class PostIdApi(Resource):
                     "deleted": True,
                 }
             )
-            # response.status_code = 204
-            # return response
+           
             return Response(response, mimetype="application/json", status=204)
         else:
             response = jsonify(
@@ -180,16 +166,11 @@ class PostIdApi(Resource):
                     "error": "failed to delete the post",
                 }
             )
-            # response.status_code = 500
-            # return response
+           
             return Response(response, mimetype="application/json", status=500)
-
-        # voivodeship = Voivodeship.objects.get(id=id).delete()
-        # return "", 200
 
 
 class PostsApi(Resource):
-    # comments: list = CommentDao.get_comments()
     @marshal_with(resource_fields)
     def get(self):
         """
@@ -222,10 +203,6 @@ class PostsApi(Resource):
             return Response(response, mimetype="application/json", status=200)
         """
 
-    # def get(self):
-    #    "get voivodeship list"
-    #    voivodeships = Voivodeship.objects().to_json()
-    #    return Response(voivodeships, mimetype="application/json", status=200)
     @marshal_with(resource_fields)
     def post(self):
         # if Voivodeship.objects.get(name=name):
@@ -278,7 +255,7 @@ class PostsApi(Resource):
             print("post added type")
             print(type(post_added))
             post_added_dict: dict = post_added.to_dict()
-            # post_added_dict: dict = post_added.to_dict()
+           
             print("post_added_dict")
             print(post_added_dict)
             response = jsonify(
@@ -290,9 +267,6 @@ class PostsApi(Resource):
             )
             print(response)
 
-            # response.status_code = 200
-            # response.headers.add("Access-Control-Allow-Origin", "*")
-            # return response
             return Response(post_added_dict, mimetype="application/json", status=200)
         else:
             response = jsonify(
@@ -306,12 +280,7 @@ class PostsApi(Resource):
             response.status_code = 500
             return response
 
-        # body = request.get_json()
-        # voivodeship = Voivodeship(**body).save()
-        # id = voivodeship.id
-        # return {"id": str(id)}, 200
-
-
+   
 class PostsByThreadApi(Resource):
 
     # def get_posts_count(self, obj):
@@ -344,6 +313,7 @@ class PostsByThreadApi(Resource):
     }
 
     @marshal_with(resource_fields)
+    @jwt_required()
     def get(self, thread_id: int):
         """
         Get all the posts by thread in the database.

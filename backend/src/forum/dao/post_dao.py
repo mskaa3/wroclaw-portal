@@ -29,8 +29,6 @@ class PostDao:
         :param post_id: The unique identifier for a post.
         :return: The result of the query.
         """
-        # res = Post.query.filter_by(post_id=post_id).first()
-        # print(res)
 
         return Post.query.filter_by(post_id=post_id).first()
 
@@ -125,7 +123,16 @@ class PostDao:
             .all()
         )
         """
-        result = Post.query.filter_by(thread=thread_id).all()
+        # result = Post.query.filter_by(thread=thread_id).all()
+
+        result = db.session.execute(
+            f"SELECT thread_id,thread_creator, post_id,post_content, "
+            f"post_created_at,post_updated_at,post_creator,u2.user_name as post_creator_name, u2.avatar as avatar "
+            f"FROM threads JOIN posts ON thread_id=thread "
+            f"JOIN users AS u2 ON u2.user_id=post_creator "
+            f"WHERE thread_id=:thread_id",
+            {"thread_id": thread_id},
+        ).fetchall()
 
         # res = (
         #    db.session.query(Thread, User)
@@ -135,6 +142,7 @@ class PostDao:
         # .order_by(Thread.thread_created_at)
         #    .all()
         # )
+        print("result from dao///////////////////////////////////////////////////")
         print(result)
         # for r in res:
         #    print(r)

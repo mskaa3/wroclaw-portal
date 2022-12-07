@@ -11,6 +11,9 @@ const UniversityResults = (props) => {
   }
 
   if (!loading) {
+    //if (searchUniResults.length === 0) {
+    //  return <h3>No results found!</h3>;
+    //} else {
     return (
       <div>
         {searchUniResults.map((uni) => (
@@ -18,6 +21,7 @@ const UniversityResults = (props) => {
         ))}
       </div>
     );
+    //}
   } else {
     return <Spinner />;
   }
