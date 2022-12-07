@@ -5,8 +5,6 @@ from flask import Response, request
 from flask.json import jsonify
 from src.uni.dao.course_dao import CourseDao
 
-
-# from flask_jwt_extended import jwt_required
 from src.uni.models.course_model import (
     Course,
     CourseSchema,
@@ -46,7 +44,6 @@ class CourseIdApi(Resource):
                 {
                     "self": f"/courses/{course_id}",
                     "course": None,
-                    # "log": None,
                     "error": "there is no course with this identifier",
                 }
             )
@@ -54,21 +51,15 @@ class CourseIdApi(Resource):
             return response
         else:
             course_dict: dict = Course(course).__dict__
-            # comment_dict["time"] = str(comment_dict["time"])
 
             response = jsonify(
                 {
                     "self": f"/courses/{course_id}",
                     "study": course_dict,
-                    # "log": f'/v2/logs/{comment_dict.get("log_id")}',
                 }
             )
-            # response.status_code = 200
-            # return response
-            return Response(response, mimetype="application/json", status=200)
 
-        # voivodeship = Voivodeship.objects.get(id=id).to_json()
-        # return Response(voivodeship, mimetype="application/json", status=200)
+            return Response(response, mimetype="application/json", status=200)
 
     def put(self, course_id):
         """
@@ -87,8 +78,7 @@ class CourseIdApi(Resource):
                     "error": "there is no existing course with this id",
                 }
             )
-            # response.status_code = 400
-            # return response
+
             return Response(response, mimetype="application/json", status=400)
 
         course_data: dict = request.get_json()
@@ -111,8 +101,7 @@ class CourseIdApi(Resource):
                         "course": updated_course_dict,
                     }
                 )
-                # response.status_code = 200
-                # return response
+
                 return Response(response, mimetype="application/json", status=200)
             else:
                 response = jsonify(
@@ -123,8 +112,7 @@ class CourseIdApi(Resource):
                         "error": "the course failed to update",
                     }
                 )
-                # response.status_code = 500
-                # return response
+
                 return Response(response, mimetype="application/json", status=500)
         else:
             response = jsonify(
@@ -135,13 +123,8 @@ class CourseIdApi(Resource):
                     "error": "the course submitted is equal to the existing course with the same id",
                 }
             )
-            # response.status_code = 400
-            # return response
-            return Response(response, mimetype="application/json", status=400)
 
-        # body = request.get_json()
-        # Voivodeship.objects.get(id=id).update(**body)
-        # return "", 200
+            return Response(response, mimetype="application/json", status=400)
 
     def delete(self, course_id):
         """
@@ -159,8 +142,7 @@ class CourseIdApi(Resource):
                     "error": "there is no existing course with this id",
                 }
             )
-            # response.status_code = 400
-            # return response
+
             return Response(response, mimetype="application/json", status=400)
 
         is_deleted = CourseDao.delete_course(course_id=course_id)
@@ -172,8 +154,7 @@ class CourseIdApi(Resource):
                     "deleted": True,
                 }
             )
-            # response.status_code = 204
-            # return response
+
             return Response(response, mimetype="application/json", status=204)
         else:
             response = jsonify(
@@ -183,27 +164,14 @@ class CourseIdApi(Resource):
                     "error": "failed to delete the course",
                 }
             )
-            # response.status_code = 500
-            # return response
-            return Response(response, mimetype="application/json", status=500)
 
-        # voivodeship = Voivodeship.objects.get(id=id).delete()
-        # return "", 200
+            return Response(response, mimetype="application/json", status=500)
 
 
 class CourseNameApi(Resource):
-    # parser = reqparse.RequestParser()
-    # parser.add_argument(
-    #    "price", type=float, required=True, help="This field cannot be left blank!"
-    # )
-
-    # @jwt_required()
     def get(self, course_name):
         "get courses by name"
-        # voivodeship = Voivodeship.objects.get(name=name).to_json()
-        # if voivodeship:
-        #     return Response(voivodeship, mimetype="application/json", status=200)
-        # return {"message": "Uni not found"}, 404
+
         courses = CourseDao.get_courses_by_name(course_name=course_name).to_json()
         return Response(courses, mimetype="application/json", status=200)
 
@@ -228,7 +196,6 @@ class CoursesApi(Resource):
         """
         courses: list = CourseDao.get_courses()
         print(";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;")
-        print(type(courses))
         print(courses)
         """
         if study_disciplines is None:
@@ -263,13 +230,9 @@ class CoursesApi(Resource):
         res = courses_schema.dump(courses)
         print(res)
 
-        # return study_disciplines_schema.dump(study_disciplines)
-        # return jsonify(study_disciplines)
-        # return {"a": "1", "b": "2"}
         return courses
 
     def post(self):
-
         """
         Create a new course.
         :return: A response object for the POST API request.

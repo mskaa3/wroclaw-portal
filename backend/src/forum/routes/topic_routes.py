@@ -23,10 +23,6 @@ resource_fields = {
 
 
 class TopicIdApi(Resource):
-    # parser = reqparse.RequestParser()
-    # parser.add_argument(
-    #    "price", type=float, required=True, help="This field cannot be left blank!"
-    # )
     @marshal_with(resource_fields)
     def get(self, topic_id):
         """
@@ -83,8 +79,7 @@ class TopicIdApi(Resource):
                     "error": "there is no existing topic with this id",
                 }
             )
-            # response.status_code = 400
-            # return response
+
             return Response(response, mimetype="application/json", status=400)
 
         topic_data: dict = request.get_json()
@@ -107,8 +102,7 @@ class TopicIdApi(Resource):
                         "topic": updated_topic_dict,
                     }
                 )
-                # response.status_code = 200
-                # return response
+
                 return Response(response, mimetype="application/json", status=200)
             else:
                 response = jsonify(
@@ -119,8 +113,7 @@ class TopicIdApi(Resource):
                         "error": "the topic failed to update",
                     }
                 )
-                # response.status_code = 500
-                # return response
+
                 return Response(response, mimetype="application/json", status=500)
         else:
             response = jsonify(
@@ -131,13 +124,8 @@ class TopicIdApi(Resource):
                     "error": "the topic submitted is equal to the existing topic with the same id",
                 }
             )
-            # response.status_code = 400
-            # return response
-            return Response(response, mimetype="application/json", status=400)
 
-        # body = request.get_json()
-        # Voivodeship.objects.get(id=id).update(**body)
-        # return "", 200
+            return Response(response, mimetype="application/json", status=400)
 
     def delete(self, topic_id):
         """
@@ -155,8 +143,7 @@ class TopicIdApi(Resource):
                     "error": "there is no existing topic with this id",
                 }
             )
-            # response.status_code = 400
-            # return response
+
             return Response(response, mimetype="application/json", status=400)
 
         is_deleted = TopicDao.delete_topic_by_id(topic_id=topic_id)
@@ -168,8 +155,7 @@ class TopicIdApi(Resource):
                     "deleted": True,
                 }
             )
-            # response.status_code = 204
-            # return response
+
             return Response(response, mimetype="application/json", status=204)
         else:
             response = jsonify(
@@ -179,19 +165,11 @@ class TopicIdApi(Resource):
                     "error": "failed to delete the topic",
                 }
             )
-            # response.status_code = 500
-            # return response
-            return Response(response, mimetype="application/json", status=500)
 
-        # voivodeship = Voivodeship.objects.get(id=id).delete()
-        # return "", 200
+            return Response(response, mimetype="application/json", status=500)
 
 
 class TopicNameApi(Resource):
-    # parser = reqparse.RequestParser()
-    # parser.add_argument(
-    #    "price", type=float, required=True, help="This field cannot be left blank!"
-    # )
 
     # @jwt_required()
     def get(self, name):
@@ -227,7 +205,6 @@ class TopicNameApi(Resource):
 
 
 class TopicsApi(Resource):
-    # comments: list = CommentDao.get_comments()
     @marshal_with(resource_fields)
     def get(self):
         """
@@ -259,11 +236,6 @@ class TopicsApi(Resource):
 
             return Response(response, mimetype="application/json", status=200)
         """
-
-    # def get(self):
-    #    "get voivodeship list"
-    #    voivodeships = Voivodeship.objects().to_json()
-    #    return Response(voivodeships, mimetype="application/json", status=200)
 
     def post(self):
         # if Voivodeship.objects.get(name=name):
@@ -326,11 +298,6 @@ class TopicsApi(Resource):
             )
             response.status_code = 500
             return response
-
-        # body = request.get_json()
-        # voivodeship = Voivodeship(**body).save()
-        # id = voivodeship.id
-        # return {"id": str(id)}, 200
 
 
 class TopicsInfoApi(Resource):

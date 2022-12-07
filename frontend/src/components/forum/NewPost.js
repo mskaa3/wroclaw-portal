@@ -8,6 +8,7 @@ import { Form, Icon, Button } from 'semantic-ui-react';
 import './style.css';
 import RichEditor from './RichEditor';
 import StatusMessage from './StatusMessage';
+import { useNavigate } from 'react-router-dom';
 
 export default class NewPost extends Component {
   constructor(props) {
@@ -16,6 +17,8 @@ export default class NewPost extends Component {
       editorState: EditorState.createEmpty(),
     };
   }
+
+  navigate = useNavigate();
 
   componentWillReceiveProps(newProps) {
     const { success } = newProps;
@@ -55,7 +58,7 @@ export default class NewPost extends Component {
 
   onSubmit = () => {
     const { editorState } = this.state;
-    const { threadID, createPost, thread } = this.props;
+    const { threadID, createPost, thread, authenticatedUser } = this.props;
     console.log('print threadID from props');
     console.log(threadID);
     const content = JSON.stringify(
@@ -69,7 +72,7 @@ export default class NewPost extends Component {
       //thread_id: thread.thread_id,
       post_content: content,
       //for now post creator is hardcoded, need to insert logined user
-      post_creator: '1',
+      post_creator: authenticatedUser.uaer_id,
     };
 
     console.log('new post');

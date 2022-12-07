@@ -30,11 +30,7 @@ class UniDao:
         :param uni_name: Uni name which uniquely identifies the uni.
         :return: The result of the database query.
         """
-        return (
-            Uni.query.filter_by(uni_name=uni_name)
-            # .options(defer("profilepic"), defer("profilepic_name"))
-            .first()
-        )
+        return Uni.query.filter_by(uni_name=uni_name).first()
 
     @staticmethod
     def get_uni_by_id(uni_id: str) -> Uni:
@@ -52,8 +48,6 @@ class UniDao:
         :param id: Email which uniquely identifies the uni.
         :return: The result of the database query.
         """
-        # res=Uni.join(UniKind)
-        # res=db.session.query(*Uni.__table__.columns,*UniKind.__table__.columns).select_from(Uni).join(UniKind).filter(Uni.uni_uid==uni_uid).first()
 
         return Uni.query.filter_by(uni_uid=uni_uid).first()
 
@@ -101,7 +95,6 @@ class UniDao:
                 "building": uni.building,
                 "postal_code": uni.postal_code,
             },
-            # bind=UniDao.engine,
         )
         return BasicDao.safe_commit()
 

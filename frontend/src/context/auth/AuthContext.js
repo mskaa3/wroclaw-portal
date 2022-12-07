@@ -3,10 +3,17 @@ import authReducer from '../auth/AuthReducer';
 
 const AuthContext = createContext();
 
+let user = localStorage.getItem('user')
+  ? JSON.parse(localStorage.getItem('user'))
+  : null;
+let token = localStorage.getItem('access_token')
+  ? JSON.parse(localStorage.getItem('access_token'))
+  : '';
+
 export const AuthProvider = ({ children }) => {
   const initialState = {
-    isAuthenticated: false,
-    user: null,
+    isAuthenticated: user ? true : false,
+    user: null || user,
     isLoading: false,
     error: null,
     isEditing: false,

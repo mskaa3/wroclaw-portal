@@ -4,15 +4,11 @@ from flask_restful import Resource, reqparse, fields, marshal_with
 from flask.json import jsonify
 from flask import Response, request
 
-# from flask_jwt_extended import jwt_required
-
 from src.uni.dao.uni_dao import UniDao
 from src.uni.dao.kind_dao import UniKindDao
 
 from src.uni.models.uni_model import (
     Uni,
-    UniSchema,
-    CitiesSchema,
     uni_schema,
     unis_schema,
     cities_schema,
@@ -43,14 +39,12 @@ class UniIdApi(Resource):
         :return: A response object for the GET API request.
         """
         uni = UniDao.get_uni_by_id(uni_id=uni_id)
-        # kind=Ki
 
         if uni is None:
             response = jsonify(
                 {
                     "self": f"/unis/{uni_id}",
                     "uni": None,
-                    # "log": None,
                     "error": "there is no university with this identifier",
                 }
             )
@@ -58,21 +52,15 @@ class UniIdApi(Resource):
             return response
         else:
             uni_dict: dict = Uni(uni).__dict__
-            # comment_dict["time"] = str(comment_dict["time"])
 
             response = jsonify(
                 {
                     "self": f"/unis/{uni_id}",
                     "uni": uni_dict,
-                    # "log": f'/v2/logs/{comment_dict.get("log_id")}',
                 }
             )
-            # response.status_code = 200
-            # return response
-            return Response(response, mimetype="application/json", status=200)
 
-        # voivodeship = Voivodeship.objects.get(id=id).to_json()
-        # return Response(voivodeship, mimetype="application/json", status=200)
+            return Response(response, mimetype="application/json", status=200)
 
     def put(self, uni_id):
         """
@@ -91,8 +79,7 @@ class UniIdApi(Resource):
                     "error": "there is no existing university with this id",
                 }
             )
-            # response.status_code = 400
-            # return response
+
             return Response(response, mimetype="application/json", status=400)
 
         uni_data: dict = request.get_json()
@@ -113,8 +100,7 @@ class UniIdApi(Resource):
                         "uni": updated_uni_dict,
                     }
                 )
-                # response.status_code = 200
-                # return response
+
                 return Response(response, mimetype="application/json", status=200)
             else:
                 response = jsonify(
@@ -125,8 +111,7 @@ class UniIdApi(Resource):
                         "error": "the university failed to update",
                     }
                 )
-                # response.status_code = 500
-                # return response
+
                 return Response(response, mimetype="application/json", status=500)
         else:
             response = jsonify(
@@ -137,13 +122,8 @@ class UniIdApi(Resource):
                     "error": "the university submitted is equal to the existing university with the same id",
                 }
             )
-            # response.status_code = 400
-            # return response
-            return Response(response, mimetype="application/json", status=400)
 
-        # body = request.get_json()
-        # Voivodeship.objects.get(id=id).update(**body)
-        # return "", 200
+            return Response(response, mimetype="application/json", status=400)
 
     def delete(self, uni_id):
         """
@@ -161,8 +141,7 @@ class UniIdApi(Resource):
                     "error": "there is no existing university with this id",
                 }
             )
-            # response.status_code = 400
-            # return response
+
             return Response(response, mimetype="application/json", status=400)
 
         is_deleted = UniDao.delete_uni(uni_id=uni_id)
@@ -174,8 +153,7 @@ class UniIdApi(Resource):
                     "deleted": True,
                 }
             )
-            # response.status_code = 204
-            # return response
+
             return Response(response, mimetype="application/json", status=204)
         else:
             response = jsonify(
@@ -185,16 +163,11 @@ class UniIdApi(Resource):
                     "error": "failed to delete the university",
                 }
             )
-            # response.status_code = 500
-            # return response
-            return Response(response, mimetype="application/json", status=500)
 
-        # voivodeship = Voivodeship.objects.get(id=id).delete()
-        # return "", 200
+            return Response(response, mimetype="application/json", status=500)
 
 
 class UniUidApi(Resource):
-    # uid_resourse_fields=resource_fields
     @marshal_with(resource_fields)
     def get(self, uni_uid):
         """
@@ -205,13 +178,12 @@ class UniUidApi(Resource):
 
         print("uid ====================================")
         print(uni_uid)
-        print(type(uni_uid))
+
         uni = UniDao.get_uni_by_uid(uni_uid=uni_uid)
         kind = UniKindDao.get_kind_by_id(kind_id=uni.kind)
 
         print("get uni bu uid ====================================")
         print(uni)
-        print(type(uni))
         print(kind)
 
         uni_dict = uni.__dict__
@@ -224,7 +196,6 @@ class UniUidApi(Resource):
                 {
                     "self": f"/unis/uid/{uni_uid}",
                     "uni": None,
-                    # "log": None,
                     "error": "there is no university with this identifier",
                 }
             )
@@ -232,16 +203,6 @@ class UniUidApi(Resource):
             return response
 
         else:
-            # uni_dict: dict = uni.__dict__
-
-            # response = jsonify(
-            #    {
-            #        "self": f"/unis/uid/{uni_uid}",
-            #        "uni": uni_dict,
-            # "log": f'/v2/logs/{comment_dict.get("log_id")}',
-            #    }
-            # )
-
             # return Response(response, mimetype="application/json", status=200)
 
             return uni
@@ -263,8 +224,7 @@ class UniUidApi(Resource):
                     "error": "there is no existing university with this uid",
                 }
             )
-            # response.status_code = 400
-            # return response
+
             return Response(response, mimetype="application/json", status=400)
 
         uni_data: dict = request.get_json()
@@ -285,8 +245,7 @@ class UniUidApi(Resource):
                         "uni": updated_uni_dict,
                     }
                 )
-                # response.status_code = 200
-                # return response
+
                 return Response(response, mimetype="application/json", status=200)
             else:
                 response = jsonify(
@@ -297,8 +256,7 @@ class UniUidApi(Resource):
                         "error": "the university failed to update",
                     }
                 )
-                # response.status_code = 500
-                # return response
+
                 return Response(response, mimetype="application/json", status=500)
         else:
             response = jsonify(
@@ -309,13 +267,8 @@ class UniUidApi(Resource):
                     "error": "the university submitted is equal to the existing university with the same id",
                 }
             )
-            # response.status_code = 400
-            # return response
-            return Response(response, mimetype="application/json", status=400)
 
-        # body = request.get_json()
-        # Voivodeship.objects.get(id=id).update(**body)
-        # return "", 200
+            return Response(response, mimetype="application/json", status=400)
 
     def delete(self, uni_uid):
         """
@@ -333,8 +286,7 @@ class UniUidApi(Resource):
                     "error": "there is no existing university with this id",
                 }
             )
-            # response.status_code = 400
-            # return response
+
             return Response(response, mimetype="application/json", status=400)
 
         is_deleted = UniDao.delete_uni(uni_id=existing_uni.uni_id)
@@ -346,8 +298,7 @@ class UniUidApi(Resource):
                     "deleted": True,
                 }
             )
-            # response.status_code = 204
-            # return response
+
             return Response(response, mimetype="application/json", status=204)
         else:
             response = jsonify(
@@ -357,17 +308,12 @@ class UniUidApi(Resource):
                     "error": "failed to delete the university",
                 }
             )
-            # response.status_code = 500
-            # return response
+
             return Response(response, mimetype="application/json", status=500)
 
-        # voivodeship = Voivodeship.objects.get(id=id).delete()
-        # return "", 200
 
-
+"""
 class UniNameApi(Resource):
-
-    # @jwt_required()
     def get(self, uni_name):
         "get university by name"
         # voivodeship = Voivodeship.objects.get(name=name).to_json()
@@ -387,6 +333,7 @@ class UniNameApi(Resource):
 
         uni = UniDao.get_uni_by_name(uni_name=uni_name).delete()
         return "", 200
+"""
 
 
 class UnisApi(Resource):
@@ -501,61 +448,6 @@ class CitiesApi(Resource):
         # print(res)
 
         return cities
-
-    """
-        parser = reqparse.RequestParser()
-        parser.add_argument(
-            "price", type=float, required=True, help="This field cannot be left blank!"
-        )
-
-        # @jwt_required()
-        def get(self, name):
-            uni = Uni.find_by_name(name)
-            if uni:
-                return uni.json()
-            return {"message": "Uni not found"}, 404
-
-        def post(self, name):
-            if Uni.find_by_name(name):
-                return {
-                    "message": "An uni with name '{} already exists.".format(name)}, 400
-
-            data = Uni.parser.parse_args()
-
-            uni = Uni(name, data["price"])
-
-            try:
-                uni.save_to_db()
-            except:
-                return {"message": "An error occured inserting the item"}, 500
-
-            return uni.json(), 201
-
-        def delete(self, name):
-            uni = Uni.find_by_name(name)
-            if uni:
-                uni.delete_from_db()
-            return {"message": "Uni deleted"}
-
-        def put(self, name):
-            data = Uni.parser.parse_args()
-
-            uni = Uni.find_by_name(name)
-
-            if uni is None:
-                uni = Uni(name, data["price"])
-            else:
-                uni.price = data["price"]
-
-            uni.save_to_db()
-
-            return uni.json()
-
-
-    class UniList(Resource):
-        def get(self):
-            return {"unis": list(map(lambda x: x.json(), Uni.query.all()))}
-            # return {'unis': [uni.json() for uni in UniModel.query.all()]}"""
 
 
 """

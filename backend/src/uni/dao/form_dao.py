@@ -3,7 +3,6 @@ Contains SQL queries related to course form."""
 
 from main import db
 
-# from src import app
 from src.uni.dao.basic_dao import BasicDao
 from src.uni.models.course_form_model import CourseForm
 

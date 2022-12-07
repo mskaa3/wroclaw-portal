@@ -14,7 +14,7 @@ const Thread = ({
   thread,
   posts,
 }) => {
-  const { dispatch, isAuthenticated, isLoading, error } =
+  const { dispatch, isAuthenticated, isLoading, error, user } =
     useContext(AuthContext);
   const {
     thread_id,
@@ -60,6 +60,7 @@ const Thread = ({
       createdAt={thread_created_at}
       //creator={thread_creator}
       creator={user_name}
+      creator_name={user_name}
       avatar={avatar}
       //authenticatedUsername={authenticatedUsername}
       //authenticatedIsStaff={authenticatedIsStaff}
@@ -86,6 +87,8 @@ const Thread = ({
               content={post.post_content}
               createdAt={post.post_created_at}
               creator={post.post_creator}
+              creator_name={post.post_creator_name}
+              authenticatedUser={user}
               //authenticatedUsername={authenticatedUsername}
               //authenticatedIsStaff={authenticatedIsStaff}
               //deletePostList={deletePostList}
@@ -96,6 +99,7 @@ const Thread = ({
       <NewPost
         isAuthenticated={isAuthenticated}
         threadID={thread_id}
+        authenticatedUser={user}
         //createPost={createPost}
         //success={newPostSuccess}
         //isLoading={newPostLoading}
@@ -107,6 +111,3 @@ const Thread = ({
 };
 
 export default Thread;
-/*
-
-*/

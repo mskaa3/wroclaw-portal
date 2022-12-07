@@ -4,7 +4,6 @@ from flask import Response, request
 from flask.json import jsonify
 from src.uni.dao.discipline_dao import DisciplineDao
 
-# from flask_jwt_extended import jwt_required
 from src.uni.models.discipline_model import (
     Discipline,
     DisciplineSchema,
@@ -16,11 +15,6 @@ resource_fields = {"discipline_id": fields.String, "discipline_name": fields.Str
 
 
 class DisciplineIdApi(Resource):
-    # parser = reqparse.RequestParser()
-    # parser.add_argument(
-    #    "price", type=float, required=True, help="This field cannot be left blank!"
-    # )
-
     def get(self, disc_id):
         """
         Get a single discipline with a unique ID.
@@ -34,7 +28,6 @@ class DisciplineIdApi(Resource):
                 {
                     "self": f"/disciplines/{disc_id}",
                     "discipline": None,
-                    # "log": None,
                     "error": "there is no discipline with this identifier",
                 }
             )
@@ -42,21 +35,15 @@ class DisciplineIdApi(Resource):
             return response
         else:
             discipline_dict: dict = Discipline(discipline).__dict__
-            # comment_dict["time"] = str(comment_dict["time"])
 
             response = jsonify(
                 {
                     "self": f"/disciplines/{disc_id}",
                     "discipline": discipline_dict,
-                    # "log": f'/v2/logs/{comment_dict.get("log_id")}',
                 }
             )
-            # response.status_code = 200
-            # return response
-            return Response(response, mimetype="application/json", status=200)
 
-        # voivodeship = Voivodeship.objects.get(id=id).to_json()
-        # return Response(voivodeship, mimetype="application/json", status=200)
+            return Response(response, mimetype="application/json", status=200)
 
     def put(self, disc_id):
         """
@@ -75,8 +62,7 @@ class DisciplineIdApi(Resource):
                     "error": "there is no existing discipline with this id",
                 }
             )
-            # response.status_code = 400
-            # return response
+
             return Response(response, mimetype="application/json", status=400)
 
         discipline_data: dict = request.get_json()
@@ -99,8 +85,7 @@ class DisciplineIdApi(Resource):
                         "discipline": updated_discipline_dict,
                     }
                 )
-                # response.status_code = 200
-                # return response
+
                 return Response(response, mimetype="application/json", status=200)
             else:
                 response = jsonify(
@@ -111,8 +96,7 @@ class DisciplineIdApi(Resource):
                         "error": "the discipline failed to update",
                     }
                 )
-                # response.status_code = 500
-                # return response
+
                 return Response(response, mimetype="application/json", status=500)
         else:
             response = jsonify(
@@ -123,13 +107,8 @@ class DisciplineIdApi(Resource):
                     "error": "the discipline submitted is equal to the existing discipline with the same id",
                 }
             )
-            # response.status_code = 400
-            # return response
-            return Response(response, mimetype="application/json", status=400)
 
-        # body = request.get_json()
-        # Voivodeship.objects.get(id=id).update(**body)
-        # return "", 200
+            return Response(response, mimetype="application/json", status=400)
 
     def delete(self, disc_id):
         """
@@ -149,8 +128,7 @@ class DisciplineIdApi(Resource):
                     "error": "there is no existing discipline with this id",
                 }
             )
-            # response.status_code = 400
-            # return response
+
             return Response(response, mimetype="application/json", status=400)
 
         is_deleted = DisciplineDao.delete_discipline_by_id(disc_id=disc_id)
@@ -162,8 +140,7 @@ class DisciplineIdApi(Resource):
                     "deleted": True,
                 }
             )
-            # response.status_code = 204
-            # return response
+
             return Response(response, mimetype="application/json", status=204)
         else:
             response = jsonify(
@@ -173,55 +150,31 @@ class DisciplineIdApi(Resource):
                     "error": "failed to delete the discipline",
                 }
             )
-            # response.status_code = 500
-            # return response
-            return Response(response, mimetype="application/json", status=500)
 
-        # voivodeship = Voivodeship.objects.get(id=id).delete()
-        # return "", 200
+            return Response(response, mimetype="application/json", status=500)
 
 
 class DisciplineNameApi(Resource):
-    # parser = reqparse.RequestParser()
-    # parser.add_argument(
-    #    "price", type=float, required=True, help="This field cannot be left blank!"
-    # )
-
-    # @jwt_required()
     def get(self, name):
         "get discipline by name"
-        # voivodeship = Voivodeship.objects.get(name=name).to_json()
-        # if voivodeship:
-        #     return Response(voivodeship, mimetype="application/json", status=200)
-        # return {"message": "Uni not found"}, 404
+
         discipline = Discipline.objects.get(name=name).to_json()
-        return Response(discipline, mimetype="application/json", status=200)
 
-    def put(self, name):
-        # data = Uni.parser.parse_args()
-        # voivodeship = Voivodeship.objects.get(name=name)
-        # if voivodeship is None:
-        #    voivodeship = voivodeship(name, data["terc"])
-        # else:
-        #    voivodeship.terc = data["terc"]
-        # voivodeship.save_to_db()
-
-        body = request.get_json()
-        Discipline.objects.get(name=name).update(**body)
-        return "", 200
-
-    def delete(self, name):
-        # voivodeship = Voivodeship.objects.get(name=name)
-        # if voivodeship:
-        #    voivodeship.delete()
-        # return {"message": "Uni deleted"}
-
-        discipline = Discipline.objects.get(name=name).delete()
-        return "", 200
+        if discipline is None:
+            response = jsonify(
+                {
+                    "self": f"/disciplines/name/{name}",
+                    "discipline": None,
+                    "error": "there is no discipline with this name",
+                }
+            )
+            response.status_code = 404
+            return response
+        else:
+            return Response(discipline, mimetype="application/json", status=200)
 
 
 class DisciplinesApi(Resource):
-    # comments: list = CommentDao.get_comments()
     @marshal_with(resource_fields)
     def get(self):
         """
@@ -230,8 +183,6 @@ class DisciplinesApi(Resource):
         """
         disciplines: list = DisciplineDao.get_disciplines()
 
-        return disciplines
-        """
         if disciplines is None:
             response = jsonify(
                 {
@@ -240,40 +191,15 @@ class DisciplinesApi(Resource):
                     "error": "an unexpected error occurred retrieving disciplines",
                 }
             )
-            
+
             return Response(response, mimetype="application/json", status=500)
         else:
-            disc_dicts = [Discipline(disc).__dict__ for disc in disciplines]
+            return disciplines
 
-            # for voiv_dict in voiv_dicts:
-            #    voiv_dict["log"] = f'/v2/logs/{comment_dict.get("log_id")}'
-
-            response = jsonify({"self": "/disciplines", "disciplines": disc_dicts})
-            
-            return Response(response, mimetype="application/json", status=200)
-        """
-
-    # def get(self):
-    #    "get voivodeship list"
-    #    voivodeships = Voivodeship.objects().to_json()
-    #    return Response(voivodeships, mimetype="application/json", status=200)
+            # response = jsonify({"self": "/disciplines", "disciplines": disc_dicts})
+            # return Response(response, mimetype="application/json", status=200)
 
     def post(self):
-        # if Voivodeship.objects.get(name=name):
-        #    return {
-        #        "message": "A voivodeship with name '{} already exists.".format(name)
-        #    }, 400
-
-        # data = Uni.parser.parse_args()
-
-        # uni = UniModel(name, data["price"])
-
-        # try:
-        #    uni.save_to_db()
-        # except:
-        #    return {"message": "An error occured inserting the item"}, 500
-
-        # return uni.json(), 201
         """
         Create a new discipline.
         :return: A response object for the POST API request.
@@ -323,8 +249,3 @@ class DisciplinesApi(Resource):
             )
             response.status_code = 500
             return response
-
-        # body = request.get_json()
-        # voivodeship = Voivodeship(**body).save()
-        # id = voivodeship.id
-        # return {"id": str(id)}, 200

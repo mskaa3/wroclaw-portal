@@ -64,7 +64,7 @@ def create_app(config_class="config.DevConfig"):
         from src.uni.routes.uni_routes import (
             UniIdApi,
             UniUidApi,
-            UniNameApi,
+            # UniNameApi,
             UnisApi,
             CitiesApi,
         )
@@ -118,7 +118,7 @@ def create_app(config_class="config.DevConfig"):
 
         api.add_resource(UniIdApi, "/unis/<uni_id>")
         api.add_resource(UniUidApi, "/unis/uid/<uni_uid>")
-        api.add_resource(UniNameApi, "/unis/name/<uni_name>")
+        # api.add_resource(UniNameApi, "/unis/name/<uni_name>")
         api.add_resource(UnisApi, "/unis")
         api.add_resource(CitiesApi, "/unis/cities")
 

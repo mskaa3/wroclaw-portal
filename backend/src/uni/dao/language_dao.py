@@ -3,7 +3,6 @@ Contains SQL queries related to course language."""
 from typing import List
 from main import db
 
-# from src import app
 from src.uni.dao.basic_dao import BasicDao
 from src.uni.models.course_language_model import CourseLanguage
 
