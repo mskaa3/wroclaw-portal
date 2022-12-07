@@ -155,7 +155,7 @@ def create_app(config_class="config.DevConfig"):
         # @with_appcontext
         # def create_tables():
         #    db.Base.metadata.create_all(bind=db.engine)
-        fill_tables(db.engine.url.database)
+        # fill_tables(db.engine.url.database)
 # delete everything from database, then run once, then comment it out
 
 

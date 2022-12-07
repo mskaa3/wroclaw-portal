@@ -149,7 +149,7 @@ const UniversitySearch = (props) => {
           type="submit"
           onClick={handleSearch}
         >
-          Search by filters
+          Search for university
         </Button>
       </Form>
     </div>

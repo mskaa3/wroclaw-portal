@@ -35,11 +35,12 @@ The uniqueness of the city is due in part to its long and entangled history. Sit
           <ListGroup.Item action href="/uni"> 1. Find yourself a university</ListGroup.Item>
           <ListGroup.Item action href="/docs"> 2. Learn about your legal stay</ListGroup.Item>
           <ListGroup.Item action href="/map"> 3. Get familiar with the city </ListGroup.Item>
-          <ListGroup.Item action href="/forum"> 4. Find out more </ListGroup.Item>
-          <ListGroup.Item action href="#"> 5. Start your new life</ListGroup.Item>
+          <ListGroup.Item action href="/forum"> 4. Find out more about life in Wrocław </ListGroup.Item>
+          <ListGroup.Item action href="/qa"> 5. Ask your questions </ListGroup.Item>
+          <ListGroup.Item action href="#"> 6. Start your new life </ListGroup.Item>
     </ListGroup>
         </Card.Text>
-        <Card.Link href="/qa">Have any questions?</Card.Link>
+        
       </Card.Body>
     </Card>
     </center>
