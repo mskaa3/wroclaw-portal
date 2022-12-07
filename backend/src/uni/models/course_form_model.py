@@ -16,8 +16,6 @@ class CourseForm(db.Base):
     def __init__(self, course_form_name: str):
         self.course_form_name = course_form_name
 
-    # def json(self):
-    #  return {'name':self.name,...}
     def __repr__(self):
         """
         String representation of the course form.

@@ -12,7 +12,6 @@ from marshmallow import pprint
 # from flask_jwt_extended import jwt_required
 from src.forum.models.thread_model import (
     Thread,
-    ThreadSchema,
     thread_schema,
     threads_schema,
     thread_info_schema,
@@ -30,10 +29,6 @@ resource_fields = {
 
 
 class ThreadIdApi(Resource):
-    # parser = reqparse.RequestParser()
-    # parser.add_argument(
-    #    "price", type=float, required=True, help="This field cannot be left blank!"
-    # )
     @marshal_with(resource_fields)
     def get(self, thread_id):
         """
@@ -91,8 +86,7 @@ class ThreadIdApi(Resource):
                     "error": "there is no existing thread with this id",
                 }
             )
-            # response.status_code = 400
-            # return response
+
             return Response(response, mimetype="application/json", status=400)
 
         thread_data: dict = request.get_json()
@@ -115,8 +109,7 @@ class ThreadIdApi(Resource):
                         "thread": updated_thread_dict,
                     }
                 )
-                # response.status_code = 200
-                # return response
+
                 return Response(response, mimetype="application/json", status=200)
             else:
                 response = jsonify(
@@ -127,8 +120,7 @@ class ThreadIdApi(Resource):
                         "error": "the thread failed to update",
                     }
                 )
-                # response.status_code = 500
-                # return response
+
                 return Response(response, mimetype="application/json", status=500)
         else:
             response = jsonify(
@@ -139,13 +131,8 @@ class ThreadIdApi(Resource):
                     "error": "the thread submitted is equal to the existing thread with the same id",
                 }
             )
-            # response.status_code = 400
-            # return response
-            return Response(response, mimetype="application/json", status=400)
 
-        # body = request.get_json()
-        # Voivodeship.objects.get(id=id).update(**body)
-        # return "", 200
+            return Response(response, mimetype="application/json", status=400)
 
     def delete(self, thread_id):
         """
@@ -163,8 +150,7 @@ class ThreadIdApi(Resource):
                     "error": "there is no existing thread with this id",
                 }
             )
-            # response.status_code = 400
-            # return response
+
             return Response(response, mimetype="application/json", status=400)
 
         is_deleted = ThreadDao.delete_thread_by_id(thread_id=thread_id)
@@ -176,8 +162,7 @@ class ThreadIdApi(Resource):
                     "deleted": True,
                 }
             )
-            # response.status_code = 204
-            # return response
+
             return Response(response, mimetype="application/json", status=204)
         else:
             response = jsonify(
@@ -187,16 +172,11 @@ class ThreadIdApi(Resource):
                     "error": "failed to delete the thread",
                 }
             )
-            # response.status_code = 500
-            # return response
-            return Response(response, mimetype="application/json", status=500)
 
-        # voivodeship = Voivodeship.objects.get(id=id).delete()
-        # return "", 200
+            return Response(response, mimetype="application/json", status=500)
 
 
 class ThreadsApi(Resource):
-    # comments: list = CommentDao.get_comments()
     @marshal_with(resource_fields)
     def get(self):
         """
@@ -228,11 +208,6 @@ class ThreadsApi(Resource):
 
             return Response(response, mimetype="application/json", status=200)
         """
-
-    # def get(self):
-    #    "get voivodeship list"
-    #    voivodeships = Voivodeship.objects().to_json()
-    #    return Response(voivodeships, mimetype="application/json", status=200)
 
     def post(self):
         # if Voivodeship.objects.get(name=name):
@@ -296,11 +271,6 @@ class ThreadsApi(Resource):
             response.status_code = 500
             return response
 
-        # body = request.get_json()
-        # voivodeship = Voivodeship(**body).save()
-        # id = voivodeship.id
-        # return {"id": str(id)}, 200
-
 
 class ThreadsByTopicApi(Resource):
 
@@ -352,11 +322,6 @@ class ThreadsByTopicApi(Resource):
 
 
 class ThreadIdInfoApi(Resource):
-    # parser = reqparse.RequestParser()
-    # parser.add_argument(
-    #    "price", type=float, required=True, help="This field cannot be left blank!"
-    # )
-
     resource_fields_user = {
         "user_id": fields.Integer,
         "user_name": fields.String,

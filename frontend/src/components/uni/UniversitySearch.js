@@ -4,6 +4,7 @@ import { Form, Button } from 'react-bootstrap';
 import UnivercityContext from '../../context/uni/UnivercityContext';
 
 import { searchUnisByFilters } from '../../context/uni/UnivercityActions';
+import { isEmpty } from 'lodash';
 
 const UniversitySearch = (props) => {
   const { dispatch, city, level, discipline, search } =
@@ -12,15 +13,6 @@ const UniversitySearch = (props) => {
   const [disciplines, setDisciplines] = useState([]);
   const [levels, setLevels] = useState([]);
   const [cities, setCities] = useState([]);
-  /*
-  const [values, setValues] = useState({
-    discipline: '',
-    level: '',
-    city: '',
-    results: [],
-    searched: false,
-  });
-*/
 
   useEffect(() => {
     const fetchDisciplines = async () => {
@@ -151,16 +143,6 @@ const UniversitySearch = (props) => {
               );
             })}
         </Form.Select>
-
-        <Button
-          className="mt-2 w-100"
-          variant="custom"
-          type="submit"
-          onClick={handleSearch}
-        >
-          Search - does not work yet
-        </Button>
-
         <Button
           className="mt-2 w-100"
           variant="custom"

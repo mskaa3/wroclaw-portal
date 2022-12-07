@@ -12,6 +12,7 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
+from marshmallow import fields
 
 
 class Role(Enum):
@@ -74,14 +75,6 @@ class User(db.Base):
         )
 
 
-# def json(self):
-#    return {"name":self.name,...}
-
-from marshmallow import fields
-
-# from src.forum.models.thread_model import ThreadSchema
-
-
 class UserSchema(ma.Schema):
     """schema for User"""
 
@@ -113,4 +106,3 @@ class UserShortSchema(ma.Schema):
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)
 user_short_schema = UserShortSchema()
-# user_short_schema = UserSchema(only=["user_name", "user_email", "avatar"])

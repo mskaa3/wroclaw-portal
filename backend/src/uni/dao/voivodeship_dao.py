@@ -3,7 +3,6 @@ Contains SQL queries related to voivodeship."""
 
 from main import db
 
-# from src import app
 from src.uni.dao.basic_dao import BasicDao
 from src.uni.models.voivodeship_model import Voivodeship
 

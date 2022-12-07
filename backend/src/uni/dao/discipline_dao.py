@@ -1,9 +1,8 @@
-"""VDisciplene data access from the database.
+"""Disciplene data access from the database.
 Contains SQL queries related to discipline."""
 
 from main import db
 
-# from src import app
 from src.uni.dao.basic_dao import BasicDao
 from src.uni.models.discipline_model import Discipline
 

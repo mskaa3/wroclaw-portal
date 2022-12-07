@@ -42,7 +42,9 @@ const Post = (props) => {
     content,
     createdAt,
     creator,
+    creator_name,
     avatar,
+    authenticatedUser,
     //authenticatedUsername,
     //authenticatedIsStaff,
     //deletePostList,
@@ -76,11 +78,11 @@ const Post = (props) => {
                 link={`/users/${creator}`}
               />
               <div className="post-column">
-                <div className="post-name">{creator}</div>
+                <div className="post-name">{creator_name}</div>
                 <div className="post-username">
                   <Link to={`/users/${creator}`}>
                     <Icon name="user" />
-                    {creator}
+                    {creator_name}
                   </Link>
                 </div>
               </div>
@@ -109,9 +111,7 @@ export default Post;
 <Grid.Column width={12}>
           <div className="post-time">
             {post.post_created_at}
-            {(authenticatedIsStaff ||
-              authenticatedUsername === creator.username) &&
-              actions}
+            {(authenticatedUsername === creator.username) && actions}
           </div>
           <RichEditor
 */

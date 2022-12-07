@@ -1,6 +1,6 @@
 """Users in the WroclawPortal API.
 Used for retrieving, adding, updating, and deleting users ."""
-from flask_restful import Resource, fields, marshal_with
+from flask_restful import Resource
 from flask import Response, request, json
 from flask.json import jsonify
 from src.user.dao.user_dao import UserDao
@@ -13,7 +13,6 @@ from flask_jwt_extended import (
 )
 from src.user.user_model import (
     User,
-    UserSchema,
     user_schema,
     users_schema,
 )
@@ -143,7 +142,6 @@ class UsersApi(Resource):
         Get all the users in the database.
         :return: A response object for the GET API request.
         """
-
         users: list = UserDao.get_users()
 
         users_dumped = users_schema.dump(users)
@@ -200,7 +198,6 @@ class UsersApi(Resource):
 
 
 class UserAuthApi(Resource):
-    # @marshal_with(resource_fields)
     def get(self, user_name):
         """
         Get all the user in the database by unique name.

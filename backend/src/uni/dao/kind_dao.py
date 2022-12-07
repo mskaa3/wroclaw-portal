@@ -1,4 +1,4 @@
-"""Uni data access from the database.  Contains SQL queries related to unis."""
+"""Uni kind data from the database.  Contains SQL queries related to uni kinds."""
 from typing import List
 
 from src.uni.models.uni_kind_model import UniKind
@@ -9,8 +9,6 @@ from src.uni.dao.basic_dao import BasicDao
 
 class UniKindDao:
     """dao for uni_kinds table"""
-
-    # engine = db.get_engine(app=app, bind="app")
 
     @staticmethod
     def get_kinds() -> List[UniKind]:
@@ -27,11 +25,7 @@ class UniKindDao:
         :param kind_id: Id which uniquely identifies the uni kind.
         :return: The result of the database query.
         """
-        return (
-            UniKind.query.filter_by(kind_id=kind_id)
-            # .options(defer("profilepic"), defer("profilepic_name"))
-            .first()
-        )
+        return UniKind.query.filter_by(kind_id=kind_id).first()
 
     @staticmethod
     def add_kind(kind: UniKind) -> bool:
@@ -60,7 +54,6 @@ class UniKindDao:
             {
                 "kind_name": kind.kind_name,
             },
-            # bind=UniDao.engine,
         )
         return BasicDao.safe_commit()
 
@@ -74,7 +67,6 @@ class UniKindDao:
         db.session.execute(
             "DELETE FROM uni_kinds WHERE kind_id=:kind_id",
             {"kind_id": kind_id},
-            # bind=UniDao.engine,
         )
 
         return BasicDao.safe_commit()

@@ -3,8 +3,6 @@ from main import db
 from flask import current_app
 from sqlalchemy.exc import SQLAlchemyError
 
-# from sqlalchemy.orm import scoped_session
-
 
 class BasicDao:
     @staticmethod

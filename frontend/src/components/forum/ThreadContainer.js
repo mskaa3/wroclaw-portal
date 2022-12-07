@@ -4,6 +4,7 @@ import axios from 'axios';
 import './style.css';
 import Thread from './Thread';
 //import {createPost, fetchThread, deletePost, deleteThread} from '../../actions';
+import { authHeader } from '../../context/auth/AuthActions';
 
 const ThreadContainer = () => {
   const { id } = useParams();
@@ -20,7 +21,8 @@ const ThreadContainer = () => {
   useEffect(() => {
     const fetchThread = async () => {
       const { data } = await axios.get(
-        `http://127.0.0.1:5000/forum/threads/${id}/info`
+        `http://127.0.0.1:5000/forum/threads/${id}/info`,
+        { headers: authHeader() }
       );
       console.log('thread data');
       console.log(data);
@@ -33,7 +35,8 @@ const ThreadContainer = () => {
   useEffect(() => {
     const fetchThreadPosts = async () => {
       const { data } = await axios.get(
-        `http://127.0.0.1:5000/forum/threads/${id}/posts`
+        `http://127.0.0.1:5000/forum/threads/${id}/posts`,
+        { headers: authHeader() }
       );
       console.log('thread posts data');
       console.log(data);
@@ -43,22 +46,6 @@ const ThreadContainer = () => {
     fetchThreadPosts();
   }, [id]);
 
-  /*
-  componentWillReceiveProps(newProps) {
-    const {thread} = this.props.match.params;
-    const {thread: newThread} = newProps.match.params;
-    if (thread !== newThread) {
-      this.props.fetchThread(newThread);
-    }
-  }
-*/
-  //const isAuthenticated = () => {};
-
-  //const deleteThread = (thread_id) => {};
-
-  //const createPost = (newPost) => {};
-
-  //const deletePost = (post_id, thread_id) => {};
   //console.log('before return');
   console.log(currentThread);
 
@@ -93,43 +80,3 @@ const ThreadContainer = () => {
 };
 
 export default ThreadContainer;
-
-/*
-return (
-    <Thread
-      id={thread_id}
-      isLoading={isLoading}
-      name={thread.thread_name}
-      content={thread.thread_content}
-      pinned={thread.pinned}
-      creator={thread.thread_creator}
-      createdAt={thread.thread_created_at}
-      posts={thread.posts}
-      error={error}
-      isAuthenticated={isAuthenticated}
-      createPost={createPost}
-      //newPostSuccess={newPostSuccess}
-      //newPostLoading={newPostLoading}
-      //newPostError={newPostError}
-      //authenticatedUsername={authenticatedUsername}
-      //authenticatedIsStaff={authenticatedIsStaff}
-      //deletePostList={deletePostList}
-      deletePost={deletePost}
-      isDeleting={isDeleting}
-      deleteError={deleteError}
-      deleteThread={deleteThread}
-    />
-  );
-};
-*/
-/*
-  const [newThreadState, setNewThreadState] = useState({
-    newThreadLoading: false,
-    newThreadSuccess: false,
-    newThreadName: '',
-    newThreadContent: '',
-    newThreadId: null,
-    newThreadError: null,
-    newThreadShow: false,
-  });
-  */
