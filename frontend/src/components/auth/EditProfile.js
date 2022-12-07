@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { useContext, useState, useEffect } from 'react';
 import Dropzone from 'react-dropzone';
 import {
@@ -169,7 +170,8 @@ const EditProfile = ({ isLoading, error, editSuccess }) => {
                     return (
                       <div {...getRootProps()}>
                         <Image src={avatarURL} className="editProfile-avatar" />
-                        <input {...getInputProps()} />
+
+                        <input name='avatar'{...getInputProps()}/>
                       </div>
                     );
                   }}

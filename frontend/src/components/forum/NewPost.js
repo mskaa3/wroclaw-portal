@@ -18,7 +18,7 @@ export default class NewPost extends Component {
     };
   }
 
-  navigate = useNavigate();
+  // navigate = useNavigate();
 
   componentWillReceiveProps(newProps) {
     const { success } = newProps;
