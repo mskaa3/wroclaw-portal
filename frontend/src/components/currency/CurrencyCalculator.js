@@ -1,64 +1,36 @@
 /* eslint-disable prettier/prettier */
-import React,{ useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Axios from 'axios';
 import Form from 'react-bootstrap/Form';
 import Dropdown from 'react-dropdown';
+import Button from 'react-bootstrap/Button';
 
 import '../../css/Currency.css';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 
 function CurrencyCalculator() {
-  /*const [inputs, setInputs] = useState({});
-
-  const handleChange = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    setInputs((values) => ({ ...values, [name]: value }));
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    setInputs(() => '5');
-    console.log(inputs);
-  };*/
-
-  /*return (
-    <center>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Enter your name:
-          <input
-            type="text"
-            name="username"
-            value={inputs.username || ''}
-            onChange={handleChange}
-          />
-        </label>
-        <br></br>
-        <label>
-          Enter your age:
-          <input
-            type="number"
-            name="age"
-            value={inputs.age || ''}
-            onChange={handleChange}
-          />
-        </label>
-        <br></br>
-        <input type="submit" />
-      </form>
-    </center>
-  );*/
-
   // Initializing all the state variables
+  const [currencyNames, setCurrencyNames] = useState([]);
   const [info, setInfo] = useState([]);
   const [input, setInput] = useState(0);
-  const [from, setFrom] = useState('usd');
-  const [to, setTo] = useState('eur');
+  const [from, setFrom] = useState();
+  const [to, setTo] = useState();
   const [options, setOptions] = useState([]);
-  const [output, setOutput] = useState(0);
+  const [output, setOutput] = useState();
 
   // Calling the api whenever the dependency changes
+  useEffect(() => {
+    Axios.get(
+      'https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies.json'
+    ).then((res) => {
+      setCurrencyNames(
+        Object.entries(res.data).map((item) => {
+          return { value: item[0], label: item[1] };
+        })
+      );
+    });
+  }, []);
+
   useEffect(() => {
     Axios.get(
       `https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/${from}.json`
@@ -72,11 +44,17 @@ function CurrencyCalculator() {
   useEffect(() => {
     setOptions(Object.keys(info));
 
-    convert();
+    //convert();
   }, [info]);
 
   // Function to convert the currency
   function convert() {
+    if (isNaN(input)) {
+      return;
+    }
+    if (!from || !to) {
+      return;
+    }
     var rate = info[to];
 
     setOutput(input * rate);
@@ -95,16 +73,26 @@ function CurrencyCalculator() {
     <center>
       <Form.Group className="mb-3 w-25 mt-5" controlId="formBasicCurrencyFrom">
         <Form.Label>Currency From</Form.Label>
-        <div className="container" style={{ display: 'inherit' }}>
-          <Dropdown
-            className="sample-container-2"
-            options={options}
-            onChange={(e) => {
-              setFrom(e.value);
-            }}
-            value={from}
-            placeholder="From"
-          />
+        <div style={{ display: 'inherit' }}>
+          {currencyNames && (
+            <Form.Select
+              onChange={(e) => {
+                console.log(e.target.value);
+                setFrom(e.target.value);
+              }}
+            >
+              {!from && <option value="">Select currency from</option>}
+
+              {currencyNames &&
+                currencyNames.map((item) => {
+                  return (
+                    <option key={item.value} value={item.value}>
+                      {item.label}
+                    </option>
+                  );
+                })}
+            </Form.Select>
+          )}
         </div>
 
         <br />
@@ -120,27 +108,42 @@ function CurrencyCalculator() {
       <Form.Group className="mb-3 w-25" controlId="formBasicCurrencyTo">
         <Form.Label>Currency To</Form.Label>
         <div>
-          <Dropdown
-            options={options}
+          <Form.Select
+            //value="Choose Currency To"
             onChange={(e) => {
-              setTo(e.value);
+              setTo(e.target.value);
             }}
-            value={to}
-            placeholder="To"
-          />
+          >
+            {!to && <option value="">Select currency to</option>}
+
+            {currencyNames &&
+              currencyNames.map((item) => {
+                return (
+                  <option key={item.value} value={item.value}>
+                    {item.label}
+                  </option>
+                );
+              })}
+          </Form.Select>
         </div>
         <br />
       </Form.Group>
-      <button
+
+      <Button
         onClick={() => {
           convert();
         }}
       >
         Convert
-      </button>
-      <h2>Result of Convertion:</h2>
+      </Button>
+      {output && (
+        <div>
+          <br />
+          <h2>Result of Convertion:</h2>
 
-      <p>{input + ' ' + from + ' = ' + output.toFixed(2) + ' ' + to}</p>
+          <p>{input + ' ' + from + ' = ' + output.toFixed(2) + ' ' + to}</p>
+        </div>
+      )}
     </center>
   );
 }
