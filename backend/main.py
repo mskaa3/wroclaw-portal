@@ -148,12 +148,6 @@ def create_app(config_class="config.DevConfig"):
         api.add_resource(UserIdApi, "/users/<user_id>", endpoint="user")
         api.add_resource(UserAuthApi, "/users/login")
 
-        from src.currency.currency_routes import currency_routes
-        from src.docs.docs_routes import docs_routes
-        from src.qa.qa_routes import qa_routes
-        app.register_blueprint(currency_routes)
-        app.register_blueprint(docs_routes)
-        app.register_blueprint(qa_routes)
         # db.create_all()
         print("db=====================================================")
         print(db.engine.url.database)
@@ -190,6 +184,6 @@ def create_app(config_class="config.DevConfig"):
     from src.qa.qa_routes import qa_routes
     app.register_blueprint(currency_routes)
     app.register_blueprint(map_routes, url_prefix="/map")
-    app.register_blueprint(docs_routes, url_prefix="/docs")
-    app.register_blueprint(qa_routes, url_prefix="/qa")
+    app.register_blueprint(docs_routes)
+    app.register_blueprint(qa_routes)
     return app
