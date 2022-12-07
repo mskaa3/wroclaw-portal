@@ -48,6 +48,9 @@ function CurrencyCalculator() {
 
   // Function to convert the currency
   function convert() {
+    if (isNaN(input)){
+      return;
+    }
     if (!from || !to) {
       return;
     }
