@@ -72,7 +72,7 @@ export default class NewPost extends Component {
       //thread_id: thread.thread_id,
       post_content: content,
       //for now post creator is hardcoded, need to insert logined user
-      post_creator: authenticatedUser.uaer_id,
+      post_creator: authenticatedUser.user_id,
     };
 
     console.log('new post');
