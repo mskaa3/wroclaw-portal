@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Axios from 'axios';
 import Form from 'react-bootstrap/Form';
 import Dropdown from 'react-dropdown';
+import Button from 'react-bootstrap/Button';
 
 import '../../css/Currency.css';
 import DropdownButton from 'react-bootstrap/DropdownButton';
@@ -48,7 +49,7 @@ function CurrencyCalculator() {
 
   // Function to convert the currency
   function convert() {
-    if (isNaN(input)){
+    if (isNaN(input)) {
       return;
     }
     if (!from || !to) {
@@ -127,13 +128,14 @@ function CurrencyCalculator() {
         </div>
         <br />
       </Form.Group>
-      <button
+
+      <Button
         onClick={() => {
           convert();
         }}
       >
         Convert
-      </button>
+      </Button>
       {output && (
         <div>
           <br />

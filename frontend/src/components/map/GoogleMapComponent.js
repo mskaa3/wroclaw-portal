@@ -26,7 +26,7 @@ const GoogleMapComponent = (props) => {
             id="map1"
             mapContainerStyle={containerStyle}
             center={center}
-            zoom={10}
+            zoom={13}
           >
             {props.markerList?.map((pin) => {
               if (props.pinCategories.includes(pin.cat))
