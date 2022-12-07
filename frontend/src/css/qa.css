@@ -5,3 +5,10 @@
 .answers-component{
     margin-top: 40px;
 }
+.qa-submit{
+    display: block;
+  margin-left: auto;
+  margin-right: auto;
+    margin-top: 100px;
+    
+}

@@ -2,6 +2,7 @@
 import Button from 'react-bootstrap/Button';
 import React from 'react';
 import Form from 'react-bootstrap/Form';
+import Badge from 'react-bootstrap/Badge';
 import { useState } from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
 import '../css/qa.css';
@@ -23,7 +24,7 @@ function QAform() {
       body: JSON.stringify(query),
     }).then((response) => {
       response.json().then((data) => {
-        console.log(data);
+        console.log(decodeURIComponent(escape((data[1].context))));
         setAnswers(data);
         setIsPending(false);
         setIsAnswered(true);
@@ -32,7 +33,64 @@ function QAform() {
   };
   return (
     <div className="QaComponents">
-      <Form
+       <Card className='qa-submit'>
+
+        <Card.Body>
+          <center>
+          <Card.Title>Have any questions? We will try to answer them!</Card.Title>
+          </center>
+          <Card.Text>
+          <Form
+        name="QAform"
+        onSubmit={handleSubmit}
+        action="http://localhost:5000/qa"
+        method="post"
+      >
+        <center>
+          <div className="col-sm-6">
+            <Form.Group className="mb-3 mt-4" controlId="question" >
+              
+              <Form.Control
+                type="question"
+                placeholder="Type your question..."
+                onChange={(e) => setQuestion(e.target.value)}
+                value={question}
+              />
+            </Form.Group>
+          </div>
+          <div>
+          <Badge bg="primary">#Culture</Badge>{' '}
+          <Badge bg="secondary">#Transport</Badge>{' '}
+          <Badge bg="success">#Legal stay</Badge> {' '}
+          <Badge bg="danger">#Work</Badge>{' '}
+          <Badge bg="warning" text="dark">
+            #Studies
+          </Badge>{' '}
+          <Badge bg="info">#Costs</Badge>{' '}
+          <Badge bg="light" text="dark">
+            #Accomodation
+          </Badge>{' '}
+          <Badge bg="dark">#Others</Badge>
+
+        </div>
+        <br /><br />
+          {!isPending && (
+            <Button variant="primary" type="submit">
+              Submit
+            </Button>
+          )}
+          {isPending && (
+            <Button disabled variant="primary" type="submit">
+              Finding the answer, please wait...
+            </Button>
+          )}
+        </center>
+      </Form>
+          </Card.Text>
+          
+        </Card.Body>
+      </Card>
+      {/* <Form
         name="QAform"
         onSubmit={handleSubmit}
         action="http://localhost:5000/qa"
@@ -62,7 +120,7 @@ function QAform() {
             </Button>
           )}
         </center>
-      </Form>
+      </Form> */}
 
       <div className="answers-component">
         {isAnswered && <h2>Most relevant results:</h2>}
@@ -72,8 +130,8 @@ function QAform() {
               <div className="single-answer">
                 <Card key={answ.id}>
                   <Card.Body>
-                    <Card.Title>{answ.answer}</Card.Title>
-                    <Card.Text>...{answ.context}...</Card.Text>
+                    <Card.Title>{decodeURIComponent(escape(answ.answer))}</Card.Title>
+                    <Card.Text>...{decodeURIComponent(escape(answ.context))}...</Card.Text>
                     <Card.Link href={answ.link}>Read more...</Card.Link>
                   </Card.Body>
                 </Card>
