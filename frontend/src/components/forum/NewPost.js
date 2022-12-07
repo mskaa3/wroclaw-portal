@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { Component } from 'react';
 import { getSelectedBlock } from 'draftjs-utils';
 import htmlToDraft from 'html-to-draftjs';
@@ -72,7 +73,7 @@ export default class NewPost extends Component {
       //thread_id: thread.thread_id,
       post_content: content,
       //for now post creator is hardcoded, need to insert logined user
-      post_creator: authenticatedUser.uaer_id,
+      post_creator: authenticatedUser.user_id,
     };
 
     console.log('new post');

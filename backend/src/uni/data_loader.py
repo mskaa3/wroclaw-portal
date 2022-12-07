@@ -2,7 +2,11 @@
 import sqlite3
 from urllib.error import URLError
 from sqlalchemy.inspection import inspect
+from deep_translator import GoogleTranslator 
+translator =GoogleTranslator(source='pl', target='en') 
+import sqlite3
 
+# pip install -U deep-translator
 from collections import defaultdict
 
 # import dpath.util
@@ -125,6 +129,7 @@ def load_courses(course_list: list):
             if elem["statusCode"] == "3":
                 course_uid = validate_string(elem["courseInstanceUuid"])
                 course_name = validate_string(item["courseName"])
+                course_name=translator.translate(course_name)
                 level = int(item["levelCode"])
                 title = int(elem["titleCode"])
                 form = int(elem["formCode"])
@@ -217,7 +222,9 @@ def load_dictionaries(initial_data: dict):
         for item in response:
             code = item["code"]
             name = validate_string(item["nameEn"])
-
+            
+            name=translator.translate(name)
+            print(name)
             elem = (code, name)
 
             data[k].append(elem)
@@ -250,7 +257,7 @@ def fill_tables(db):
 
     courses_data = load_courses(courses_list)
     print("courses data created-------------------------------------------------")
-
+    
     cursor.executemany(CONST.COURSES_QUERY, courses_data)
     conn.commit()
     print("courses table filled +++++++++++++++++++++++++++++++++++++++++")

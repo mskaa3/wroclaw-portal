@@ -1,23 +1,24 @@
 from os import environ
 
 
-UNI_DATA_API_URL = environ.get("UNI_DATA_API_URL")
+# UNI_DATA_API_URL = environ.get("UNI_DATA_API_URL")
 
+UNI_DATA_API_URL = "https://radon.nauka.gov.pl/opendata/polon"
 """endpoints to load data"""
-VOIVODESHIP_DATA_URL = str(UNI_DATA_API_URL) + "/dictionaries/shared/voivodeships"
+VOIVODESHIP_DATA_URL = UNI_DATA_API_URL + "/dictionaries/shared/voivodeships"
 INSTITUTION_KINDS_DATA_URL = (
-    str(UNI_DATA_API_URL) + "/dictionaries/institution/institutionKinds"
+    UNI_DATA_API_URL + "/dictionaries/institution/institutionKinds"
 )
 
-COURSE_LEVELS_DATA_URL = str(UNI_DATA_API_URL) + "/dictionaries/course/levels"
-COURSE_TITLES_DATA_URL = str(UNI_DATA_API_URL) + "/dictionaries/course/professionalTitles"
-COURSE_FORMS_DATA_URL = str(UNI_DATA_API_URL) + "/dictionaries/course/instanceForms"
+COURSE_LEVELS_DATA_URL = UNI_DATA_API_URL + "/dictionaries/course/levels"
+COURSE_TITLES_DATA_URL = UNI_DATA_API_URL + "/dictionaries/course/professionalTitles"
+COURSE_FORMS_DATA_URL = UNI_DATA_API_URL + "/dictionaries/course/instanceForms"
 COURSE_LANGUAGES_DATA_URL = (
-    str(UNI_DATA_API_URL) + "/dictionaries/course/philologicalLanguages"
+    UNI_DATA_API_URL + "/dictionaries/course/philologicalLanguages"
 )
-DISCIPLINES_DATA_URL = str(UNI_DATA_API_URL) + "/dictionaries/shared/disciplines"
-COURSES_DATA_URL = str(UNI_DATA_API_URL) + "/courses"
-INSTITUTIONS_DATA_URL =str(UNI_DATA_API_URL) + "/institutions"
+DISCIPLINES_DATA_URL = UNI_DATA_API_URL + "/dictionaries/shared/disciplines"
+COURSES_DATA_URL = UNI_DATA_API_URL + "/courses"
+INSTITUTIONS_DATA_URL =UNI_DATA_API_URL + "/institutions"
 
 
 """sql querise to fill database tables"""

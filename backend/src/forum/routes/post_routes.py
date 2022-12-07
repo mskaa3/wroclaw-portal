@@ -313,7 +313,7 @@ class PostsByThreadApi(Resource):
     }
 
     @marshal_with(resource_fields)
-    @jwt_required()
+    # @jwt_required()
     def get(self, thread_id: int):
         """
         Get all the posts by thread in the database.
