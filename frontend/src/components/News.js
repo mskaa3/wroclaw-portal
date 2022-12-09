@@ -1,68 +1,95 @@
 /* eslint-disable prettier/prettier */
-import { useState } from 'react';
-import Form from 'react-bootstrap/Form';
-import ListGroup from 'react-bootstrap/ListGroup';
-import { Row, Col } from 'react-bootstrap';
-import docs from '../css/docs.css';
 
+import axios from 'axios';
+ 
+import docs from '../css/docs.css';
+import { useEffect, useState ,useMemo} from 'react';
 import { NewsContext } from "../NewsContext";
 import NewsArticle from "./NewsArticle";
 import React, { useContext } from "react";
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 
-// const News = () => (
-//   <div>
-//     <center>
-//     <Form role="form" >
-//     <h1>What is New? </h1>
-//       <h2 className='h2 mb-5 mt-3'><span style={{ fontWeight: 'bold' }}>Wroclaw</span> | Poland</h2>  
-//       <h2 className='h1'> New NextBike stations in 2023</h2>
-//     <Form.Group>
-//     <Row>           
-//       {/* <Col lg={6} md={6} sm={12} xs={12}> */}
-//       <ListGroup variant="numbered" active className='line mb-3 w-25 mt-3'>
-//         <ListGroup.Item action href='#1'>Health</ListGroup.Item>
-//         <ListGroup.Item action href='#2'>Politics</ListGroup.Item>
-//         <ListGroup.Item action href='#3'>Education</ListGroup.Item>
-//         <ListGroup.Item action href='#4'>Law</ListGroup.Item>
-//         <ListGroup.Item action href='#6'>Business</ListGroup.Item>
-//         <ListGroup.Item action href='#5'>Entertainment</ListGroup.Item>
-//         <ListGroup.Item action href='#7'>Sport</ListGroup.Item>
-//         <ListGroup.Item action href='#8'>General</ListGroup.Item>
-//       </ListGroup>  
-//       {/* </Col>        */}
+function News() {
+  const [sources,setSources]=useState([]);
+  const [news,setNews]=useState([]);
+  const [sourceID,setSourceID]=useState();
+  const [filtered,setFiltered]=useState(false);
+
+  const handleClick=(e)=>{
+    setSourceID( parseInt(e.target.value));
+    console.log(sourceID);
+    setFiltered(true);
+    
+  };
+
+  function getFilteredList() {
+    if (!setSourceID) {
+      return NaN;
+    }
+        
+    return news.filter(news=>news.source===sourceID);
+   
+  }
+  var filteredNews = useMemo(getFilteredList, [sourceID, news]);
+
+  
+
+  useEffect(()=>{
+    const getData=async()=>{
+      const {data}  = await axios.get(
+        'http://localhost:5000/news'
+      );
+    
+      setSources(data[0]);
+      setFiltered(data[0]);
+      setNews(data[1]);
+      // console.log(documents[0])
       
-//       <Col lg={6} md={6} sm={12} xs={12}>
-//         <img className='image mb-3'
-//           src='http://www.wroclaw.pl/en/files/news/13165/wroclawskirowermiejski.jpg'
-//           alt='example'/>           
-//           <div>"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"</div>                  
-//         </Col> 
-       
-      
-//       </Row>
-//       </Form.Group>        
-//     </Form>
-//     </center>
-//     </div>  
-//   )
-function News(props) {
-  const { data } = useContext(NewsContext);
-  console.log(data);
+    };
+    getData();
+  },[sources,news]);
+  
+  // const { data } = useContext(NewsContext);
+  // console.log(data);
 
   return (
     <div>
       <center>
       <h1 className="head__text">News</h1>
+      {/* <DropdownButton id="dropdown-item-button" title="Dropdown button"  value={sources}>
+      {sources.map((source)=>{
+          return (
+             <Dropdown.Item as button
+             action onClick={handleClick}
+             value={source[0]} 
+             >{source[1]}</Dropdown.Item>
+            )
+        })}
+      </DropdownButton> */}
       </center>
+      {!filtered && (
+      
       <div className="all__news">
-        {data
-          ? data.articles.map((news) => (
-              <NewsArticle data={news} key={news.url} />
+        {news
+          ? news.map((single_news) => (
+              <NewsArticle data={single_news} key={single_news.url} />
             ))
           : "Loading"}
       </div>
+      )}
+      {filtered && (
+      
+      <div className="all__news">
+        {news
+          ? news.map((single_news) => (
+              <NewsArticle data={single_news} key={single_news.id} />
+            ))
+          : "Loading"}
+      </div>
+      )}
     </div>
-  );
+  );  
 }
 
 export default News;

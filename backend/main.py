@@ -17,7 +17,7 @@ from transformers import AutoTokenizer, AutoModelForQuestionAnswering
 # from crypt import methods
 from sentence_transformers import SentenceTransformer
 from dotenv import load_dotenv
-
+from src.news.data_loader import update
 
 # Globally accessible libraries
 # db = SQLAlchemy()
@@ -147,7 +147,7 @@ def create_app(config_class="config.DevConfig"):
         api.add_resource(UsersApi, "/users", endpoint="users")
         api.add_resource(UserIdApi, "/users/<user_id>", endpoint="user")
         api.add_resource(UserAuthApi, "/users/login")
-
+        update()
         print("db=====================================================")
         print(db.engine.url.database)
 
@@ -189,4 +189,6 @@ def create_app(config_class="config.DevConfig"):
     app.register_blueprint(map_routes, url_prefix="/map")
     app.register_blueprint(docs_routes)
     app.register_blueprint(qa_routes)
+    from src.news.news_routes import news_routes
+    app.register_blueprint(news_routes)
     return app
