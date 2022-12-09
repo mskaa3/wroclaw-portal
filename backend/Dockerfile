@@ -4,12 +4,13 @@ WORKDIR /app
 
 EXPOSE 5000
 
-COPY Pipfile Pipfile.lock ./
+COPY Pipfile Pipfile.lock 
 
 RUN pip install pipenv
-RUN pipenv lock --requirements > requirements.txt
-RUN pip install -r requirements.txt
+# RUN pipenv lock --requirements > requirements.txt
+COPY requirements.txt /tmp/requirements.txt
+RUN pip install -r /tmp/requirements.txt
 
 COPY . ./
 
-CMD ["python","main.py"]
+CMD ["python","app.py"]
