@@ -22,7 +22,7 @@ def docs():
                     "categoryID": elem[3],
                 }
                 documents_list.append(elem_dict)
-
+            categories_data.sort(key=lambda x:x[1])
             return jsonify(categories_data, documents_list)
         except sqlite3.Error as er:
             return er
