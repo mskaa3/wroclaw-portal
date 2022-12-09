@@ -1,35 +1,49 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState, useContext } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
 import axios from 'axios';
 import TopicThreadList from './TopicThreadList';
 import NewThread from './NewThread';
-
+import AuthContext from '../../context/auth/AuthContext';
 import './style.css';
 
-//import {
-//  createThreadSave,
-// createThreadToggle,
-//  fetchForum,
-//  createThread,
-//} from '../../actions';
+import {
+  createThreadSave,
+  //fetchTopic,
+  createThread,
+} from '../../context/auth/AuthActions';
 
 const TopicContainer = () => {
   const { topic_id } = useParams();
   console.log(topic_id);
+  const navigate = useNavigate();
+  const {
+    dispatch,
+    isAuthenticated,
+    newThreadShow,
+    newThreadError,
+    newThreadId,
+    newThreadName,
+    newThreadContent,
+    newThreadLoading,
+    newThreadSuccess,
+    user,
+  } = useContext(AuthContext);
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [threads, setThreads] = useState(null);
   const [topic, setTopic] = useState(null);
 
-  const [newThreadState, setNewThreadState] = useState({
-    newThreadLoading: false,
-    newThreadSuccess: false,
-    newThreadName: '',
-    newThreadContent: '',
-    newThreadId: null,
-    newThreadError: null,
-    newThreadShow: false,
-  });
+  //const [newThreadState, setNewThreadState] = useState({
+  //newThreadLoading: false,
+  //newThreadSuccess: false,
+  //newThreadName: '',
+  //newThreadContent: '',
+  //newThreadId: null,
+  //newThreadError: null,
+  //newThreadShow: false,
+  //});
 
   useEffect(() => {
     const fetchTopic = async () => {
@@ -55,7 +69,7 @@ const TopicContainer = () => {
     };
 
     fetchThreads();
-  }, [topic_id]);
+  }, [topic_id, newThreadId]);
 
   //const {
   //  isLoading,
@@ -64,7 +78,6 @@ const TopicContainer = () => {
   //  description,
   //  threads,
   //  error,
-  //isAuthenticated,
   //newThreadLoading,
   //newThreadSuccess,
   //newThreadName,
@@ -72,22 +85,40 @@ const TopicContainer = () => {
   // newThreadId,
   //newThreadError,
   //newThreadShow,
-  //createThread,
-  //createThreadSave,
-  //createThreadToggle,
   //} = this.props;
 
   //const { topic_name, slug, description } = topic;
 
-  const isAuthenticated = () => {};
-
-  const createThread = (newThread) => {};
-
-  const createThreadSave = (newThread) => {};
-
-  const createThreadToggle = () => {};
+  const createThreadToggle = () => {
+    dispatch({ type: 'CREATE_THREAD_TOGGLE' });
+  };
   return (
     <div>
+      <NewThread
+        topic={topic_id}
+        isAuthenticated={isAuthenticated}
+        isLoading={newThreadLoading}
+        success={newThreadSuccess}
+        thread_name={newThreadName}
+        thread_content={newThreadContent}
+        id={newThreadId}
+        error={newThreadError}
+        showEditor={newThreadShow}
+        createThread={createThread}
+        updateNewThread={createThreadSave}
+        toggleShowEditor={createThreadToggle}
+        maxLength={2000}
+        user={user}
+        dispatch={dispatch}
+      />
+      <Button
+        className="mt-3 w-40 mb-3"
+        variant="custom"
+        type="submit"
+        onClick={() => navigate(-1)}
+      >
+        <i className="fa-solid fa-left-long"></i> &nbsp;Back to topics
+      </Button>
       <TopicThreadList
         isLoading={isLoading}
         threads={threads}
@@ -99,85 +130,3 @@ const TopicContainer = () => {
 };
 
 export default TopicContainer;
-
-/*
-<NewThread
-        topic={topic_id}
-        isAuthenticated={isAuthenticated}
-        isLoading={newThreadState.newThreadLoading}
-        success={newThreadState.newThreadSuccess}
-        name={newThreadState.newThreadName}
-        content={newThreadState.newThreadContent}
-        id={newThreadState.newThreadId}
-        error={newThreadState.newThreadError}
-        showEditor={newThreadState.newThreadShow}
-        createThread={createThread}
-        updateNewThread={createThreadSave}
-        toggleShowEditor={createThreadToggle}
-        maxLength={2000}
-      />
-*/
-
-//componentDidMount() {
-//  const {forum} = this.props.match.params;
-//  this.props.fetchForum(forum);
-//}
-
-//componentWillReceiveProps(newProps) {
-//  const {forum: oldForum} = this.props.match.params;
-//  const {forum: futureForum} = newProps.match.params;
-//  if (oldForum !== futureForum) {
-//    this.props.fetchForum(futureForum);
-//  }
-// }
-
-/*
-const mapStateToProps = state => ({
-isLoading: state.forum.isLoading,
-name: state.forum.name,
-slug: state.forum.slug,
-description: state.forum.description,
-threads: state.forum.threads,
-error: state.forum.error,
-isAuthenticated: state.auth.isAuthenticated,
-newThreadLoading: state.forum.newThreadLoading,
-newThreadSuccess: state.forum.newThreadSuccess,
-newThreadName: state.forum.newThreadName,
-newThreadContent: state.forum.newThreadContent,
-newThreadId: state.forum.newThreadId,
-newThreadError: state.forum.newThreadError,
-newThreadShow: state.forum.newThreadShow,
-});
-
-const mapDispatchToProps = dispatch => ({
-fetchForum: forum => {
-  dispatch(fetchForum(forum));
-},
-createThread: newThread => {
-  dispatch(createThread(newThread));
-},
-createThreadSave: newThread => {
-  dispatch(createThreadSave(newThread));
-},
-createThreadToggle: () => {
-  dispatch(createThreadToggle());
-},
-});
-*/
-
-/*<NewThread
-        forum={slug}
-        isAuthenticated={isAuthenticated}
-        isLoading={newThreadLoading}
-        success={newThreadSuccess}
-        name={newThreadName}
-        content={newThreadContent}
-        id={newThreadId}
-        error={newThreadError}
-        showEditor={newThreadShow}
-        createThread={createThread}
-        updateNewThread={createThreadSave}
-        toggleShowEditor={createThreadToggle}
-        maxLength={2000}
-      />
-      */

@@ -2,9 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { Form, Button } from 'react-bootstrap';
 import UnivercityContext from '../../context/uni/UnivercityContext';
-
 import { searchUnisByFilters } from '../../context/uni/UnivercityActions';
-import { isEmpty } from 'lodash';
 
 const UniversitySearch = (props) => {
   const { dispatch, city, level, discipline, search } =

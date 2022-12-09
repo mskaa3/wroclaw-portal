@@ -230,6 +230,8 @@ class ThreadsApi(Resource):
         :return: A response object for the POST API request.
         """
         thread_data: dict = request.get_json()
+        print("new thread data from request")
+        print(thread_data)
 
         if thread_data is None:
             response = jsonify(
@@ -242,13 +244,25 @@ class ThreadsApi(Resource):
             )
             response.status_code = 400
             return response
+
+        if ThreadDao.get_thread_by_name(thread_name=thread_data["thread_name"]):
+            return {
+                "message": "A thread with name '{} already exists.".format(
+                    thread_data["thread_name"]
+                )
+            }, 400
+            # return response_with(
+            #    code.INVALID_INPUT_422,
+            #    message="Thread {} already exists".format(thread_data["thread_name"]),
+            # )
+
         thread_to_add = Thread(thread_data)
 
         thread_added_successfully: bool = ThreadDao.add_thread(new_thread=thread_to_add)
 
         if thread_added_successfully:
             thread_added = ThreadDao.get_thread_by_id(thread_to_add.thread_id)
-            thread_added_dict: dict = Thread(thread_added).__dict__
+            thread_added_dict: dict = thread_added.to_dict()
 
             response = jsonify(
                 {
@@ -285,25 +299,48 @@ class ThreadsByTopicApi(Resource):
         "post_creator_name": fields.String,
     }
 
-    resource_fields = {
+    resource_fields_with_activity = {
         "thread_id": fields.Integer,
         "thread_name": fields.String,
         "thread_content": fields.String,
         "thread_created_at": fields.String,
         "thread_creator_name": fields.String,
+        "thread_creator_avatar": fields.String,
         "post_count": fields.Integer,
+        "pinned": fields.Boolean,
         # "last_activity": fields.Nested(thread_last_activity_fields),
         "last_activity": {
-            "thread_id": fields.Integer,
-            "thread_name": fields.String,
+            # "thread_id": fields.Integer,
+            # "thread_name": fields.String,
+            "post_id": fields.Integer,
+            "post_creator": fields.Integer,
             "post_created_at": fields.String,
             "post_creator_name": fields.String,
-            "pinned": fields.String,
+            "post_creator_avatar": fields.String,
         },
     }
 
-    @marshal_with(resource_fields)
+    @marshal_with(resource_fields_with_activity)
     def get(self, topic_id: int):
+        """
+        Get all the threads by topic in the database.
+        :return: A response object for the GET API request.
+        """
+        print("in routes///////////////////")
+
+        threads: list = ThreadDao.get_threads_by_topic(topic_id)
+        print(type(threads))
+        print(threads)
+        for thread in threads:
+            print(thread)
+            # if
+
+        # res = threads_schema.dump(threads)
+        # print(res)
+        return threads
+
+    @marshal_with(resource_fields)
+    def get1(self, topic_id: int):
         """
         Get all the threads by topic in the database.
         :return: A response object for the GET API request.
@@ -339,27 +376,9 @@ class ThreadIdInfoApi(Resource):
 
         # thread = ThreadDao.get_thread_info_by_id(thread_id=thread_id)
         thread = ThreadDao.get_thread_by_id(thread_id=thread_id)
-        user = UserDao.get_user_by_id(user_id=thread.thread_creator)
         print("thread info")
         print(type(thread))
         print(thread)
-        print("user info")
-        print(type(user))
-        print(user)
-        thread_dict: dict = thread.to_dict()
-        user_dict: dict = user.to_dict()
-        thread_dict.update(user_dict)
-        print(thread_dict)
-
-        # res = thread_info_schema.dump(thread)
-        # res = ThreadSchema().dump(thread)
-
-        # pprint(res)
-        # resp=make_response(json.dumps(thread),200)
-        # return thread_dict
-        return jsonify(thread_dict)
-        # return Response(thread, mimetype="application/json", status=200)
-        """
         if thread is None:
             response = jsonify(
                 {
@@ -369,20 +388,24 @@ class ThreadIdInfoApi(Resource):
                     "error": "there is no thread with this identifier",
                 }
             )
-            response.status_code = 400
+            response.status_code = 404
             return response
         else:
-            thread_dict: dict = Thread(thread).__dict__
-            # comment_dict["time"] = str(comment_dict["time"])
+            user = UserDao.get_user_by_id(user_id=thread.thread_creator)
 
-            response = jsonify(
-                {
-                    "self": f"/threads/{thread_id}",
-                    "thread": thread_dict,
-                    # "log": f'/v2/logs/{comment_dict.get("log_id")}',
-                }
-            )
-            # response.status_code = 200
-            # return response
-            return Response(response, mimetype="application/json", status=200)
-        """
+            print("user info")
+            print(type(user))
+            print(user)
+            thread_dict: dict = thread.to_dict()
+            user_dict: dict = user.to_dict()
+            thread_dict.update(user_dict)
+            print(thread_dict)
+
+            # res = thread_info_schema.dump(thread)
+            # res = ThreadSchema().dump(thread)
+
+            # pprint(res)
+            # resp=make_response(json.dumps(thread),200)
+            # return thread_dict
+            return jsonify(thread_dict)
+            # return Response(thread, mimetype="application/json", status=200)

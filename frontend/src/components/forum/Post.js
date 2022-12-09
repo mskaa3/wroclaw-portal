@@ -11,8 +11,8 @@ const Post = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   //console.log('post_creator');
   //console.log(post.post_creator);
-  const { id, threadID, isThread } = props;
-
+  const { deleteAction, id, threadID, isThread, dispatch } = props;
+  /*
   const deleteThread = async (thread_id) => {
     const response = await axios.delete(
       `http://127.0.0.1:5000/forum/threads/${thread_id}`
@@ -20,7 +20,8 @@ const Post = (props) => {
 
     return response.data;
   };
-
+  */
+  /*
   const deletePost = async (post_id) => {
     const response = await axios.delete(
       `http://127.0.0.1:5000/forum/posts/${post_id}`
@@ -28,13 +29,15 @@ const Post = (props) => {
 
     return response.data;
   };
-
+*/
   const onDelete = () => {
-    //const {deleteAction, id, threadID, isThread} = this.props;
+    //const { deleteAction, id, threadID, isThread } = this.props;
     if (isThread) {
-      deleteThread(threadID);
+      //deleteThread(threadID);
+      deleteAction(dispatch, threadID);
     } else {
-      deletePost(id);
+      //deletePost(id);
+      deleteAction(dispatch, id);
     }
   };
 

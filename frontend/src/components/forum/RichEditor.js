@@ -4,18 +4,6 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './style.css';
 import { Editor } from 'react-draft-wysiwyg';
 
-//const RichEditor = () => {
-
-//  const [editorState, setEditorState] = useState(
-//    () => EditorState.createEmpty(),
-//  );
-//  return (
-//    <div>RichEditor</div>
-//  )
-//}
-
-//export default RichEditor
-
 export default class RichEditor extends Component {
   constructor(props) {
     super(props);

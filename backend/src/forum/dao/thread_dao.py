@@ -123,6 +123,101 @@ class ThreadDao:
     @staticmethod
     def get_threads_by_topic(topic_id: int) -> list:
         """
+        Retrieve all the threads of one topic in the database by topic id
+        with thread_creator info and posts number by thread and last activity in thread.
+        :param topic_id: The unique identifier for a topic.
+        :return: The result of the query.
+        """
+        result = (
+            db.session.execute(
+                f"WITH threadpost AS "
+                f"(SELECT thread_id, count(post_id) AS post_count "
+                f"FROM threads LEFT JOIN posts ON thread_id=thread GROUP BY thread_id), "
+                f"last_activity AS "
+                f"(SELECT g.*, u2.user_name AS post_creator_name,u2.avatar as post_creator_avatar "
+                f"FROM "
+                f"(SELECT p.*,topic "
+                f"FROM threads LEFT JOIN "
+                f"(SELECT post_id, post_created_at, post_creator, thread ,row_number() "
+                f"OVER (PARTITION BY thread ORDER BY post_created_at DESC) AS rn "
+                f"FROM posts) AS p "
+                f"ON threads.thread_id=p.thread where rn=1 or rn is null) AS g "
+                f"LEFT JOIN users AS u2 ON u2.user_id=g.post_creator "
+                f"WHERE g.topic={topic_id}) "
+                f"SELECT threads.thread_id,thread_name, thread_created_at, "
+                f"thread_creator, thread_content,pinned,threads.topic,post_count, "
+                f"u1.user_name AS thread_creator_name,u1.avatar AS thread_creator_avatar, "
+                f"post_creator,post_creator_name,post_created_at,post_id,post_creator_avatar "
+                f"FROM threads "
+                f"JOIN threadpost ON threadpost.thread_id=threads.thread_id "
+                f"JOIN users AS u1 ON u1.user_id=thread_creator "
+                f"LEFT JOIN last_activity ON threads.thread_id=last_activity.thread "
+                f"WHERE threads.topic={topic_id} "
+                f"ORDER BY thread_created_at DESC "
+                # {"thread_id": topic_id},
+            )
+            .mappings()
+            .all()
+        )
+
+        # res = (
+        #    db.session.query(Thread, User)
+        #    .filter_by(topic=topic_id)
+        #    .join(User, Thread.thread_creator == User.user_id)
+        #    .add_columns(Thread.thread_id, Thread.thread_name, User.user_name)
+        # .order_by(Thread.thread_created_at)
+        #    .all()
+        # )
+        print(result)
+        # for r in res:
+        #    print(r)
+        #    print(r.Thread.thread_id)
+
+        return result
+
+    @staticmethod
+    def get_threads_by_topic2(topic_id: int) -> list:
+        """
+        Retrieve all the threads of one topic in the database by topic id with thread_creator info and posts number by thread.
+        :param topic_id: The unique identifier for a topic.
+        :return: The result of the query.
+        """
+        result = (
+            db.session.execute(
+                f"WITH threadpost AS "
+                f"(SELECT topic, thread_id, count(post_id) AS post_count "
+                f"FROM threads LEFT JOIN posts ON thread_id=thread GROUP BY thread_id) "
+                f"SELECT threads.thread_id,thread_name, thread_created_at, thread_creator, "
+                f"thread_content,pinned,threads.topic ,post_count, u1.user_name AS thread_creator_name "
+                f"FROM threads "
+                f"JOIN threadpost ON threadpost.thread_id=threads.thread_id "
+                f"JOIN users AS u1 ON u1.user_id=thread_creator "
+                f"WHERE topic=:topic_id "
+                f"ORDER BY thread_created_at DESC",
+                {"thread_id": topic_id},
+            )
+            .mappings()
+            .all()
+        )
+
+        # res = (
+        #    db.session.query(Thread, User)
+        #    .filter_by(topic=topic_id)
+        #    .join(User, Thread.thread_creator == User.user_id)
+        #    .add_columns(Thread.thread_id, Thread.thread_name, User.user_name)
+        # .order_by(Thread.thread_created_at)
+        #    .all()
+        # )
+        print(result)
+        # for r in res:
+        #    print(r)
+        #    print(r.Thread.thread_id)
+
+        return result
+
+    @staticmethod
+    def get_threads_by_topic1(topic_id: int) -> list:
+        """
         Retrieve all the threads of one topic in the database by topic id.
         :param topic_id: The unique identifier for a topic.
         :return: The result of the query.
@@ -131,18 +226,18 @@ class ThreadDao:
             db.session.execute(
                 f"WITH threadpost AS "
                 f"(SELECT topic, thread_id, count(post_id) AS post_count "
-                f"FROM threads JOIN posts ON thread_id=thread GROUP BY thread_id) "
+                f"FROM threads LEFT JOIN posts ON thread_id=thread GROUP BY thread_id) "
                 f"SELECT g.*, u1.user_name AS thread_creator_name, u2.user_name AS post_creator_name, post_count "
                 f"FROM "
                 f"(SELECT p.*, thread_name, thread_created_at, thread_creator, thread_content,pinned,topic "
-                f"FROM "
+                f"FROM threads LEFT JOIN"
                 f"(SELECT post_id, post_created_at, post_creator, thread AS thread_id, "
                 f"row_number() OVER (PARTITION BY thread ORDER BY post_created_at DESC) AS rn "
                 f"FROM posts) AS p "
-                f"JOIN threads ON threads.thread_id=p.thread_id where rn=1) AS g "
+                f"ON threads.thread_id=p.thread_id where rn=1 or rn IS NULL) AS g "
                 f"JOIN threadpost ON threadpost.thread_id=g.thread_id "
-                f"JOIN users AS u1 ON u1.user_id=g.thread_creator "
-                f"JOIN users AS u2 ON u2.user_id=g.post_creator "
+                f"LEFT JOIN users AS u1 ON u1.user_id=g.thread_creator "
+                f"LEFT JOIN users AS u2 ON u2.user_id=g.post_creator "
                 f"WHERE g.topic={topic_id} "
                 f"ORDER BY post_created_at DESC"
             )
@@ -164,3 +259,23 @@ class ThreadDao:
         #    print(r.Thread.thread_id)
 
         return result
+
+
+"""
+f"WITH threadpost AS "
+                f"(SELECT topic, thread_id, count(post_id) AS post_count "
+                f"FROM threads JOIN posts ON thread_id=thread GROUP BY thread_id) "
+                f"SELECT g.*, u1.user_name AS thread_creator_name, u2.user_name AS post_creator_name, post_count "
+                f"FROM "
+                f"(SELECT p.*, thread_name, thread_created_at, thread_creator, thread_content,pinned,topic "
+                f"FROM "
+                f"(SELECT post_id, post_created_at, post_creator, thread AS thread_id, "
+                f"row_number() OVER (PARTITION BY thread ORDER BY post_created_at DESC) AS rn "
+                f"FROM posts) AS p "
+                f"JOIN threads ON threads.thread_id=p.thread_id where rn=1) AS g "
+                f"JOIN threadpost ON threadpost.thread_id=g.thread_id "
+                f"JOIN users AS u1 ON u1.user_id=g.thread_creator "
+                f"JOIN users AS u2 ON u2.user_id=g.post_creator "
+                f"WHERE g.topic={topic_id} "
+                f"ORDER BY post_created_at DESC"
+"""

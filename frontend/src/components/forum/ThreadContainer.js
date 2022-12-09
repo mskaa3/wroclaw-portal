@@ -1,22 +1,54 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState, useContext } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
 import axios from 'axios';
 import './style.css';
 import Thread from './Thread';
+import AuthContext from '../../context/auth/AuthContext';
 //import {createPost, fetchThread, deletePost, deleteThread} from '../../actions';
-import { authHeader } from '../../context/auth/AuthActions';
+import {
+  authHeader,
+  createPost,
+  deletePost,
+  deleteThread,
+} from '../../context/auth/AuthActions';
 
 const ThreadContainer = () => {
   const { id } = useParams();
   console.log('thread_id');
   console.log(id);
+  const navigate = useNavigate();
+  const {
+    dispatch,
+    isLoading,
+    //name,
+    //content,
+    //pinned,
+    //creator,
+    //createdAt,
+    posts,
+    error,
+    isAuthenticated,
+    curThread,
+    //createPost,
+    //newPostLoading,
+    //newPostError,
+    //newPostSuccess,
+    //authenticatedUsername,
+    //authenticatedIsStaff,
+    //deletePostList,
+    //deletePost,
+    //isDeleting,
+    //deleteError,
+    //deleteThread,
+  } = useContext(AuthContext);
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  //const [isLoading, setIsLoading] = useState(false);
+  //const [error, setError] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState(null);
   const [currentThread, setCurrentThread] = useState([]);
-  const [posts, setPosts] = useState([]);
+  const [postss, setPostss] = useState([]);
 
   useEffect(() => {
     const fetchThread = async () => {
@@ -40,17 +72,25 @@ const ThreadContainer = () => {
       );
       console.log('thread posts data');
       console.log(data);
-      setPosts(data);
+      setPostss(data);
     };
 
     fetchThreadPosts();
-  }, [id]);
+  }, [id, curThread]);
 
   //console.log('before return');
   console.log(currentThread);
 
   return (
     <>
+      <Button
+        className="mt-3 w-40 mb-3"
+        variant="custom"
+        type="submit"
+        onClick={() => navigate(-1)}
+      >
+        <i className="fa-solid fa-left-long"></i> &nbsp;Back to threads
+      </Button>
       <Thread
         thread={currentThread}
         //id={thread_id}
@@ -60,20 +100,20 @@ const ThreadContainer = () => {
         //pinned={thread.pinned}
         //creator={thread.thread_creator}
         //createdAt={thread.thread_created_at}
-        posts={posts}
+        posts={postss}
         //error={error}
         //isAuthenticated={isAuthenticated}
-        //createPost={createPost}
+        createPost={createPost}
         //newPostSuccess={newPostSuccess}
         //newPostLoading={newPostLoading}
         //newPostError={newPostError}
         //authenticatedUsername={authenticatedUsername}
         //authenticatedIsStaff={authenticatedIsStaff}
         //deletePostList={deletePostList}
-        //deletePost={deletePost}
+        deletePost={deletePost}
         isDeleting={isDeleting}
         deleteError={deleteError}
-        //deleteThread={deleteThread}
+        deleteThread={deleteThread}
       />
     </>
   );
