@@ -572,3 +572,8 @@ https://github.com/jpuri/react-draft-wysiwyg/blob/master/src/renderer/Image/styl
   height: 20px;
   width: 20px;
 }
+
+.btn-custom{
+  background-color: #69a3ff !important;
+  color:black
+}

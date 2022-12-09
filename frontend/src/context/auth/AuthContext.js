@@ -22,32 +22,24 @@ export const AuthProvider = ({ children }) => {
     registerError: false,
     modalType: null,
     modalProps: {},
+    newThreadLoading: false,
+    newThreadSuccess: false,
+    newThreadName: '',
+    newThreadContent: '',
+    newThreadId: null,
+    newThreadError: null,
+    newThreadShow: false,
+    isDeleting: false, //about tread
+    deleteError: null, //about thread
+    curThread: null,
+    posts: [],
+    newPostLoading: true,
+    newPostError: null,
+    newPostSuccess: false,
+    deletePostList: [],
   };
 
   const [state, dispatch] = useReducer(authReducer, initialState);
-
-  // const getUnis = async (e) => {
-  //   //e.preventDefault();
-  //   //console.log(uniSearchWord);
-
-  //   setLoading();
-  //   try {
-  //     const res = await axios.get(`${API_URL}/unis`);
-  //     console.log([res.data]);
-  //     //setUnis([res.data, ...unis]);
-  //     //setUnis(res.data || []);
-  //     dispatch({
-  //       type: 'GET_UNIS',
-  //       payload: res,
-  //     });
-
-  //     //setLoading(false);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-
-  //   //setUniSearchWord('');
-  // };
 
   return (
     <AuthContext.Provider

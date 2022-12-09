@@ -177,6 +177,7 @@ def create_app(config_class="config.DevConfig"):
         response.headers.add("Access-Control-Allow-Headers", "x-csrf-token")
         response.headers.add("Access-Control-Allow-Headers", "Content-Type")
         response.headers.add("Access-Control-Allow-Headers", "Authorization")
+        # response.headers.add("Access-Control-Allow-Headers", "Origin")
         # response.access_control_allow_headers = "Origin, Content-Type"
         # "Origin, X-Requested-With, Content-Type, Accept, Authorization"
         return response

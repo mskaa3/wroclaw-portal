@@ -89,7 +89,7 @@ class TopicDao:
         result = db.session.execute(
             f"WITH threadpost AS "
             f"(SELECT thread_id,topic,COUNT(post_id) AS post_count "
-            f"FROM threads JOIN posts ON thread_id=thread "
+            f"FROM threads LEFT JOIN posts ON thread_id=thread "
             f"GROUP BY thread_id) "
             f"SELECT topic_id,topic_name,description, "
             f"COUNT(thread_id) AS threads_count, SUM(post_count) AS posts_count "

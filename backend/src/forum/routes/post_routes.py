@@ -24,7 +24,6 @@ resource_fields = {
 
 
 class PostIdApi(Resource):
-   
     @marshal_with(resource_fields)
     def get(self, post_id):
         """
@@ -81,7 +80,7 @@ class PostIdApi(Resource):
                     "error": "there is no existing post with this id",
                 }
             )
-           
+
             return Response(response, mimetype="application/json", status=400)
 
         post_data: dict = request.get_json()
@@ -102,7 +101,7 @@ class PostIdApi(Resource):
                         "post": updated_post_dict,
                     }
                 )
-                
+
                 return Response(response, mimetype="application/json", status=200)
             else:
                 response = jsonify(
@@ -113,7 +112,7 @@ class PostIdApi(Resource):
                         "error": "the post failed to update",
                     }
                 )
-                
+
                 return Response(response, mimetype="application/json", status=500)
         else:
             response = jsonify(
@@ -124,9 +123,8 @@ class PostIdApi(Resource):
                     "error": "the post submitted is equal to the existing post with the same id",
                 }
             )
-            
-            return Response(response, mimetype="application/json", status=400)
 
+            return Response(response, mimetype="application/json", status=400)
 
     def delete(self, post_id):
         """
@@ -144,7 +142,7 @@ class PostIdApi(Resource):
                     "error": "there is no existing post with this id",
                 }
             )
-            
+
             return Response(response, mimetype="application/json", status=400)
 
         is_deleted = PostDao.delete_post_by_id(post_id=post_id)
@@ -156,7 +154,7 @@ class PostIdApi(Resource):
                     "deleted": True,
                 }
             )
-           
+
             return Response(response, mimetype="application/json", status=204)
         else:
             response = jsonify(
@@ -166,7 +164,7 @@ class PostIdApi(Resource):
                     "error": "failed to delete the post",
                 }
             )
-           
+
             return Response(response, mimetype="application/json", status=500)
 
 
@@ -255,7 +253,7 @@ class PostsApi(Resource):
             print("post added type")
             print(type(post_added))
             post_added_dict: dict = post_added.to_dict()
-           
+
             print("post_added_dict")
             print(post_added_dict)
             response = jsonify(
@@ -266,7 +264,7 @@ class PostsApi(Resource):
                 }
             )
             print(response)
-
+            # return post_added_dict, 200
             return Response(post_added_dict, mimetype="application/json", status=200)
         else:
             response = jsonify(
@@ -280,7 +278,7 @@ class PostsApi(Resource):
             response.status_code = 500
             return response
 
-   
+
 class PostsByThreadApi(Resource):
 
     # def get_posts_count(self, obj):
@@ -301,6 +299,7 @@ class PostsByThreadApi(Resource):
         "post_updated_at": fields.String,
         "post_creator_name": fields.String,
         "post_creator": fields.String,
+        "avatar": fields.String
         # "post_count": fields.Integer,
         # "last_activity": fields.Nested(thread_last_activity_fields),
         # "last_activity": {
@@ -313,7 +312,7 @@ class PostsByThreadApi(Resource):
     }
 
     @marshal_with(resource_fields)
-    @jwt_required()
+    # @jwt_required()
     def get(self, thread_id: int):
         """
         Get all the posts by thread in the database.

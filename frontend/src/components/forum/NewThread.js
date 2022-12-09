@@ -10,7 +10,8 @@ import {
   convertToRaw,
   Modifier,
 } from 'draft-js';
-import { Form, Icon, Divider, Button } from 'semantic-ui-react';
+import { Form, Icon, Divider } from 'semantic-ui-react';
+import { Button } from 'react-bootstrap';
 import './style.css';
 import RichEditor from './RichEditor';
 import StatusMessage from './StatusMessage';
@@ -18,31 +19,31 @@ import StatusMessage from './StatusMessage';
 export default class NewThread extends Component {
   constructor(props) {
     super(props);
-    const { name, content } = this.props;
-    let editorState = this.convertToEditorState(content);
+    const { thread_name, thread_content } = this.props;
+    let editorState = this.convertToEditorState(thread_content);
     this.state = {
-      name,
+      thread_name,
       editorState,
     };
   }
 
-  componentWillReceiveProps(newProps) {
-    const { name: newName, content: newContent } = newProps;
+  UNSAFE_componentWillReceiveProps(newProps) {
+    const { thread_name: newName, thread_content: newContent } = newProps;
     const editorState = this.convertToEditorState(newContent);
     this.setState({
-      name: newName,
+      thread_name: newName,
       editorState,
     });
   }
 
-  convertToEditorState = (content) => {
+  convertToEditorState = (thread_content) => {
     let editorState = EditorState.createEmpty();
-    if (content) {
+    if (thread_content) {
       try {
-        const contentState = convertFromRaw(JSON.parse(content));
+        const contentState = convertFromRaw(JSON.parse(thread_content));
         editorState = EditorState.createWithContent(contentState);
       } catch (error) {
-        const contentState = ContentState.createFromText(content);
+        const contentState = ContentState.createFromText(thread_content);
         editorState = EditorState.createWithContent(contentState);
       }
     }
@@ -53,15 +54,16 @@ export default class NewThread extends Component {
     this.props.toggleShowEditor();
   };
 
+  //????
   onSave = () => {
     // save to redux store (uncontrolled input way)
-    const { name, editorState } = this.state;
-    const content = JSON.stringify(
+    const { thread_name, editorState } = this.state;
+    const thread_content = JSON.stringify(
       convertToRaw(editorState.getCurrentContent())
     );
     this.props.updateNewThread({
-      name: name,
-      content: content,
+      thread_name: thread_name,
+      thread_content: thread_content,
     });
     this.toggleShowEditor();
   };
@@ -70,22 +72,22 @@ export default class NewThread extends Component {
     // reset & clear everything
     const editorState = EditorState.createEmpty();
     this.setState({
-      name: '',
+      thread_name: '',
       editorState,
     });
-    const content = JSON.stringify(
+    const thread_content = JSON.stringify(
       convertToRaw(editorState.getCurrentContent())
     );
     this.props.updateNewThread({
-      name: '',
-      content: content,
+      thread_name: '',
+      thread_content: thread_content,
     });
     this.toggleShowEditor();
   };
 
   onNameChange = (e, { value }) => {
     this.setState({
-      name: value,
+      thread_name: value,
     });
   };
 
@@ -96,23 +98,26 @@ export default class NewThread extends Component {
   };
 
   isFormValid = () => {
-    const { name } = this.state;
-    return name;
+    const { thread_name } = this.state;
+    return thread_name;
   };
 
   onSubmit = () => {
+    const { dispatch, user } = this.props;
     if (this.isFormValid()) {
-      const { name, editorState } = this.state;
-      const { forum, createThread } = this.props;
-      const content = JSON.stringify(
+      const { thread_name, editorState } = this.state;
+      const { topic, createThread } = this.props;
+      const thread_content = JSON.stringify(
         convertToRaw(editorState.getCurrentContent())
       );
       let newThread = {
-        name: name,
-        forum: forum,
-        content: content,
+        thread_name: thread_name,
+        topic: topic,
+        thread_content: thread_content,
+        thread_creator: user.user_id,
+        pinned: false,
       };
-      createThread(newThread);
+      createThread(dispatch, newThread);
     }
   };
 
@@ -168,7 +173,7 @@ export default class NewThread extends Component {
   render() {
     const { isAuthenticated, isLoading, success, id, error, showEditor } =
       this.props;
-    const { name, editorState } = this.state;
+    const { thread_name, editorState } = this.state;
     if (!isAuthenticated) {
       return <div className="newThread-none" />;
     }
@@ -193,15 +198,14 @@ export default class NewThread extends Component {
       return (
         <div>
           {statusMessage} {/*this will only show the success message*/}
-          <div className="newThread-hidden">
+          <div className="newThread-hidden ">
             <Button
-              size="small"
-              className="btn-custom"
-              floated="left"
+              className="mt-3 w-60"
+              variant="custom"
+              type="submit"
               onClick={this.toggleShowEditor}
             >
-              <Icon name="edit" />
-              New Thread
+              <i className="fa-solid fa-pen-to-square"></i> &nbsp; New Thread
             </Button>
           </div>
         </div>
@@ -222,7 +226,7 @@ export default class NewThread extends Component {
             placeholder="Name"
             type="text"
             name="name"
-            value={name}
+            value={thread_name}
             onChange={this.onNameChange}
           />
           <Divider />
@@ -237,7 +241,8 @@ export default class NewThread extends Component {
             handlePastedText={this.handlePastedText}
           />
           <Button
-            color="#69a3ff"
+            //color="#69a3ff"
+            color="blue"
             size="small"
             loading={isLoading}
             disabled={isLoading}

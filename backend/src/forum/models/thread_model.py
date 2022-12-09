@@ -29,9 +29,6 @@ class Thread(db.Base):
         self.thread_creator = thread.get("thread_creator")
         self.pinned = thread.get("pinned")
 
-    # def json(self):
-    #  return {'name':self.name,...}
-
     def to_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 

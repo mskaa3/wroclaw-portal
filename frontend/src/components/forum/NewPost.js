@@ -8,7 +8,6 @@ import { Form, Icon, Button } from 'semantic-ui-react';
 import './style.css';
 import RichEditor from './RichEditor';
 import StatusMessage from './StatusMessage';
-import { useNavigate } from 'react-router-dom';
 
 export default class NewPost extends Component {
   constructor(props) {
@@ -18,7 +17,7 @@ export default class NewPost extends Component {
     };
   }
 
-  navigate = useNavigate();
+  //navigate = useNavigate();
 
   componentWillReceiveProps(newProps) {
     const { success } = newProps;
@@ -34,8 +33,9 @@ export default class NewPost extends Component {
       editorState,
     });
   };
-
+  /*
   createPost = async (newPost) => {
+    //configure request
     const req = axios.create({
       baseURL: 'http://127.0.0.1:5000',
       headers: {
@@ -45,7 +45,6 @@ export default class NewPost extends Component {
     });
     console.log('new post to add');
     console.log(newPost);
-    //const headers = { 'Access-Control-Allow-Origin': '*' };
 
     const result = await req
       .post('/forum/posts', newPost)
@@ -55,10 +54,11 @@ export default class NewPost extends Component {
       })
       .catch((error) => console.log(error));
   };
-
+*/
   onSubmit = () => {
     const { editorState } = this.state;
-    const { threadID, createPost, thread, authenticatedUser } = this.props;
+    const { threadID, createPost, thread, authenticatedUser, dispatch } =
+      this.props;
     console.log('print threadID from props');
     console.log(threadID);
     const content = JSON.stringify(
@@ -72,12 +72,12 @@ export default class NewPost extends Component {
       //thread_id: thread.thread_id,
       post_content: content,
       //for now post creator is hardcoded, need to insert logined user
-      post_creator: authenticatedUser.uaer_id,
+      post_creator: authenticatedUser.user_id,
     };
 
     console.log('new post');
     console.log(newPost);
-    this.createPost(newPost);
+    createPost(dispatch, newPost);
   };
 
   isValidLength = (contentState) => {

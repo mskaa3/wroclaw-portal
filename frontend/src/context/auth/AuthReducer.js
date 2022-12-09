@@ -35,6 +35,13 @@ const authReducer = (state, action) => {
         registerError: false,
         modalType: null,
         modalProps: {},
+        newThreadLoading: false,
+        newThreadSuccess: false,
+        newThreadName: '',
+        newThreadContent: '',
+        newThreadId: null,
+        newThreadError: null,
+        newThreadShow: false,
       };
     case 'SET_LOADING':
       return {
@@ -120,6 +127,138 @@ const authReducer = (state, action) => {
         ...state,
         modalType: null,
         modalProps: {},
+      };
+    case 'CREATE_THREAD_TOGGLE':
+      return {
+        ...state,
+        newThreadShow: !state.newThreadShow,
+        newThreadSuccess: false,
+        newThreadError: null,
+      };
+    case 'CREATE_THREAD_REQUEST':
+      return {
+        ...state,
+        newThreadLoading: true,
+        newThreadSuccess: false,
+        newThreadError: null,
+        newThreadName: action.newThread.thread_name,
+        newThreadContent: action.newThread.thread_content,
+      };
+    case 'CREATE_THREAD_SUCCESS':
+      console.log('action payload');
+      console.log(action);
+      return {
+        ...state,
+        newThreadLoading: false,
+        newThreadSuccess: true,
+        newThreadName: '',
+        newThreadContent: '',
+        newThreadId: action.newThread.thread['thread_id'],
+        newThreadShow: false,
+        newThreadError: null,
+      };
+    case 'CREATE_THREAD_FAILURE':
+      return {
+        ...state,
+        newThreadLoading: false,
+        newThreadSuccess: false,
+        newThreadId: null,
+        newThreadShow: true,
+        newThreadError: action.error,
+      };
+    case 'CREATE_THREAD_SAVE':
+      return {
+        ...state,
+        newThreadName: action.threda_name,
+        newThreadContent: action.thread_content,
+      };
+    case 'DELETE_THREAD_REQUEST':
+      return {
+        ...state,
+        isDeleting: true,
+        deleteError: null,
+      };
+    case 'DELETE_THREAD_SUCCESS':
+      return {
+        ...state,
+        isDeleting: false,
+        deleteError: null,
+      };
+    case 'DELETE_THREAD_FAILURE':
+      return {
+        ...state,
+        isDeleting: false,
+        deleteError: action.error,
+      };
+
+    case 'FETCH_TOPIC_SUCCESS':
+      return {
+        ...state,
+        isLoading: false,
+        name: action.name,
+        //slug: action.slug,
+        //description: action.description,
+        //threads: action.threads,
+        error: null,
+      };
+    case 'FETCH_TOPIC_FAILURE':
+      return {
+        ...state,
+        error: action.error,
+      };
+    //---posts
+    case 'CREATE_POST_REQUEST':
+      return {
+        ...state,
+        newPostLoading: true,
+        newPostError: null,
+        newPostSuccess: false,
+      };
+    case 'CREATE_POST_SUCCESS':
+      return {
+        ...state,
+        newPostLoading: false,
+        newPostError: null,
+        newPostSuccess: true,
+      };
+    case 'CREATE_POST_FAILURE':
+      return {
+        ...state,
+        newPostLoading: false,
+        newPostError: action.error,
+        newPostSuccess: false,
+      };
+    case 'DELETE_POST_REQUEST':
+      return {
+        ...state,
+        deletePostList: [...state.deletePostList, action.id],
+      };
+    case 'DELETE_POST_SUCCESS':
+    case 'DELETE_POST_FAILURE':
+      return {
+        ...state,
+        deletePostList: state.deletePostList.filter((id) => id !== action.id),
+      };
+    case 'FETCH_THREAD_SUCCESS':
+      console.log('in fetch_thread_success,action');
+      console.log(action);
+      return {
+        ...state,
+        isLoading: false,
+        curThread: action.thread,
+        //name: action.thread.name,
+        //content: action.thread.content,
+        //pinned: action.thread.pinned,
+        //creator: action.thread.creator,
+        //createdAt: action.thread.created_at,
+        posts: action.thread,
+        error: null,
+      };
+    case 'FETCH_THREAD_FAILURE':
+      return {
+        ...state,
+        isLoading: false,
+        error: action.error,
       };
     default:
       return state;

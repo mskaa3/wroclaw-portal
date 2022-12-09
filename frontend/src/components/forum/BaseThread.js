@@ -1,17 +1,10 @@
 import React from 'react';
-import {
-  formatDistanceToNow,
-  parseISO,
-  toDate,
-  intervalToDuration,
-  formatDuration,
-} from 'date-fns';
+import { parseISO, toDate, intervalToDuration, formatDuration } from 'date-fns';
 //import { toDate, format } from 'date-fns-tz';
 import { Link } from 'react-router-dom';
 import { Segment, Grid, Icon } from 'semantic-ui-react';
 import Avatar from './Avatar';
 import './style.css';
-import axios from 'axios';
 
 const BaseThread = ({ thread }) => {
   const {
@@ -20,7 +13,7 @@ const BaseThread = ({ thread }) => {
     pinned,
     thread_creator_name,
     thread_created_at,
-    avatar,
+    thread_creator_avatar,
     //naturaltime,
     post_count,
     last_activity,
@@ -37,14 +30,15 @@ const BaseThread = ({ thread }) => {
     'yyyy/MM/dd kk:mm:ss'
   );
 */
-  const post_date_humanized = formatDuration(
-    intervalToDuration({
-      start: toDate(parseISO(last_activity.post_created_at)),
-      end: Date.now(),
-    }),
-    { format: ['years', 'months', 'days', 'hours', 'minutes'] }
-  );
-  //console.log(post_date_humanized);
+  const post_date_humanized = last_activity.post_created_at
+    ? formatDuration(
+        intervalToDuration({
+          start: toDate(parseISO(last_activity.post_created_at)),
+          end: Date.now(),
+        }),
+        { format: ['years', 'months', 'days', 'hours', 'minutes'] }
+      )
+    : '';
 
   const thread_date_humanized = formatDuration(
     intervalToDuration({
@@ -54,11 +48,12 @@ const BaseThread = ({ thread }) => {
     { format: ['years', 'months', 'days', 'hours', 'minutes'] }
   );
 
-  let lastActivity = last_activity ? (
+  //let lastActivity = last_activity ? (
+  let lastActivity = last_activity.post_id ? (
     <div className="forum-row">
       <Avatar
         className="forum-avatar"
-        avatar={last_activity.avatar}
+        avatar={last_activity.post_creator_avatar}
         centered={false}
         link={`/user/${last_activity.post_creator_name}`}
       />
@@ -85,7 +80,7 @@ const BaseThread = ({ thread }) => {
             <div className="forum-row">
               <Avatar
                 className="forum-avatar"
-                avatar={avatar}
+                avatar={thread_creator_avatar}
                 centered={false}
                 link={`/user/${thread_creator_name}`}
               />

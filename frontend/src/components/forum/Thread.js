@@ -1,5 +1,4 @@
 import React, { useState, useContext } from 'react';
-import { useParams } from 'react-router-dom';
 import { Segment, Icon } from 'semantic-ui-react';
 import StatusMessage from './StatusMessage';
 import Post from './Post';
@@ -13,6 +12,9 @@ const Thread = ({
   deleteError,
   thread,
   posts,
+  createPost,
+  deletePost,
+  deleteThread,
 }) => {
   const { dispatch, isAuthenticated, isLoading, error, user } =
     useContext(AuthContext);
@@ -28,7 +30,7 @@ const Thread = ({
     user_email,
   } = thread;
 
-  const tread_creator = { avatar, user_name, user_email };
+  //const tread_creator = { avatar, user_name, user_email };
   const { newPost, setNewPost } = useState([]);
   const { postsList, setPostsList } = useState([]);
 
@@ -64,7 +66,8 @@ const Thread = ({
       avatar={avatar}
       //authenticatedUsername={authenticatedUsername}
       //authenticatedIsStaff={authenticatedIsStaff}
-      //deleteAction={deleteThread}
+      deleteAction={deleteThread}
+      dispatch={dispatch}
     />
   );
 
@@ -89,10 +92,12 @@ const Thread = ({
               creator={post.post_creator}
               creator_name={post.post_creator_name}
               authenticatedUser={user}
+              avatar={post.avatar}
               //authenticatedUsername={authenticatedUsername}
               //authenticatedIsStaff={authenticatedIsStaff}
               //deletePostList={deletePostList}
-              //deleteAction={deletePost}
+              deleteAction={deletePost}
+              dispatch={dispatch}
             />
           ))}
       </Segment.Group>
@@ -100,11 +105,12 @@ const Thread = ({
         isAuthenticated={isAuthenticated}
         threadID={thread_id}
         authenticatedUser={user}
-        //createPost={createPost}
+        createPost={createPost}
         //success={newPostSuccess}
         //isLoading={newPostLoading}
         //error={newPostError}
         maxLength={2000}
+        dispatch={dispatch}
       />
     </div>
   );
