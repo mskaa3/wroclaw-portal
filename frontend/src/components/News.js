@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 
 import axios from 'axios';
- 
+import Button from 'react-bootstrap/Button';
 import docs from '../css/docs.css';
 import { useEffect, useState ,useMemo} from 'react';
 import { NewsContext } from "../NewsContext";
@@ -88,7 +88,12 @@ function News() {
           : "Loading"}
       </div>
       )}
+      <center><Button variant="primary" type="submit">
+      Load more
+      </Button></center>
     </div>
+
+      
   );  
 }
 
