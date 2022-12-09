@@ -62,12 +62,12 @@ function QAform() {
           <div>
           <Button variant="primary" className="google p-0" onClick={() => setQuestion('Is there a cinema for foreigners?')}>#Culture</Button>{' '}
           <Button variant="secondary" onClick={() => setQuestion('How much is a bus ticket?')}>#Transport</Button>{' '}
-          <Button variant="success" onClick={() => setQuestion('What is PESEL?')}>#Legal stay</Button> {' '}
+          <Button variant="success" onClick={() => setQuestion('What is a PESEL number?')}>#Legal stay</Button> {' '}
           <Button variant="danger" onClick={() => setQuestion('Can I work legally as a student?')}>#Work</Button>{' '}
           <Button variant="info" onClick={() => setQuestion('What is the university cost in Poland?')} >
             #Studies
           </Button>{' '}
-          <Button variant="help" onClick={() => setQuestion('How much are eggs?')}>#Costs</Button>{' '}
+          <Button variant="help" onClick={() => setQuestion('How much is bread in Poland?')}>#Costs</Button>{' '}
           <Button variant="success" onClick={() => setQuestion('Where can I look for a flat to rent?')}>
             #Accomodation
           </Button>{' '}
