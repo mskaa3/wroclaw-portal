@@ -5,20 +5,12 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import {Col,Row} from 'react-bootstrap'
 import axios from 'axios';
 import '../css/doc_component.css';
+import Accordion from 'react-bootstrap/Accordion';
 
 const Documents = () => {
   const [categories,setCategories]=useState([]);
   const [documents,setDocuments]=useState([]);
   const [catID,setCatID]=useState();
-  // const [filteredDocs,setFilteredDocs]=useState([]);
-  // useEffect(()=>{
-  //   fetch("/docs").then(response=>{
-  //       return response.json();
-  //     }).then(data=>{
-  //       setCategories(data);
-  //       console.log(categories)
-  //     })
-  // },[]);
   const handleClick=(e)=>{
     setCatID( parseInt(e.target.value));
     console.log(catID);
@@ -28,15 +20,15 @@ const Documents = () => {
     
   };
 
-  function getFilteredList() {
-    if (!setCatID) {
-      return NaN;
-    }
+  // function getFilteredList() {
+  //   if (!setCatID) {
+  //     return NaN;
+  //   }
         
-    return documents.filter(doc=>doc.categoryID===catID);
+  //   return documents.filter(doc=>doc.categoryID===catID);
    
-  }
-  var filteredDocs = useMemo(getFilteredList, [catID, documents]);
+  // }
+  // var filteredDocs = useMemo(getFilteredList, [catID, documents]);
 
   
 
@@ -60,7 +52,7 @@ const Documents = () => {
     {/* <center>
     <h1 className='doc_title'>Documents </h1>
     </center> */}
-    <Row>
+    {/* <Row>
       
       <Col lg={3} md={6} sm={10} xs={10} >
       
@@ -104,8 +96,52 @@ const Documents = () => {
       </ListGroup> 
       </div> 
       </Col>  
-      </Row>
+      </Row> */}
 
+
+      
+      
+      
+      {categories.map((category_arr)=>{
+          return (
+            <Accordion value={categories}>
+            <Accordion.Item eventKey="1">
+            <Accordion.Header 
+             action onClick={handleClick}
+             
+             key={category_arr[0]} 
+             value={category_arr[0]} 
+             >{category_arr[1]}</Accordion.Header>
+             <Accordion.Body >
+             <ListGroup value={documents}>
+             {documents.filter(doc=>doc.categoryID===category_arr[0]).map((documents_arr)=>{
+           
+           return(
+             <div >
+              
+              <ListGroup.Item 
+              role="tabpanel"
+              key={documents_arr.id}
+              id={documents_arr.id}
+              action href={documents_arr.link}
+              >{documents_arr.name}</ListGroup.Item>
+          
+           </div>
+             )
+          }
+        )}
+        </ListGroup>
+        </Accordion.Body>
+      </Accordion.Item>
+      </Accordion>
+            )
+         })}
+     
+        
+      
+    
+      
+    
     </div>  
   );
 };
