@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 export const errorHandler = (error) => {
   try {
     if (!error.response) {

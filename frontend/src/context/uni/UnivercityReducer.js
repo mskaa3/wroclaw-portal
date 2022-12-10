@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 const univercityReducer = (state, action) => {
   switch (action.type) {
     case 'GET_UNIS':

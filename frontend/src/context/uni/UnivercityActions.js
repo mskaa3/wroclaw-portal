@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import axios from 'axios';
 import omitBy from 'lodash/omitBy';
 import isEmpty from 'lodash/isEmpty';
