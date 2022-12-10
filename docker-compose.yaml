@@ -1,6 +1,6 @@
 version: '3'
 services:
-  frontend:
+  frontend:  
     restart: always
     build: ./frontend
     ports:
@@ -10,11 +10,13 @@ services:
       - ./frontend:/app
     environment:
       - CHOKIDAR_USEPOLLING=true
+    imagePullPolicy: IfNotPresent
   backend:
     restart: always
     build: ./backend
     ports:
       - '5000:5000'
+    imagePullPolicy: IfNotPresent
     volumes:
       - ./backend:/app
     
