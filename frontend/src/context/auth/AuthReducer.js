@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 const authReducer = (state, action) => {
   switch (action.type) {
     case 'SET_IS_AUTHENTICATED':

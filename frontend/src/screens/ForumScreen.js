@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { useState, useEffect } from 'react';
 import TopicList from '../components/forum/TopicList';
 import { Header } from 'semantic-ui-react';

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { useState } from 'react';
 import { Form, Icon, Message, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';

@@ -2,7 +2,7 @@
 import Button from 'react-bootstrap/Button';
 import React from 'react';
 import Form from 'react-bootstrap/Form';
-import Badge from 'react-bootstrap/Badge';
+
 import { useState } from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
 import '../css/qa.css';

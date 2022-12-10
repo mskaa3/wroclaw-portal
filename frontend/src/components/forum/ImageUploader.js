@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import axios from 'axios';
 const CLOUDINARY_UPLOAD_TRANSFORM_PRESET = 'wp-preset-transform-1'; // img transformed to 200x200
 const CLOUDINARY_UPLOAD_PRESET = 'wp-preset-1';

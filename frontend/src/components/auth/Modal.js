@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React from 'react';
 import { Icon } from 'semantic-ui-react';
 import './style.css';

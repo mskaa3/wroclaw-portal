@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { useContext } from 'react';
 import { Outlet } from 'react-router-dom';
 import AuthContext from '../context/auth/AuthContext';

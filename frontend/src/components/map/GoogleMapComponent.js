@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React from 'react';
 import { Wrapper, Status } from '@googlemaps/react-wrapper';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';

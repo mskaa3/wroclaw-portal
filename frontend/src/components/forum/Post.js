@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Segment, Grid, Icon, Dropdown } from 'semantic-ui-react';

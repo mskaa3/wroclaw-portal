@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { useContext } from 'react';
 import EditProfile from './EditProfile';
 import Modal from './Modal';

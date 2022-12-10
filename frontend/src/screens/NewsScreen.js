@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React from 'react';
 import News from '../components/News';
 import { NewsContextProvider } from '../NewsContext';

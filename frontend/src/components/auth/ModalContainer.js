@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { useContext } from 'react';
 import RegisterModal from './RegisterModal';
 import LoginModal from './LoginModal';

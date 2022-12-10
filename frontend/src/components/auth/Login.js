@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { useState, useContext } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Form, Icon, Message, Button } from 'semantic-ui-react';

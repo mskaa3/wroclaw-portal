@@ -14,6 +14,7 @@ function News() {
   const [sources,setSources]=useState([]);
   const [news,setNews]=useState([]);
   const [sourceID,setSourceID]=useState();
+  /* eslint-disable prettier/prettier */
   const [filtered,setFiltered]=useState(false);
 
   const handleClick=(e)=>{

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Icon, Message } from 'semantic-ui-react';

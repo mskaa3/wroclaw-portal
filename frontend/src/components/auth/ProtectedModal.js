@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Protected from './Protected';

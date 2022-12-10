@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { Component } from 'react';
 import { Card } from 'semantic-ui-react';
 import Avatar from '../forum/Avatar';

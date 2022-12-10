@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React from 'react';
 import Main from '../components/forum/Main';
 import Stats from '../components/forum/Stats';

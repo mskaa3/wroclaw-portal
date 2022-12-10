@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React from 'react';
 import axios from 'axios';
 import GoogleMapComponent from '../components/map/GoogleMapComponent';

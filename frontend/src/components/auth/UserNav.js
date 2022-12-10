@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { useContext } from 'react';
 import Avatar from '../forum/Avatar';
 import { Menu, Dropdown } from 'semantic-ui-react';

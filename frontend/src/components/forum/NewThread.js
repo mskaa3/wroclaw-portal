@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { getSelectedBlock } from 'draftjs-utils';

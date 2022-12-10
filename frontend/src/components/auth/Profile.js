@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React from 'react';
 import Avatar from '../forum/Avatar';
 import './style.css';

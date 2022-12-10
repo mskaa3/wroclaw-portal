@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { useContext } from 'react';
 import Spinner from '../Spinner';
 import UniversityCard from './UniversityCard';

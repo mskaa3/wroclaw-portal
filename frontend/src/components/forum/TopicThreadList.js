@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React from 'react';
 import { Segment } from 'semantic-ui-react';
 import StatusMessage from './StatusMessage';
