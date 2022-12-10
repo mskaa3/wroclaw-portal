@@ -24,7 +24,7 @@ Apart from these sights, Wroclaw captivates with its marvellous location on the 
 
 The uniqueness of the city is due in part to its long and entangled history. Situated on the interface between ethnically diverse areas, Wroclaw has been part of the Polish, Czech, Austrian and German states. It has inherited the spirit of German Breslau (a previous name of Wroclaw), which partly disappeared when the Germans left the city, and that of Polish Lwow, whose population was resettled here after World War II. Wroclaw is also an important cultural and academic centre of the region, with a large student community that animates the city’s nightlife.
         </Card.Text>
-       <Card.Img variant='bottom' width="300px" height="300px" src="https://ocdn.eu/pulscms-transforms/1/XDvk9kpTURBXy9hZmZmNGU1ODBjZmI5NGI4YTRmZWZlNjIxMTNjMzgzYy5qcGeTlQPNAe4AzRvHzQ-gkwXNBLDNAqSTCaY2MjI0MDAG3gABoTAB/wroclaw.jpg"/>
+       <Card.Img variant='top' width="300px" height="300px" src="https://ocdn.eu/pulscms-transforms/1/XDvk9kpTURBXy9hZmZmNGU1ODBjZmI5NGI4YTRmZWZlNjIxMTNjMzgzYy5qcGeTlQPNAe4AzRvHzQ-gkwXNBLDNAqSTCaY2MjI0MDAG3gABoTAB/wroclaw.jpg"/>
       </Card.Body>
 
        <Card.Body>

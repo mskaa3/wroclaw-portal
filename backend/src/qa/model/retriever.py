@@ -8,9 +8,8 @@ from gensim.parsing.preprocessing import preprocess_string
 from main import sentence_model
 
 
-dirname = ".\\backend\\model\\docs\\"
 ext = "txt"
-top_k_bm25=10
+top_k_bm25=25
 k = 3
 embed_path_dir = os.path.dirname(os.path.realpath(__file__))
 embed_path = os.path.join(embed_path_dir, "embeddings.pkl")

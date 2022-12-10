@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from googletrans import Translator
 import sqlite3
-
+# change translator
 translator = Translator()
 page = requests.get("https://przybysz.duw.pl/en/documents-to-download/", verify=False)
 soup = BeautifulSoup(page.text, "html.parser")
@@ -24,13 +24,13 @@ for header, category in zip(headers, categories):
     for row in category.find_all("div", attrs={"class": ""}):
         doc_title = translator.translate(row.span.text, src="pl", dest="en")
         dict[doc_title.text] = "https://przybysz.duw.pl" + row.a["href"]
-        # dict[row.span.text]='https://przybysz.duw.pl'+row.a['href']
     result_dict[header] = dict
 
 
 with sqlite3.connect("docs_db.db") as conn:
     try:
         cur = conn.cursor()
+        # add deliting of previoslu existing data
         for key in result_dict:
             cur.execute(
                 f'SELECT category_id FROM categories WHERE category_name = "{key}"'
