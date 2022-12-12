@@ -49,7 +49,7 @@ function News() {
       
     };
     getData();
-  },[sources,news]);
+  },[]);
   
   // const { data } = useContext(NewsContext);
   // console.log(data);

@@ -21,6 +21,11 @@ const GoogleMapComponent = (props) => {
   return (
     <center>
       <br /> <br />
+      <center>
+    <h1 className='doc_title'>City map </h1>
+    <br />
+    <br />
+    </center>
       <div>
         <Wrapper apiKey="AIzaSyBr6cQlTB8LQ1Rwf9ZZqIFfc7vl-2gxduk">
           <GoogleMap

@@ -44,14 +44,17 @@ const Documents = () => {
       
     };
     getData();
-  },[categories,documents]);
+  },[]);
   
   return (
   <div>    
   
-    {/* <center>
+    <center>
+    <br />
     <h1 className='doc_title'>Documents </h1>
-    </center> */}
+    </center>
+    <br />
+    <br />
     {/* <Row>
       
       <Col lg={3} md={6} sm={10} xs={10} >
