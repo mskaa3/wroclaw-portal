@@ -2,16 +2,15 @@ import requests
 import json
 import sqlite3
 from deep_translator import GoogleTranslator 
-from datetime import datetime
-# pip install -U deep-translator
+from news_config import api_key,now,keyword,language,sorting_mode
 translator =GoogleTranslator(source='pl', target='en') 
-api_key='70fdb9ba81ba40b6bda148e672898bd9'
+
 
 def update():
 # or maybe since last update?
-    now = str((datetime.now())).split(' ')[0]
+    
     try:
-        response_API = requests.get('https://newsapi.org/v2/everything?q=Wrocław&language=pl&from='+now+'&sortBy=publishedAt&apiKey='+api_key)
+        response_API = requests.get('https://newsapi.org/v2/everything?q='+keyword+'&language='+language+'&from='+now+'&sortBy='+sorting_mode+'&apiKey='+api_key)
     except requests.exceptions.RequestException as e:
         print(e)
 
