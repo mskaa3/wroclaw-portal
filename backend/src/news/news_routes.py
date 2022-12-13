@@ -1,7 +1,7 @@
 import sqlite3
 from flask import Blueprint, request, jsonify
 from .data_loader import update
-number=15
+number=30
 news_routes = Blueprint("news_routes", __name__)
 
 

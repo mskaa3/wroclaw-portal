@@ -9,6 +9,9 @@ import NewsArticle from "./NewsArticle";
 import React, { useContext } from "react";
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import '../css/doc_component.css';
 
 function News() {
   const [sources,setSources]=useState([]);
@@ -23,6 +26,8 @@ function News() {
     setFiltered(true);
     
   };
+
+
 
   function getFilteredList() {
     if (!setSourceID) {
@@ -43,7 +48,7 @@ function News() {
       );
     
       setSources(data[0]);
-      setFiltered(data[0]);
+      // setFiltered(data[0]);
       setNews(data[1]);
       // console.log(documents[0])
       
@@ -56,22 +61,35 @@ function News() {
 
   return (
     <div>
-      <center>
-      <h1 className="head__text">News</h1>
-      {/* <DropdownButton id="dropdown-item-button" title="Dropdown button"  value={sources}>
+     <br/>
+        <Row>
+          <Col sm={4}>
+          <Dropdown maxHeight='150px'>
+          <DropdownButton id="dropdown-item-button" title="Choose news source"  value={sources} >
+            
       {sources.map((source)=>{
           return (
-             <Dropdown.Item as button
-             action onClick={handleClick}
+            
+             <Dropdown.Item as="button"
+             onClick={handleClick}
              value={source[0]} 
              >{source[1]}</Dropdown.Item>
             )
         })}
-      </DropdownButton> */}
+      </DropdownButton>
+      </Dropdown>
+      </Col>
+      <Col sm={4}>
+        <center>
+         
+      <h1 className="head__text">News</h1>
       </center>
-      {!filtered && (
+      </Col>
+      <Col sm={4}></Col>
+      </Row>
       
-      <div className="all__news">
+      {!filtered && (
+           <div className="all__news">
         {news
           ? news.map((single_news) => (
               <NewsArticle data={single_news} key={single_news.url} />
@@ -79,19 +97,22 @@ function News() {
           : "Loading"}
       </div>
       )}
-      {filtered && (
-      
+      {filtered && (    
       <div className="all__news">
-        {news
-          ? news.map((single_news) => (
+        {filteredNews.length>0
+          && (filteredNews.map((single_news) => (
               <NewsArticle data={single_news} key={single_news.id} />
             ))
-          : "Loading"}
+          )}
+         {filteredNews.length===0
+          && ( <center> <p>No news from this source </p> </center>)}
       </div>
       )}
-      <center><Button variant="primary" type="submit">
+      {/* <center><Button variant="primary" type="submit" onClick={handleClick}>
       Load more
-      </Button></center>
+      </Button></center> */}
+     
+
     </div>
 
       

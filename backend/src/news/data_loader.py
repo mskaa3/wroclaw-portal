@@ -2,7 +2,7 @@ import requests
 import json
 import sqlite3
 from deep_translator import GoogleTranslator 
-from news_config import api_key,now,keyword,language,sorting_mode
+from .news_config import api_key,now,keyword,language,sorting_mode
 translator =GoogleTranslator(source='pl', target='en') 
 
 
