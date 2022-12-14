@@ -43,7 +43,7 @@ def create_app(config_class="config.DevConfig"):
 
     CORS(app)
     api = Api(app)
-
+    update()
     """initialize plugins"""
     db.init_app(app)
     migrate.init_app(app, db)
