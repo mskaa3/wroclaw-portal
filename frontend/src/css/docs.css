@@ -69,11 +69,7 @@
 
 .news__published {
   margin-right: 10px;
-}
-
-.news__source,
-.news__published {
-  display: inline-block;
-  margin-top: 10px;
+  margin-bottom: 5px;
   color: rgb(122, 122, 122);
 }
+

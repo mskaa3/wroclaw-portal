@@ -48,16 +48,11 @@ function News() {
       );
     
       setSources(data[0]);
-      // setFiltered(data[0]);
-      setNews(data[1]);
-      // console.log(documents[0])
-      
+      setNews(data[1]);   
     };
     getData();
   },[]);
-  
-  // const { data } = useContext(NewsContext);
-  // console.log(data);
+
 
   return (
     <div>
@@ -92,7 +87,7 @@ function News() {
            <div className="all__news">
         {news
           ? news.map((single_news) => (
-              <NewsArticle data={single_news} key={single_news.url} />
+              <NewsArticle  data={single_news} key={single_news.url} />
             ))
           : "Loading"}
       </div>
@@ -101,7 +96,7 @@ function News() {
       <div className="all__news">
         {filteredNews.length>0
           && (filteredNews.map((single_news) => (
-              <NewsArticle data={single_news} key={single_news.id} />
+              <NewsArticle  href={single_news.url} data={single_news} key={single_news.id} />
             ))
           )}
          {filteredNews.length===0
