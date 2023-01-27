@@ -1,6 +1,6 @@
 # wroclaw-portal
 
-The wroclaw-portal web system is a complex and comprehensive tool to obtain all necessary information about relocating to Poland to work or study. It consists of several modules covering different functionalities whose work do not interfere with one another. Functionalities include university search engine, documents library, forum, maps, news, currencies and qa. The structure of the project allows work of multiple developers on chosen modules without the risk of violating structure of remaining parts. The project allows using docker and running the application using docker containers.
+The wroclaw-portal web system is a complex and comprehensive tool to obtain all necessary information about relocating to Poland to work or study. It consists of several modules covering different functionalities whose work do not interfere with one another. Functionalities include university search engine, documents library, forum, maps, news, currencies and qa running on AI model. The structure of the project allows work of multiple developers on chosen modules without the risk of violating structure of remaining parts. The project allows using docker and running the application using docker containers.
 
 ## Requirements
 Installed [git](https://git-scm.com/download/win)
